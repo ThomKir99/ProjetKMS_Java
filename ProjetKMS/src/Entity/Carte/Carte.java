@@ -1,3 +1,7 @@
+package Entity.Carte;
+
+import Entity.Entity;
+import Entity.Position;
 
 public class Carte extends Entity{
     private String description;

@@ -1,5 +1,10 @@
+package Entity.Group;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import Entity.Entity;
+import Entity.Carte.Carte;
 
 public class Group extends Entity{
 	private List<Carte> cartes;

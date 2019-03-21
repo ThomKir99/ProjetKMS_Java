@@ -1,5 +1,10 @@
+package Entity.Projet;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import Entity.Entity;
+import Entity.Group.Group;
 
 public class Project extends Entity{
 	private List<Group> groups;

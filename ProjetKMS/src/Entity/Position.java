@@ -1,3 +1,5 @@
+package Entity;
+
 
 public class Position {
 	private float x ;
