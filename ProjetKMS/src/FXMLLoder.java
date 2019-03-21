@@ -8,7 +8,7 @@ public class FXMLLoder extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/FXMLFILE/Carte.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

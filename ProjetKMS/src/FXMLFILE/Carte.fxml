@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="248.0" layoutY="188.0" mnemonicParsing="false" text="Allo" />
+      <Button layoutX="53.0" layoutY="46.0" mnemonicParsing="false" text="Ajouter projet" />
+      <Pane layoutX="53.0" layoutY="92.0" prefHeight="115.0" prefWidth="225.0" style="-fx-border-color: blue;">
+         <children>
+            <TextField layoutX="14.0" layoutY="14.0" />
+         </children>
+      </Pane>
    </children>
 </Pane>
