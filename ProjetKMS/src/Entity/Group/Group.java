@@ -14,6 +14,12 @@ public class Group extends Entity{
 		this.cartes = new ArrayList<Carte>();
 	}
 
+	public Group(String name){
+		super();
+		this.cartes = null;
+		this.setName(name);
+	}
+
 	public List<Carte> getCartes() {return cartes;}
 
 	public void setCartes(List<Carte> cartes) {this.cartes = cartes;}

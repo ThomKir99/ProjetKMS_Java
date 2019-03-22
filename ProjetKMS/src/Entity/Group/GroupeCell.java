@@ -1,13 +1,24 @@
-package Entity.Carte;
+package Entity.Group;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import Entity.Position;
+import Entity.Carte.Carte;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class CarteCell extends ListCell<Carte>{
+public class GroupeCell extends ListCell<Carte> {
+
+
 
 	@FXML
 	private TextField textField1;
@@ -20,7 +31,7 @@ public class CarteCell extends ListCell<Carte>{
 
 	private FXMLLoader mLLoader;
 
-	public CarteCell(){
+	public GroupeCell(){
 
 	}
 
@@ -54,5 +65,6 @@ public class CarteCell extends ListCell<Carte>{
         }
 
     }
+	
 
 }
