@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="gridPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="221.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="textField1" layoutY="-4.0" prefHeight="21.0" prefWidth="221.0" text="Test" />
+      <TextField fx:id="textField2" layoutY="29.0" prefHeight="40.0" prefWidth="221.0" text="Test2" GridPane.rowIndex="1" />
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
