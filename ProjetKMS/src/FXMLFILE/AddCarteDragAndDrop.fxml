@@ -8,8 +8,8 @@
 	<children>
 	    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
 	         <children>
-	            <ListView fx:id="ListView1" layoutX="268.0" prefHeight="156.0" prefWidth="339.0" VBox.vgrow="ALWAYS" />
-            <ListView fx:id="listViewDrop" layoutY="202.0" prefHeight="200.0" prefWidth="200.0" />
+	            <ListView fx:id="ListView1" editable="true" layoutX="268.0" prefHeight="292.0" prefWidth="339.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="listViewDrop" editable="true" layoutY="88.0" prefHeight="314.0" prefWidth="200.0" />
 	         </children>
 	    </AnchorPane>
 	</children>

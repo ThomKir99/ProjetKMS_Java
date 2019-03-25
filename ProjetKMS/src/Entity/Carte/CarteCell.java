@@ -3,6 +3,10 @@ package Entity.Carte;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,9 +38,17 @@ public class CarteCell extends ListCell<Carte>{
 
 	private Carte listOfCarte;
 
+	private ListView<Carte> listView;
+
+	private final ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
+	private boolean dropInSameList=false;
+	private boolean dropIsSuccessful=false;
+
 	public CarteCell(){
 		listOfCarte = new Carte();
-	}
+
+		}
+
 
 
 	@Override
