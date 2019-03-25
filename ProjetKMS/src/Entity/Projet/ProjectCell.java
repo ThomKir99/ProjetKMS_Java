@@ -86,14 +86,15 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		if (carteObservableList != null){
+
+		if (listViewGroup != null)
+		{
 			getAllCarte();
 
 			listViewGroup.setItems(carteObservableList);
 
 			listViewGroup.setCellFactory(groupeListView -> new GroupeCell());
 		}
-
 
 	}
 
