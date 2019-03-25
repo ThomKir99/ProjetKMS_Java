@@ -56,5 +56,9 @@ public class Position {
         return areEqual;
     }
 
+    public String getPosition(){
+    	return "("+ x +  ";" +y +";" + z + ")";
+    }
+
 
 }
