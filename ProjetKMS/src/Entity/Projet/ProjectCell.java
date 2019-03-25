@@ -18,7 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class ProjectCell extends ListCell<Group>implements Initializable{
+public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	@FXML
@@ -27,6 +27,9 @@ public class ProjectCell extends ListCell<Group>implements Initializable{
 	public ObservableList<Carte> carteObservableList;
 	@FXML
 	private TextField textFieldGroupName;
+
+	@FXML
+	private GridPane gridPane_emptyGroup;
 
 	@FXML
 	private GridPane gridPaneGroup;
@@ -47,32 +50,50 @@ public class ProjectCell extends ListCell<Group>implements Initializable{
             setGraphic(null);
 
         } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
-                mLLoader.setController(this);
+        	if (group.getIsEmptyObject()){
+        		if (mLLoader == null) {
+            		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/EmptyGroup.fxml"));
+            		mLLoader.setController(this);
 
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        mLLoader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+        		}
+                setText(null);
+                setGraphic(gridPane_emptyGroup);
+        	}
+        	else{
+        		if (mLLoader == null) {
+                    mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
+                    mLLoader.setController(this);
 
+                    try {
+                        mLLoader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+        		}
+
+                textFieldGroupName.setText(String.valueOf(group.getName()));
+
+                setText(null);
+                setGraphic(gridPaneGroup);
             }
-
-            textFieldGroupName.setText(String.valueOf(group.getName()));
-
-            setText(null);
-            setGraphic(gridPaneGroup);
         }
-
     }
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		getAllCarte();
+		if (carteObservableList != null){
+			getAllCarte();
 
-		listViewGroup.setItems(carteObservableList);
-		listViewGroup.setCellFactory(groupeListView -> new GroupeCell());
+			listViewGroup.setItems(carteObservableList);
+
+			listViewGroup.setCellFactory(groupeListView -> new GroupeCell());
+		}
+
 
 	}
 
@@ -83,5 +104,6 @@ public class ProjectCell extends ListCell<Group>implements Initializable{
 				   				   new Carte(2,"Its Magic",new Position(0,0,0),0,0,"desc2"),
 				   				   new Carte(2,"test3",new Position(0,0,0),0,0,"desc3"),
 				   				   new Carte(2,"test4",new Position(0,0,0),0,0,"desc4"));
+
 	}
 }

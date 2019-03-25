@@ -27,7 +27,9 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		groupObservableList = FXCollections.observableArrayList();
 
 		groupObservableList.addAll(new Group("test"),
-				   				   new Group("test2"),new Group("test2"),new Group("test2"),new Group("test2"),new Group("test2"));
+				   				   new Group("test2"),new Group("test2"),new Group("test2"));
+
+		addEmptyGroupToEndOfList();
 	}
 
 	@Override
@@ -35,7 +37,12 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView -> new ProjectCell());
+	}
 
+	private void addEmptyGroupToEndOfList(){
+		Group emptyGroup = new Group();
+		emptyGroup.setIsEmptyObject(true);
+		groupObservableList.add(emptyGroup);
 	}
 
 

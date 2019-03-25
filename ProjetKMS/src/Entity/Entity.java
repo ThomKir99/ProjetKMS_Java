@@ -6,6 +6,7 @@ public class Entity {
     private Position position;
     private float width;
     private float height;
+    private boolean isEmptyObject;
 
     public Entity(){
         this.id = -1;
@@ -13,6 +14,7 @@ public class Entity {
         this.position = new Position();
         this.width = 0;
         this.height = 0;
+        this.isEmptyObject = false;
     }
 
     public Entity(int id, String name, Position position, float width, float height){
@@ -21,6 +23,7 @@ public class Entity {
         this.position = position;
         this.width = width;
         this.height = height;
+        this.isEmptyObject = false;
     }
 
 	public float getHeight() {return height;}
@@ -42,4 +45,8 @@ public class Entity {
 	public Position getPosition() {return position;}
 
 	public void setPosition(Position position) {this.position = position;}
+
+	public boolean getIsEmptyObject() {return this.isEmptyObject;}
+
+	public void setIsEmptyObject(boolean isEmpty) {this.isEmptyObject = isEmpty;}
 }

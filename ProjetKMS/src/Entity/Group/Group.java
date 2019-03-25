@@ -1,10 +1,13 @@
 package Entity.Group;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import Entity.Entity;
 import Entity.Carte.Carte;
+import javafx.fxml.Initializable;
 
 public class Group extends Entity{
 	private List<Carte> cartes;
@@ -27,4 +30,5 @@ public class Group extends Entity{
 	public void addCarte(Carte carte){
 		cartes.add(carte);
 	}
+
 }
