@@ -14,9 +14,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -45,17 +49,23 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
+	@FXML
+	private Button btn_delete;
+	private ControllerProjectList controllerProjectList;
+	private Group group;
 
 
 
-	public ProjectCell(){
+
+	public ProjectCell(ControllerProjectList controllerProjectList){
+		this.controllerProjectList = controllerProjectList;
 
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
         super.updateItem(group, empty);
-
+        this.group = group;
         if(empty || group == null) {
 
             setText(null);
@@ -87,14 +97,34 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
                         e.printStackTrace();
                     }
         		}
+        		if(textFieldGroupName!=null){
+        			textFieldGroupName.setText(String.valueOf(group.getName()));
+        		}
 
-                textFieldGroupName.setText(String.valueOf(group.getName()));
-
+                setHandler();
                 setText(null);
                 setGraphic(gridPaneGroup);
             }
         }
     }
+
+
+	private void setHandler() {
+		if(btn_delete!=null){
+
+			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					controllerProjectList.removeRow(getGroupIndex());
+				}
+
+
+			});
+		}
+
+
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -281,6 +311,14 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	public void setDragSource(ObjectProperty<ListCell<Carte>> origineDragSource) {
 
 		dragSource = origineDragSource;
+
+	}
+	private int getGroupIndex() {
+	int index =	controllerProjectList.getItemIndex(group);
+		return index;
+	}
+
+	public void refresh(){
 
 	}
 

@@ -4,13 +4,18 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.input.*;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import Entity.Position;
@@ -20,7 +25,7 @@ import Entity.Group.*;
 public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	@FXML
-	public ListView<Group> listViewProjet;
+	public  ListView<Group> listViewProjet;
 
 	public ObservableList<Group> groupObservableList;
 
@@ -32,12 +37,14 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 
 	public ControllerProjectList(){
+
 		groupObservableList = FXCollections.observableArrayList();
-
-		groupObservableList.addAll(new Group("test"),
-				   				   new Group("test2"),new Group("test2"),new Group("test2"));
-
 		addEmptyGroupToEndOfList();
+		groupObservableList.addAll(new Group("test"),
+				   				   new Group("test2"),new Group("test3"),new Group("test4"));
+
+
+
 	}
 
 	@Override
@@ -48,6 +55,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 		return setCellDragAndDropHandler();
 		});
+
 	}
 
 	private void addEmptyGroupToEndOfList(){
@@ -57,8 +65,8 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	}
 
 	private ListCell<Group> setCellDragAndDropHandler() {
-		ListCell<Group> cell = new ProjectCell();
-		
+
+		ListCell<Group> cell = new ProjectCell(this);
 
 		return cell;
 	}
@@ -78,6 +86,21 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public static void setDropIsSuccessful(boolean states){
 		dropIsSuccessful=states;
 	}
+
+
+	public  void removeRow(int index){
+
+		groupObservableList.remove(index);
+
+
+	}
+
+	public int getItemIndex(Group group) {
+		return groupObservableList.indexOf(group);
+	}
+
+
+
 
 
 
