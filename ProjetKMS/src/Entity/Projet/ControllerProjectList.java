@@ -1,5 +1,7 @@
 package Entity.Projet;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +24,12 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	public ObservableList<Group> groupObservableList;
 
+	public static ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
+	public static boolean dropIsSuccessful=false;
+
+
+
+
 
 	public ControllerProjectList(){
 		groupObservableList = FXCollections.observableArrayList();
@@ -36,7 +44,10 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 
 		listViewProjet.setItems(groupObservableList);
-		listViewProjet.setCellFactory(projectListView -> new ProjectCell());
+		listViewProjet.setCellFactory(projectListView ->{
+
+		return setCellDragAndDropHandler();
+		});
 	}
 
 	private void addEmptyGroupToEndOfList(){
@@ -44,6 +55,37 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		emptyGroup.setIsEmptyObject(true);
 		groupObservableList.add(emptyGroup);
 	}
+
+	private ListCell<Group> setCellDragAndDropHandler() {
+		ListCell<Group> cell = new ProjectCell();
+
+
+		return cell;
+	}
+
+	public static void setDragSource(ObjectProperty<ListCell<Carte>> cellDragSource){
+	dragSource = cellDragSource;
+	}
+
+	public static ObjectProperty<ListCell<Carte>> getDragSource(){
+		return dragSource;
+	}
+
+	public static void setDragSourceToNull(){
+		dragSource = null;
+		}
+
+	public static void setDropIsSuccessful(boolean states){
+		dropIsSuccessful=states;
+	}
+
+
+
+
+
+
+
+
 
 
 }

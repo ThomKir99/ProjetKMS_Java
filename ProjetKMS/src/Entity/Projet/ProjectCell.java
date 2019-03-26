@@ -2,12 +2,16 @@ package Entity.Projet;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 
 import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +20,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
 public class ProjectCell extends ListCell<Group> implements Initializable{
@@ -35,6 +43,10 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private GridPane gridPaneGroup;
 
 	private FXMLLoader mLLoader;
+	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
+	private boolean dropInSameList=false;
+
+
 
 	public ProjectCell(){
 
@@ -86,24 +98,192 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		if (carteObservableList != null){
+		if(listViewGroup!=null){
 			getAllCarte();
-
 			listViewGroup.setItems(carteObservableList);
-
-			listViewGroup.setCellFactory(groupeListView -> new GroupeCell());
+			listViewGroup.setCellFactory(groupeListView -> {
+				return setCellDragAndDropHandler();
+			});
 		}
 
+	}
+	private ListCell<Carte> setCellDragAndDropHandler() {
+		ListCell<Carte> cell = new GroupeCell();
+
+		 cell.setOnDragDetected(event -> {
+			 setDragDetectHandler(cell);
+         });
+
+         cell.setOnDragOver(event -> {
+        	 setDragOverHandler(event);
+
+         });
+         cell.setOnDragDone(event -> {
+        	 setOnDragDoneHandler(cell);
+
+      });
+
+         cell.setOnDragDropped(event -> {
+        	 setOnDragDroppedHandler(event,cell);
+
+         });
+		return cell;
+	}
+
+
+
+	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
+		ControllerProjectList.setDropIsSuccessful(true);
+		 dragSource = ControllerProjectList.getDragSource();
+         Dragboard db = event.getDragboard();
+         if (db.hasString() && dragSource.get() != null) {
+        	 doDragAndDrop(event,cell);
+         } else {
+             event.setDropCompleted(false);
+         }
 
 	}
+
+	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
+		if(dragSourceCameFromSameList(listViewGroup)){
+  		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
+  	   }else{
+
+  		   addCarteToOtherList(event);
+  	   }
+	}
+
+	private void setOnDragDoneHandler(ListCell<Carte> cell) {
+		if(!dropInSameList&& ControllerProjectList.dropIsSuccessful){
+     		 listViewGroup.getItems().remove(cell.getItem());
+     	   }
+     	   dropInSameList=false;
+     	  ControllerProjectList.setDropIsSuccessful(false);
+
+	}
+
+	private void setDragOverHandler(DragEvent event) {
+		Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+	}
+
+	private void setDragDetectHandler(ListCell<Carte> cell) {
+		String index="";
+        if (! cell.isEmpty()) {
+
+            Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent cc = new ClipboardContent();
+            index = getIndexOfDragItem(cell);
+            cc.putString(index);
+            db.setContent(cc);
+            setDragSource(cell);
+        }
+
+	}
+
+	private void setDragSource(ListCell<Carte> cell) {
+		dragSource.set(cell);
+        ControllerProjectList.setDragSource(dragSource);
+	}
+
+	private String getIndexOfDragItem(ListCell<Carte> cell) {
+		String index="";
+		for(int i = 0;i<listViewGroup.getItems().size();i++){
+      	   if(cell.getItem() == listViewGroup.getItems().get(i)){
+      		  index = String.valueOf(i);
+      	   }
+         }
+		return index;
+	}
+
+	private int findDragSourceIndex(ListView<Carte> listView) {
+		int index=0;
+		for(int i=0;i<listView.getItems().size();i++){
+			if(listView.getItems().get(i).getAllCarteByString().equals(dragSource.get().getItem().getAllCarteByString())){
+				index =i;
+			}
+		}
+		return index;
+	}
+
+	private void changeOrderInList(DragEvent event, ListView<Carte> listView,int indexToAdd, int indexToDelete) {
+
+		dropInSameList =true;
+		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
+		carteObservableList.addAll(listView.getItems());
+		carteObservableList.remove(indexToDelete);
+
+		if(indexToAdd>listView.getItems().size()){
+			carteObservableList.add(dragSource.get().getItem());
+		}else{
+			carteObservableList.add(indexToAdd, dragSource.get().getItem());
+		}
+
+		listView.setItems(carteObservableList);
+		 event.setDropCompleted(true);
+		 setDragSourceToNull();
+
+	}
+
+	private void setDragSourceToNull() {
+		dragSource.set(null);
+        ControllerProjectList.setDragSourceToNull();
+	}
+
+	private boolean dragSourceCameFromSameList( ListView<Carte> listView) {
+
+		boolean cameFromSameList=false;
+		for(Carte carte :listView.getItems()){
+
+			if(carte.getAllCarteByString().equals(dragSource.get().getItem().getAllCarteByString())){
+				cameFromSameList =true;
+			}
+		}
+
+		return cameFromSameList;
+	}
+
+	private void addCarteToOtherList( DragEvent event) {
+
+		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
+		carteObservableList.addAll(listViewGroup.getItems());
+
+		ListCell<Carte> dragSourceCell = dragSource.get();
+		carteObservableList.add(dragSourceCell.getItem());
+		listViewGroup.setItems(carteObservableList);
+        event.setDropCompleted(true);
+        setDragSourceToNull();
+
+	}
+
 
 	public void getAllCarte(){
 		carteObservableList = FXCollections.observableArrayList();
 
-		carteObservableList.addAll(new Carte(1,"test",new Position(0,0,0),0,0,"desc"),
-				   				   new Carte(2,"Its Magic",new Position(0,0,0),0,0,"desc2"),
-				   				   new Carte(2,"test3",new Position(0,0,0),0,0,"desc3"),
-				   				   new Carte(2,"test4",new Position(0,0,0),0,0,"desc4"));
+		carteObservableList.addAll(new Carte(randomId(),"test",new Position(0,0,0),0,0,"desc"),
+				   				   new Carte(randomId(),"Its Magic",new Position(0,0,0),0,0,"desc2"),
+				   				   new Carte(randomId(),"test3",new Position(0,0,0),0,0,"desc3"),
+				   				   new Carte(randomId(),"test4",new Position(0,0,0),0,0,"desc4"));
 
 	}
+
+	private int randomId(){
+
+		return (int) (Math.random() * (100000));
+	}
+
+	public ObjectProperty<ListCell<Carte>> getDragSource(){
+
+		return dragSource;
+	}
+
+	public void setDragSource(ObjectProperty<ListCell<Carte>> origineDragSource) {
+
+		dragSource = origineDragSource;
+
+	}
+
+
 }

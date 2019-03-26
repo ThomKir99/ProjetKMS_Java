@@ -4,7 +4,8 @@ import java.util.Map;
 
 import Entity.Position;
 import Entity.Carte.Carte;
-import Entity.Carte.CarteCell;
+
+import Entity.Group.GroupeCell;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -48,7 +49,7 @@ public class DnDListViews extends Application {
         }
 listView.setItems(carteObservableList);
         listView.setCellFactory(lv -> {
-           ListCell<Carte> cell = new CarteCell();
+           ListCell<Carte> cell = new GroupeCell();
 
 
            cell.setOnDragDetected(event -> {
