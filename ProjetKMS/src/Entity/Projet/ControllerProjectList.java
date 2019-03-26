@@ -89,7 +89,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 
 	public  void removeRow(int index){
-
+		groupObservableList.get(index).getCartes().clear();
 		groupObservableList.remove(index);
 
 

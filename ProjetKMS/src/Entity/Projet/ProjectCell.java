@@ -116,7 +116,9 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 				@Override
 				public void handle(ActionEvent event) {
+					group.setCartes(carteObservableList);
 					controllerProjectList.removeRow(getGroupIndex());
+					
 				}
 
 
@@ -132,13 +134,16 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 			getAllCarte();
 			listViewGroup.setItems(carteObservableList);
 			listViewGroup.setCellFactory(groupeListView -> {
+
 				return setCellDragAndDropHandler();
 			});
 		}
 
 	}
 	private ListCell<Carte> setCellDragAndDropHandler() {
+
 		ListCell<Carte> cell = new GroupeCell();
+
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });
@@ -156,6 +161,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
         	 setOnDragDroppedHandler(event,cell);
 
          });
+
 		return cell;
 	}
 
@@ -295,6 +301,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 				   				   new Carte(randomId(),"Its Magic",new Position(0,0,0),0,0,"desc2"),
 				   				   new Carte(randomId(),"test3",new Position(0,0,0),0,0,"desc3"),
 				   				   new Carte(randomId(),"test4",new Position(0,0,0),0,0,"desc4"));
+
+			group.setCartes(carteObservableList);
 
 	}
 
