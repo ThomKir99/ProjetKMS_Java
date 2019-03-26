@@ -58,7 +58,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	private ListCell<Group> setCellDragAndDropHandler() {
 		ListCell<Group> cell = new ProjectCell();
-
+		
 
 		return cell;
 	}

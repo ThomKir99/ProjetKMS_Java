@@ -8,6 +8,8 @@ import Entity.Position;
 import Entity.Carte.Carte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +33,8 @@ public class GroupeCell extends ListCell<Carte> {
 
 	private FXMLLoader mLLoader;
 
+	private Carte carte;
+
 	public GroupeCell(){
 
 	}
@@ -38,7 +42,7 @@ public class GroupeCell extends ListCell<Carte> {
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
-
+        this.carte = carte;
         if(empty || carte == null) {
 
             setText(null);
@@ -60,11 +64,44 @@ public class GroupeCell extends ListCell<Carte> {
             textField1.setText(String.valueOf(carte.getId()));
             textField2.setText(carte.getName());
 
+            setTextHandler();
             setText(null);
             setGraphic(gridPane1);
         }
 
     }
-	
+	private void setTextHandler() {
+		textField1.setOnKeyTyped(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+
+				setCarteId(Integer.valueOf(textField1.getText()));
+			}
+		});
+
+		textField2.setOnKeyTyped(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				carte.setName(textField2.getText());
+
+			}
+		});
+
+	}
+
+	private void setCarteId(int id){
+		carte.setId(id);
+	}
+
+	private void setName(String name){
+		carte.setName(name);
+	}
+	private void setDescription(String description){
+		carte.setDescription(description);
+	}
+
+
 
 }

@@ -109,7 +109,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	}
 	private ListCell<Carte> setCellDragAndDropHandler() {
 		ListCell<Carte> cell = new GroupeCell();
-
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });
