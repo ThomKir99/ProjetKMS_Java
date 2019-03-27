@@ -22,14 +22,13 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	@FXML
 	public ListView<Group> listViewProjet;
 
-	public ObservableList<Group> groupObservableList;
+	@FXML
+	public TextField txt_projectName;
 
 	public static ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	public static boolean dropIsSuccessful=false;
 
-
-
-
+	public ObservableList<Group> groupObservableList;
 
 	public ControllerProjectList(){
 		groupObservableList = FXCollections.observableArrayList();
@@ -37,7 +36,6 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		groupObservableList.addAll(new Group("test"),
 				   				   new Group("test2"),new Group("test2"),new Group("test2"));
 
-		addEmptyGroupToEndOfList();
 	}
 
 	@Override
@@ -45,23 +43,26 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
+	    txt_projectName.setText("NomTest");
 
 		return setCellDragAndDropHandler();
 		});
 	}
 
-	private void addEmptyGroupToEndOfList(){
-		Group emptyGroup = new Group();
-		emptyGroup.setIsEmptyObject(true);
-		groupObservableList.add(emptyGroup);
+	public void ajouterGroup(Group group){
+		groupObservableList.add(group);
 	}
 
 	private ListCell<Group> setCellDragAndDropHandler() {
 		ListCell<Group> cell = new ProjectCell();
-		
+
 
 		return cell;
 	}
+
+	 public void createNewGroup(){
+		 ajouterGroup(new Group("test"));
+	 }
 
 	public static void setDragSource(ObjectProperty<ListCell<Carte>> cellDragSource){
 	dragSource = cellDragSource;
