@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import Entity.Position;
 import Entity.Carte.Carte;
+import Entity.Projet.ControllerProjectList;
+import Entity.Projet.ProjectCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,14 +33,17 @@ public class GroupeCell extends ListCell<Carte> {
 	@FXML
 	private GridPane gridPane1;
 
+	@FXML
+	private Button btn_delete;
 
 
 	private FXMLLoader mLLoader;
 
 	private Carte carte;
+	private ProjectCell projectCellController;
 
-	public GroupeCell(){
-
+	public GroupeCell(ProjectCell projectCell){
+		projectCellController = projectCell;
 	}
 
 	@Override
@@ -73,13 +78,25 @@ public class GroupeCell extends ListCell<Carte> {
 
     }
 	private void setHandler() {
-
+		setButtonHandler();
 		setTextHandler();
 
 	}
 
+	private void setButtonHandler() {
+		btn_delete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				removeCarte();
+
+			}
+		});
+
+	}
+
 	private void setTextHandler() {
-		textField1.setOnKeyTyped(new EventHandler<Event>() {
+		textField1.setOnKeyReleased(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event event) {
@@ -88,7 +105,7 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 		});
 
-		textField2.setOnKeyTyped(new EventHandler<Event>() {
+		textField2.setOnKeyReleased(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event event) {
@@ -97,6 +114,10 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 		});
 
+	}
+
+	private void removeCarte(){
+		projectCellController.removeCarte(carte);
 	}
 
 	private void setCarteId(int id){

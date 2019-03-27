@@ -40,4 +40,9 @@ public class Group extends Entity{
 
 	}
 
+	public void removeCarte(int index) {
+		cartes.remove(index);
+
+	}
+
 }
