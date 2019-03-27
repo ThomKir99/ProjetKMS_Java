@@ -14,8 +14,9 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="558.0" minHeight="10.0" prefHeight="553.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="558.0" minHeight="10.0" prefHeight="521.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="553.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Pane prefHeight="33.0" prefWidth="237.0">
@@ -29,5 +30,6 @@
          </children>
       </Pane>
       <ListView fx:id="listViewGroup" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <Button fx:id="btn_delete" mnemonicParsing="false" text="Delete" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
    </children>
 </GridPane>

@@ -7,10 +7,11 @@ import java.util.ResourceBundle;
 
 import Entity.Entity;
 import Entity.Carte.Carte;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 public class Group extends Entity{
-	private List<Carte> cartes;
+	private ArrayList<Carte> cartes;
 
 	public Group(){
 		super();
@@ -23,12 +24,20 @@ public class Group extends Entity{
 		this.setName(name);
 	}
 
-	public List<Carte> getCartes() {return cartes;}
+	public ArrayList<Carte> getCartes() {return cartes;}
 
-	public void setCartes(List<Carte> cartes) {this.cartes = cartes;}
+	public void setCartes(ArrayList<Carte> cartes) {this.cartes = cartes;}
 
 	public void addCarte(Carte carte){
+		if(cartes==null){
+			cartes = new ArrayList<Carte>();
+		}
 		cartes.add(carte);
+	}
+
+	public void addAll(ObservableList<Carte> items) {
+		cartes.addAll(items);
+
 	}
 
 }

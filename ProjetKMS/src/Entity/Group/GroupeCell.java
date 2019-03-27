@@ -8,11 +8,13 @@ import Entity.Position;
 import Entity.Carte.Carte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -29,6 +31,8 @@ public class GroupeCell extends ListCell<Carte> {
 	@FXML
 	private GridPane gridPane1;
 
+
+
 	private FXMLLoader mLLoader;
 
 	private Carte carte;
@@ -40,6 +44,8 @@ public class GroupeCell extends ListCell<Carte> {
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
+
+
         this.carte = carte;
         if(empty || carte == null) {
             setText(null);
@@ -59,13 +65,19 @@ public class GroupeCell extends ListCell<Carte> {
 
             textField1.setText(String.valueOf(carte.getId()));
             textField2.setText(carte.getName());
+            setHandler();
 
-            setTextHandler();
             setText(null);
             setGraphic(gridPane1);
         }
 
     }
+	private void setHandler() {
+
+		setTextHandler();
+
+	}
+
 	private void setTextHandler() {
 		textField1.setOnKeyTyped(new EventHandler<Event>() {
 

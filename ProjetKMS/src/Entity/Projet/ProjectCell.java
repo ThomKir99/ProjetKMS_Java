@@ -13,6 +13,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -48,17 +51,25 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
+	@FXML
+	private Button btn_delete;
+	private ControllerProjectList controllerProjectList;
+
+	private Group group;
 
 
 
-	public ProjectCell(){
+	public ProjectCell(ControllerProjectList controllerProjectList){
+		this.controllerProjectList = controllerProjectList;
 
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-        super.updateItem(group, empty);
 
+
+        super.updateItem(group, empty);
+        this.group = group;
         if(empty || group == null) {
 
             setText(null);
@@ -75,13 +86,30 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
                         e.printStackTrace();
                     }
         		}
-
-                textFieldGroupName.setText(String.valueOf(group.getName()));
-
+        		if(textFieldGroupName!=null){
+        			textFieldGroupName.setText(String.valueOf(group.getName()));
+        		}
+                setHandler();
                 setText(null);
                 setGraphic(gridPaneGroup);
         }
-    }
+        }
+
+	private void setHandler() {
+		if(btn_delete!=null){
+
+			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					controllerProjectList.removeRow(getGroupIndex());
+				}
+
+
+			});
+		}
+
+
+	}
 
 	public void CreateNewCarte(){
 		carteObservableList.add(new Carte(1,"test",new Position(0,0,0),0,0,"desc"));
@@ -93,13 +121,15 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 			getAllCarte();
 			listViewGroup.setItems(carteObservableList);
 			listViewGroup.setCellFactory(groupeListView -> {
-				return setCellDragAndDropHandler();
+			return setCellDragAndDropHandler();
 			});
 		}
 
 	}
 	private ListCell<Carte> setCellDragAndDropHandler() {
+
 		ListCell<Carte> cell = new GroupeCell();
+
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });
@@ -117,6 +147,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
         	 setOnDragDroppedHandler(event,cell);
 
          });
+
 		return cell;
 	}
 
@@ -128,6 +159,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
          Dragboard db = event.getDragboard();
          if (db.hasString() && dragSource.get() != null) {
         	 doDragAndDrop(event,cell);
+        	 refreshGroup();
          } else {
              event.setDropCompleted(false);
          }
@@ -146,10 +178,16 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerProjectList.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
+     		 refreshGroup();
      	   }
      	   dropInSameList=false;
      	  ControllerProjectList.setDropIsSuccessful(false);
 
+	}
+
+	private void refreshGroup() {
+		group.getCartes().clear();
+		 group.addAll(listViewGroup.getItems());
 	}
 
 	private void setDragOverHandler(DragEvent event) {
@@ -250,12 +288,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	public void getAllCarte(){
 		carteObservableList = FXCollections.observableArrayList();
-
-		carteObservableList.addAll(new Carte(randomId(),"test",new Position(0,0,0),0,0,"desc"),
-				   				   new Carte(randomId(),"Its Magic",new Position(0,0,0),0,0,"desc2"),
-				   				   new Carte(randomId(),"test3",new Position(0,0,0),0,0,"desc3"),
-				   				   new Carte(randomId(),"test4",new Position(0,0,0),0,0,"desc4"));
-
+		carteObservableList.addAll(group.getCartes());
 	}
 
 	private int randomId(){
@@ -272,6 +305,14 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 		dragSource = origineDragSource;
 
+	}
+	private int getGroupIndex() {
+	int index =	controllerProjectList.getItemIndex(group);
+		return index;
+	}
+
+	public void addCarte(){
+		carteObservableList.add(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
 	}
 
 
