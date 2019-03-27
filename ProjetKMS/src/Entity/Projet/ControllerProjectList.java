@@ -20,30 +20,32 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	@FXML
 	public ListView<Group> listViewProjet;
 
-	public ObservableList<Group> groupObservableList;
+	@FXML
+	public TextField txt_projectName;
 
+	public ObservableList<Group> groupObservableList;
 
 	public ControllerProjectList(){
 		groupObservableList = FXCollections.observableArrayList();
 
-		groupObservableList.addAll(new Group("test"),
-				   				   new Group("test2"),new Group("test2"),new Group("test2"));
-
-		addEmptyGroupToEndOfList();
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView -> new ProjectCell());
+		txt_projectName.setText("NomTest");
 	}
 
-	private void addEmptyGroupToEndOfList(){
-		Group emptyGroup = new Group();
-		emptyGroup.setIsEmptyObject(true);
-		groupObservableList.add(emptyGroup);
+	public void ajouterGroup(Group group){
+		groupObservableList.add(group);
 	}
+
+	 public void createNewGroup(){
+		 ajouterGroup(new Group("test"));
+	 }
+
+
 
 
 }

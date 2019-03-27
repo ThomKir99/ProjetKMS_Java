@@ -18,8 +18,6 @@ import javafx.scene.layout.GridPane;
 
 public class GroupeCell extends ListCell<Carte> {
 
-
-
 	@FXML
 	private TextField textField1;
 
@@ -40,7 +38,6 @@ public class GroupeCell extends ListCell<Carte> {
         super.updateItem(carte, empty);
 
         if(empty || carte == null) {
-
             setText(null);
             setGraphic(null);
 
@@ -54,7 +51,6 @@ public class GroupeCell extends ListCell<Carte> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             textField1.setText(String.valueOf(carte.getId()));
@@ -65,6 +61,6 @@ public class GroupeCell extends ListCell<Carte> {
         }
 
     }
-	
+
 
 }

@@ -3,7 +3,6 @@ package Entity.Projet;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.Group;
@@ -13,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -20,11 +20,11 @@ import javafx.scene.layout.GridPane;
 
 public class ProjectCell extends ListCell<Group> implements Initializable{
 
-
 	@FXML
 	public ListView<Carte> listViewGroup;
 
 	public ObservableList<Carte> carteObservableList;
+
 	@FXML
 	private TextField textFieldGroupName;
 
@@ -33,6 +33,9 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	@FXML
 	private GridPane gridPaneGroup;
+
+	@FXML
+	private Button btn_addCarte;
 
 	private FXMLLoader mLLoader;
 
@@ -50,21 +53,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
             setGraphic(null);
 
         } else {
-        	if (group.getIsEmptyObject()){
-        		if (mLLoader == null) {
-            		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/EmptyGroup.fxml"));
-            		mLLoader.setController(this);
-
-                    try {
-                        mLLoader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-        		}
-                setText(null);
-                setGraphic(gridPane_emptyGroup);
-        	}
-        	else{
         		if (mLLoader == null) {
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
                     mLLoader.setController(this);
@@ -80,9 +68,12 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
                 setText(null);
                 setGraphic(gridPaneGroup);
-            }
         }
     }
+
+	public void CreateNewCarte(){
+		carteObservableList.add(new Carte(1,"test",new Position(0,0,0),0,0,"desc"));
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -95,7 +86,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 			listViewGroup.setCellFactory(groupeListView -> new GroupeCell());
 		}
-
 	}
 
 	public void getAllCarte(){
