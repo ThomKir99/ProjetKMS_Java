@@ -181,8 +181,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void refreshGroup() {
 		group.getCartes().clear();
-		 group.addAll(carteObservableList);
-
+		 group.addAll(listViewGroup.getItems());
 	}
 
 	private void setDragOverHandler(DragEvent event) {
