@@ -13,7 +13,7 @@
       <Pane prefHeight="36.0" prefWidth="221.0">
          <children>
             <TextField fx:id="textField1" disable="true" layoutY="1.0" prefHeight="30.0" prefWidth="221.0" text="Test" />
-            <Button layoutX="197.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: FF0000;" text="-" />
+            <Button fx:id="btn_delete" layoutX="197.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: FF0000;" text="-" />
          </children>
       </Pane>
    </children>

@@ -126,6 +126,12 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 		refreshCarteList();
 	}
 
+	public void removeCarte(Carte carte){
+
+		group.removeCarte(listViewGroup.getItems().indexOf(carte));
+		refreshCarteList();
+	}
+
 	public void refreshCarteList(){
 		getAllCarte();
 		listViewGroup.setItems(carteObservableList);
@@ -143,7 +149,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	}
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
-		ListCell<Carte> cell = new GroupeCell();
+		ListCell<Carte> cell = new GroupeCell(this);
 
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
