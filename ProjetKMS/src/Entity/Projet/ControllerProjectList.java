@@ -123,12 +123,16 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		groupObservableList.clear();
 
 		groupObservableList.addAll(newGroupList);
+		refreshGroupList();
+
+	}
+
+	public void refreshGroupList(){
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 
-			return setCellDragAndDropHandler();
-			});
-
+		return setCellDragAndDropHandler();
+		});
 	}
 
 	public int getItemIndex(Group group) {

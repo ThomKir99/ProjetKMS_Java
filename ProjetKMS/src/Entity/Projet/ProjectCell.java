@@ -108,21 +108,36 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 			});
 		}
 
+		if (btn_addCarte!= null)
+		{
+			btn_addCarte.setOnAction(new EventHandler<ActionEvent>() {
 
+				@Override
+				public void handle(ActionEvent event) {
+					addCarte();
+				}
+			});
+		}
 	}
 
-	public void CreateNewCarte(){
-		carteObservableList.add(new Carte(1,"test",new Position(0,0,0),0,0,"desc"));
+	public void addCarte(){
+		group.addCarte(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
+
+		refreshCarteList();
+	}
+
+	public void refreshCarteList(){
+		getAllCarte();
+		listViewGroup.setItems(carteObservableList);
+		listViewGroup.setCellFactory(groupeListView -> {
+		return setCellDragAndDropHandler();
+		});
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
-			getAllCarte();
-			listViewGroup.setItems(carteObservableList);
-			listViewGroup.setCellFactory(groupeListView -> {
-			return setCellDragAndDropHandler();
-			});
+			refreshCarteList();
 		}
 
 	}
@@ -311,9 +326,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 		return index;
 	}
 
-	public void addCarte(){
-		carteObservableList.add(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
-	}
+
 
 
 }
