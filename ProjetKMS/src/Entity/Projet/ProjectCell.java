@@ -66,10 +66,10 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-
-
         super.updateItem(group, empty);
+
         this.group = group;
+
         if(empty || group == null) {
 
             setText(null);
@@ -89,6 +89,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
         		}
+
                 setHandler();
                 setText(null);
                 setGraphic(gridPaneGroup);
@@ -104,7 +105,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 					controllerProjectList.removeRow(getGroupIndex());
 				}
 
-
 			});
 		}
 
@@ -115,6 +115,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 				@Override
 				public void handle(ActionEvent event) {
 					addCarte();
+
 				}
 			});
 		}
@@ -122,7 +123,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	public void addCarte(){
 		group.addCarte(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
-
 		refreshCarteList();
 	}
 
@@ -169,9 +169,10 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
-		ControllerProjectList.setDropIsSuccessful(true);
+		 ControllerProjectList.setDropIsSuccessful(true);
 		 dragSource = ControllerProjectList.getDragSource();
          Dragboard db = event.getDragboard();
+
          if (db.hasString() && dragSource.get() != null) {
         	 doDragAndDrop(event,cell);
         	 refreshGroup();
@@ -194,9 +195,9 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 		if(!dropInSameList&& ControllerProjectList.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		 refreshGroup();
-     	   }
-     	   dropInSameList=false;
-     	  ControllerProjectList.setDropIsSuccessful(false);
+     	}
+     		dropInSameList=false;
+     		ControllerProjectList.setDropIsSuccessful(false);
 
 	}
 
@@ -214,7 +215,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void setDragDetectHandler(ListCell<Carte> cell) {
 		String index="";
-        if (! cell.isEmpty()) {
+
+        if (!cell.isEmpty()) {
 
             Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent cc = new ClipboardContent();
@@ -233,6 +235,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private String getIndexOfDragItem(ListCell<Carte> cell) {
 		String index="";
+
 		for(int i = 0;i<listViewGroup.getItems().size();i++){
       	   if(cell.getItem() == listViewGroup.getItems().get(i)){
       		  index = String.valueOf(i);
@@ -243,6 +246,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private int findDragSourceIndex(ListView<Carte> listView) {
 		int index=0;
+
 		for(int i=0;i<listView.getItems().size();i++){
 			if(listView.getItems().get(i).getAllCarteByString().equals(dragSource.get().getItem().getAllCarteByString())){
 				index =i;
@@ -302,27 +306,26 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	public void getAllCarte(){
-		carteObservableList = FXCollections.observableArrayList();
-		carteObservableList.addAll(group.getCartes());
+		if(group.getCartes() != null){
+			carteObservableList = FXCollections.observableArrayList();
+			carteObservableList.addAll(group.getCartes());
+		}
 	}
 
 	private int randomId(){
-
 		return (int) (Math.random() * (100000));
 	}
 
 	public ObjectProperty<ListCell<Carte>> getDragSource(){
-
 		return dragSource;
 	}
 
 	public void setDragSource(ObjectProperty<ListCell<Carte>> origineDragSource) {
-
 		dragSource = origineDragSource;
-
 	}
+
 	private int getGroupIndex() {
-	int index =	controllerProjectList.getItemIndex(group);
+		int index =	controllerProjectList.getItemIndex(group);
 		return index;
 	}
 

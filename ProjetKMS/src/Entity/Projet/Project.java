@@ -18,5 +18,7 @@ public class Project extends Entity{
 
 	public void setGroups(List<Group> groups) {this.groups = groups;}
 
+	public void addGroup(Group group) { this.groups.add(group);}
+
 
 }

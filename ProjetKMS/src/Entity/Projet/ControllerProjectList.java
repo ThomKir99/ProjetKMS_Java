@@ -16,6 +16,7 @@ import javafx.scene.input.*;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -37,25 +38,24 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	public ObservableList<Group> groupObservableList;
 
+	public Project leProjet;
+
 	public ControllerProjectList(){
-
-		groupObservableList = FXCollections.observableArrayList();
-		groupObservableList.addAll(createGroup());
-
-
+		leProjet = new Project();
+		createGroup();
 	}
 
-	private ArrayList<Group> createGroup() {
-		ArrayList<Group> allGroup = new  ArrayList<Group>();
+	private void createGroup() {
+		List<Group> allGroup = new ArrayList<>();
 		allGroup.add(new Group("Groupe 1"));
 		allGroup.add(new Group("Groupe 2"));
 		allGroup.add(new Group("Groupe 3"));
 		allGroup.add(new Group("Groupe 4"));
 		addCarte(allGroup);
-		return allGroup;
+		leProjet.setGroups(allGroup);
 	}
 
-	private void addCarte(ArrayList<Group> allGroup) {
+	private void addCarte(List<Group> allGroup) {
 		for(Group group :allGroup){
 			group.addCarte(new Carte(randomId(),"carte 1",new Position(0,0,0),0,0,"desc4"));
 			group.addCarte(new Carte(randomId(),"carte 2",new Position(0,0,0),0,0,"desc4"));
@@ -69,9 +69,14 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		return (int) (Math.random() * (100000));
 	}
 
+	public void getAllGroup(){
+		groupObservableList = FXCollections.observableArrayList();
+		groupObservableList.addAll(leProjet.getGroups());
+	}
+
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
+		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 	    txt_projectName.setText("NomTest");
@@ -81,7 +86,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	}
 
 	public void ajouterGroup(Group group){
-		groupObservableList.add(group);
+		leProjet.addGroup(group);
 	}
 
 
@@ -93,10 +98,11 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	 public void createNewGroup(){
 		 ajouterGroup(new Group("test"));
+		 refreshGroupList();
 	 }
 
 	public static void setDragSource(ObjectProperty<ListCell<Carte>> cellDragSource){
-	dragSource = cellDragSource;
+		dragSource = cellDragSource;
 	}
 
 	public static ObjectProperty<ListCell<Carte>> getDragSource(){
@@ -105,29 +111,27 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	public static void setDragSourceToNull(){
 		dragSource = null;
-		}
+	}
 
 	public static void setDropIsSuccessful(boolean states){
 		dropIsSuccessful=states;
 	}
-
 
 	public  void removeRow(int index){
 		ArrayList<Group> newGroupList = new ArrayList<Group>();
 		for(int i=0;i<groupObservableList.size();i++){
 			if(i!=index){
 				newGroupList.add(groupObservableList.get(i));
-
 			}
 		}
-		groupObservableList.clear();
+		leProjet.getGroups().clear();
+		leProjet.setGroups(newGroupList);
 
-		groupObservableList.addAll(newGroupList);
 		refreshGroupList();
-
 	}
 
 	public void refreshGroupList(){
+		getAllGroup();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 
