@@ -15,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.input.*;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -39,12 +40,34 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public ControllerProjectList(){
 
 		groupObservableList = FXCollections.observableArrayList();
-		addEmptyGroupToEndOfList();
-		groupObservableList.addAll(new Group("test"),
-				   				   new Group("test2"),new Group("test3"),new Group("test4"));
+		groupObservableList.addAll(createGroup());
 
 
 
+	}
+
+	private ArrayList<Group> createGroup() {
+		ArrayList<Group> allGroup = new  ArrayList<Group>();
+		allGroup.add(new Group("Groupe 1"));
+		allGroup.add(new Group("Groupe 2"));
+		allGroup.add(new Group("Groupe 3"));
+		allGroup.add(new Group("Groupe 4"));
+		addCarte(allGroup);
+		return allGroup;
+	}
+
+	private void addCarte(ArrayList<Group> allGroup) {
+		for(Group group :allGroup){
+			group.addCarte(new Carte(randomId(),"carte 1",new Position(0,0,0),0,0,"desc4"));
+			group.addCarte(new Carte(randomId(),"carte 2",new Position(0,0,0),0,0,"desc4"));
+			group.addCarte(new Carte(randomId(),"carte 3",new Position(0,0,0),0,0,"desc4"));
+			group.addCarte(new Carte(randomId(),"carte 4",new Position(0,0,0),0,0,"desc4"));
+		}
+
+	}
+	private int randomId(){
+
+		return (int) (Math.random() * (100000));
 	}
 
 	@Override
@@ -58,16 +81,10 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	}
 
-	private void addEmptyGroupToEndOfList(){
-		Group emptyGroup = new Group();
-		emptyGroup.setIsEmptyObject(true);
-		groupObservableList.add(emptyGroup);
-	}
 
 	private ListCell<Group> setCellDragAndDropHandler() {
 
 		ListCell<Group> cell = new ProjectCell(this);
-
 		return cell;
 	}
 
@@ -89,9 +106,21 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 
 	public  void removeRow(int index){
-		groupObservableList.get(index).getCartes().clear();
-		groupObservableList.remove(index);
+		ArrayList<Group> newGroupList = new ArrayList<Group>();
+		for(int i=0;i<groupObservableList.size();i++){
+			if(i!=index){
+				newGroupList.add(groupObservableList.get(i));
 
+			}
+		}
+		groupObservableList.clear();
+
+		groupObservableList.addAll(newGroupList);
+		listViewProjet.setItems(groupObservableList);
+		listViewProjet.setCellFactory(projectListView ->{
+
+			return setCellDragAndDropHandler();
+			});
 
 	}
 

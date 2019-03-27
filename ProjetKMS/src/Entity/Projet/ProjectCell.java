@@ -52,8 +52,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	@FXML
 	private Button btn_delete;
 	private ControllerProjectList controllerProjectList;
-	private Group group;
 
+	private Group group;
 
 
 
@@ -64,6 +64,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
+
+
         super.updateItem(group, empty);
         this.group = group;
         if(empty || group == null) {
@@ -72,21 +74,6 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
             setGraphic(null);
 
         } else {
-        	if (group.getIsEmptyObject()){
-        		if (mLLoader == null) {
-            		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/EmptyGroup.fxml"));
-            		mLLoader.setController(this);
-
-                    try {
-                        mLLoader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-        		}
-                setText(null);
-                setGraphic(gridPane_emptyGroup);
-        	}
-        	else{
         		if (mLLoader == null) {
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
                     mLLoader.setController(this);
@@ -100,25 +87,19 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
         		}
-
                 setHandler();
                 setText(null);
                 setGraphic(gridPaneGroup);
             }
         }
-    }
-
 
 	private void setHandler() {
 		if(btn_delete!=null){
 
 			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
-
 				@Override
 				public void handle(ActionEvent event) {
-					group.setCartes(carteObservableList);
 					controllerProjectList.removeRow(getGroupIndex());
-					
 				}
 
 
@@ -134,8 +115,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 			getAllCarte();
 			listViewGroup.setItems(carteObservableList);
 			listViewGroup.setCellFactory(groupeListView -> {
-
-				return setCellDragAndDropHandler();
+			return setCellDragAndDropHandler();
 			});
 		}
 
@@ -173,6 +153,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
          Dragboard db = event.getDragboard();
          if (db.hasString() && dragSource.get() != null) {
         	 doDragAndDrop(event,cell);
+        	 refreshGroup();
          } else {
              event.setDropCompleted(false);
          }
@@ -191,9 +172,16 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerProjectList.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
+     		 refreshGroup();
      	   }
      	   dropInSameList=false;
      	  ControllerProjectList.setDropIsSuccessful(false);
+
+	}
+
+	private void refreshGroup() {
+		group.getCartes().clear();
+		 group.addAll(carteObservableList);
 
 	}
 
@@ -296,14 +284,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	public void getAllCarte(){
 		carteObservableList = FXCollections.observableArrayList();
-
-		carteObservableList.addAll(new Carte(randomId(),"test",new Position(0,0,0),0,0,"desc"),
-				   				   new Carte(randomId(),"Its Magic",new Position(0,0,0),0,0,"desc2"),
-				   				   new Carte(randomId(),"test3",new Position(0,0,0),0,0,"desc3"),
-				   				   new Carte(randomId(),"test4",new Position(0,0,0),0,0,"desc4"));
-
-			group.setCartes(carteObservableList);
-
+		carteObservableList.addAll(group.getCartes());
 	}
 
 	private int randomId(){
@@ -326,8 +307,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 		return index;
 	}
 
-	public void refresh(){
-
+	public void addCarte(){
+		carteObservableList.add(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
 	}
 
 
