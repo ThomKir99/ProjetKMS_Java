@@ -47,7 +47,7 @@
                   <Button mnemonicParsing="false" onAction="#createNewGroup" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: #55ef0e;" text="New Group" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                </children>
             </GridPane>
-            <ListView fx:id="listViewProjet" layoutX="-1.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="602.0" prefWidth="1134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
+            <ListView fx:id="listViewProjet" layoutX="-1.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="602.0" prefWidth="1134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
          </children>
       </AnchorPane>
    </children>

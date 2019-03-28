@@ -89,12 +89,12 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
         		}
-
+        		refreshCarteList();
                 setHandler();
                 setText(null);
                 setGraphic(gridPaneGroup);
         }
-        }
+    }
 
 	private void setHandler() {
 		if(btn_delete!=null){
@@ -312,8 +312,9 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	public void getAllCarte(){
+
+		carteObservableList = FXCollections.observableArrayList();
 		if(group.getCartes() != null){
-			carteObservableList = FXCollections.observableArrayList();
 			carteObservableList.addAll(group.getCartes());
 		}
 	}
