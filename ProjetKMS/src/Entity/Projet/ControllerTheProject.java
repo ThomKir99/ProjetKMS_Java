@@ -205,7 +205,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private boolean targetIsAllowed(String target) {
-		System.out.println(target);
 		boolean isAllowed =false;
 		if(target.contains("ListView")|| target.contains("GroupeCell")||target.contains("Pane")){
 			isAllowed=true;
