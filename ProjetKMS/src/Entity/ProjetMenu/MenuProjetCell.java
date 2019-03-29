@@ -113,11 +113,4 @@ public class MenuProjetCell extends ListCell<Project>{
     }
 
 
-
-	public void backToPageProjet(ActionEvent event) throws IOException {
-		controllerUserProjetList.backToPageProjet(event);
-
-	}
-
-
 }
