@@ -37,7 +37,6 @@ public class Group extends Entity{
 
 	public void addAll(ObservableList<Carte> items) {
 		cartes.addAll(items);
-
 	}
 
 	public void removeCarte(int index) {

@@ -57,11 +57,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private Group group;
 
-
-
 	public ProjectCell(ControllerProjectList controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
-
 	}
 
 	@Override

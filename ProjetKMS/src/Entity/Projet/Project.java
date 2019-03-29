@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entity.Entity;
+import Entity.Position;
 import Entity.Group.Group;
 
 public class Project extends Entity{
@@ -11,6 +12,11 @@ public class Project extends Entity{
 
 	public Project(){
 		super();
+		this.groups = new ArrayList<Group>();
+	}
+
+	public Project(int id,String name,Position position,int width,int height){
+		super(id,name,position,width,height);
 		this.groups = new ArrayList<Group>();
 	}
 
