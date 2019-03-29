@@ -133,6 +133,7 @@ public class MenuProjetCell extends ListCell<Project>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
 
 	private boolean showConfirmationMessage() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
