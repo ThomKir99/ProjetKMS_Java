@@ -27,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class ControllerUserProjetList extends AnchorPane implements Initializable{
+public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	@FXML
 	public ListView<Project> listViewProjet;
@@ -38,15 +38,12 @@ public class ControllerUserProjetList extends AnchorPane implements Initializabl
 
 	public Utilisateur userContext;
 
-	public  ControllerUserProjetList(){
+	public  ControllerPageProjet(){
 		userContext = new Utilisateur();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		listViewProjet.setItems(projetObservableList);
-		listViewProjet.setCellFactory(listViewProjet -> new MenuProjetCell(this));
 		refreshProjectList();
 	}
 
@@ -70,6 +67,7 @@ public class ControllerUserProjetList extends AnchorPane implements Initializabl
 		userContext.addProjet(new Project(randomId(),"testing",new Position(0,0,0),0,0));
 		refreshProjectList();
 	}
+
 
 	public void DeleteProjet(Project projet){
 

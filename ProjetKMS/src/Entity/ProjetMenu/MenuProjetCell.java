@@ -26,9 +26,13 @@ public class MenuProjetCell extends ListCell<Project>{
 	@FXML
 	private TextField idText;
 	@FXML
-	private TextField textField1;
+	private TextField txt_projectName;
+	@FXML
+	private Button btn_Delete;
+	@FXML
+	private Button btn_openProjet;
 
-	private ControllerUserProjetList controllerUserProjetList;
+	private ControllerPageProjet controllerPageProjet;
 
 	private Project projet;
 
@@ -36,8 +40,10 @@ public class MenuProjetCell extends ListCell<Project>{
 	private GridPane gridPane1;
 
 	private FXMLLoader mLLoader;
-	public MenuProjetCell(ControllerUserProjetList controllerUserProjetList){
-		this.controllerUserProjetList = controllerUserProjetList;
+
+
+	public MenuProjetCell(ControllerPageProjet controllerPageProjet){
+		this.controllerPageProjet = controllerPageProjet;
 	}
 
 	@Override
@@ -51,51 +57,57 @@ public class MenuProjetCell extends ListCell<Project>{
 
         } else {
             if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheMenuProjet.fxml"));
-                mLLoader.setController(this);
-                this.projet=projet;
-
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            	loadTheMenuProjetView(projet);
             }
-
-            textField1.setText(projet.getName());
-
-            setListener();
-            setGraphic(gridPane1);
+            initializeViewInfo(projet);
         }
     }
 
+
+	private void initializeViewInfo(Project projet) {
+		 txt_projectName.setText(projet.getName());
+
+         setListener();
+         setGraphic(gridPane1);
+
+	}
+
 	public void setListener(){
-        textField1.setOnKeyReleased(new EventHandler<Event>() {
+        txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				projet.setName(textField1.getText());
+				projet.setName(txt_projectName.getText());
 			}
 		});
+
+        btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				deleteProjet();
+
+			}
+		});
+        btn_openProjet.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					openProject(event);
+				} catch (IOException e) {
+					showLoadingError();
+				}
+
+			}
+
+		});
+
 	}
 
-	public void DeleteProjet(){
+	public void deleteProjet(){
     	if (showConfirmationMessage()){
-    		controllerUserProjetList.DeleteProjet(projet);
+    		controllerPageProjet.DeleteProjet(projet);
     	}
     }
-
-	private boolean showConfirmationMessage() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("ATTENTION");
-    	alert.setHeaderText("Voulez-vous vraiment supprimer ce projet");
-    	alert.setContentText("Cette action n'est pas reversible");
-    	ButtonType buttonTypeOne = new ButtonType("Yes");
-    	ButtonType buttonTypeTwo = new ButtonType("No");
-    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
-    	Optional<ButtonType> result = alert.showAndWait();
-
-		return (result.get() == buttonTypeOne);
-	}
 
 	public void openProject(ActionEvent event)throws IOException{
 
@@ -112,12 +124,40 @@ public class MenuProjetCell extends ListCell<Project>{
         window.show();
     }
 
+	private void loadTheMenuProjetView(Project projet) {
+		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheMenuProjet.fxml"));
+        mLLoader.setController(this);
+        this.projet=projet;
+        try {
+            mLLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
+	}
 	public void backToPageProjet(ActionEvent event) throws IOException {
-		controllerUserProjetList.backToPageProjet(event);
+		controllerPageProjet.backToPageProjet(event);
 
 	}
 
+	private boolean showConfirmationMessage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Warning");
+    	alert.setHeaderText("Do you really want to delete this project");
+    	alert.setContentText("This action cannot be undone");
+    	ButtonType buttonTypeOne = new ButtonType("Yes");
+    	ButtonType buttonTypeTwo = new ButtonType("No");
+    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+    	Optional<ButtonType> result = alert.showAndWait();
+
+		return (result.get() == buttonTypeOne);
+	}
+	private void showLoadingError() {
+		Alert alert = new Alert(AlertType.ERROR);
+    	alert.setTitle("Error");
+    	alert.setHeaderText("Fail to open your project");
+    	alert.setContentText("For an unknown reason, your project have fail to open");
+
+	}
 
 }
