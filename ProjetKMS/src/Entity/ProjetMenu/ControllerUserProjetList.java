@@ -39,7 +39,7 @@ public class ControllerUserProjetList extends AnchorPane implements Initializabl
 	public Utilisateur userContext;
 
 	public  ControllerUserProjetList(){
-		userContext = new Utilisateur();
+		userContext = Main.Main.userList.get(0);
 	}
 
 	@Override
@@ -82,18 +82,6 @@ public class ControllerUserProjetList extends AnchorPane implements Initializabl
 		return (int) (Math.random() * (100000));
 	}
 
-	public void backToPageProjet(ActionEvent event) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
-        Parent tableViewParent = (Parent)fxmlLoader.load();
-
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(tableViewScene);
-        window.show();
-        refreshProjectList();
-
-	}
 
 }
 

@@ -134,16 +134,15 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		return groupObservableList.indexOf(group);
 	}
 
+	public void BackToMenu(ActionEvent event)throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
+        Parent tableViewParent = (Parent)fxmlLoader.load();
 
+        Scene tableViewScene = new Scene(tableViewParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-
-
-
-
-
-
-
-
-
+        window.setScene(tableViewScene);
+        window.show();
+	}
 
 }
