@@ -5,8 +5,11 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import Entity.Projet.ControllerFocusProject;
+import Entity.Group.Group;
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -38,6 +41,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private GridPane gridPane_projectCell;
 
 	private FXMLLoader mLLoader;
+
 
 
 	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
@@ -112,7 +116,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
-        ControllerFocusProject controllerProjectList = fxmlLoader.getController();
+        ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
 
         Scene tableViewScene = new Scene(tableViewParent);

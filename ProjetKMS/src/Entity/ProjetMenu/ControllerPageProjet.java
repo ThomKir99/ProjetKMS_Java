@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import Entity.Position;
 import Entity.Group.Group;
 import Entity.Projet.Project;
-import Entity.Projet.ProjectCell;
+import Entity.Projet.ControllerTheGroup;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
