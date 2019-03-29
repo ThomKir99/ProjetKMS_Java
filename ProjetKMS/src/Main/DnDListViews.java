@@ -6,8 +6,8 @@ import Entity.Position;
 import Entity.Carte.Carte;
 
 import Entity.Group.GroupeCell;
-import Entity.Projet.ControllerFocusProject;
-import Entity.Projet.ProjectCell;
+import Entity.Projet.ControllerTheProject;
+import Entity.Projet.ControllerTheGroup;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -51,7 +51,7 @@ public class DnDListViews extends Application {
         }
 listView.setItems(carteObservableList);
         listView.setCellFactory(lv -> {
-           ListCell<Carte> cell = new GroupeCell(new ProjectCell(new ControllerFocusProject()));
+           ListCell<Carte> cell = new GroupeCell(new ControllerTheGroup(new ControllerTheProject()));
 
 
            cell.setOnDragDetected(event -> {

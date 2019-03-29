@@ -31,7 +31,7 @@ import Entity.Carte.Carte;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
 
-public class ControllerFocusProject  extends AnchorPane implements Initializable{
+public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@FXML
 	public  ListView<Group> listViewProjet;
@@ -39,14 +39,15 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 	@FXML
 	public TextField txt_projectName;
 
-	public static ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
+	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
+
 	public static boolean dropIsSuccessful=false;
 
 	public ObservableList<Group> groupObservableList;
 	public Project leProjet;
 	public ControllerMenuProjetCell menuProjetCellController;
 
-	public ControllerFocusProject(){
+	public ControllerTheProject(){
 		leProjet = new Project();
 
 	}
@@ -92,7 +93,7 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
 	private ListCell<Group> setCellDragAndDropHandler() {
 
-		ListCell<Group> cell = new ProjectCell(this);
+		ListCell<Group> cell = new ControllerTheGroup(this);
 
 
         cell.setOnDragOver(event -> {
@@ -113,17 +114,16 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
-		if(event.getTarget().toString().contains("Group")){
+
+		if(targetIsAllowed(event.getTarget().toString())){
 			dropIsSuccessful=true;
-			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerFocusProject.getDragSource().get().getItem());
+			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerTheProject.getDragSource().get().getItem());
 			refreshGroupList();
 		}
 	}
-
-
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
 		if(dropIsSuccessful){
-			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerFocusProject.getDragSource().get().getItem());
+			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerTheProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
@@ -152,15 +152,15 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 	 }
 
 	public static void setDragSource(ObjectProperty<ListCell<Carte>> cellDragSource){
-		dragSource = cellDragSource;
+		dragSourceCarte = cellDragSource;
 	}
 
 	public static ObjectProperty<ListCell<Carte>> getDragSource(){
-		return dragSource;
+		return dragSourceCarte;
 	}
 
 	public static void setDragSourceToNull(){
-		dragSource = null;
+		dragSourceCarte = null;
 	}
 
 	public static void setDropIsSuccessful(boolean states){
@@ -202,6 +202,16 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
         window.setScene(tableViewScene);
         window.show();
+	}
+
+	private boolean targetIsAllowed(String target) {
+		System.out.println(target);
+		boolean isAllowed =false;
+		if(target.contains("ListView")|| target.contains("GroupeCell")||target.contains("Pane")){
+			isAllowed=true;
+		}
+
+		return isAllowed;
 	}
 
 }

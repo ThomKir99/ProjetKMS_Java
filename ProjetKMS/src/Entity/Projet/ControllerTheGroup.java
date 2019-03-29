@@ -29,7 +29,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
-public class ProjectCell extends ListCell<Group> implements Initializable{
+public class ControllerTheGroup extends ListCell<Group> implements Initializable{
 
 	@FXML
 	public ListView<Carte> listViewGroup;
@@ -53,11 +53,11 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private boolean dropInSameList=false;
 	@FXML
 	private Button btn_delete;
-	private ControllerFocusProject controllerProjectList;
+	private ControllerTheProject controllerProjectList;
 
 	private Group group;
 
-	public ProjectCell(ControllerFocusProject controllerProjectList){
+	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 	}
 
@@ -183,8 +183,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
-		 ControllerFocusProject.setDropIsSuccessful(true);
-		 dragSource = ControllerFocusProject.getDragSource();
+		 ControllerTheProject.setDropIsSuccessful(true);
+		 dragSource = ControllerTheProject.getDragSource();
          Dragboard db = event.getDragboard();
 
          if (db.hasString() && dragSource.get() != null) {
@@ -206,12 +206,12 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	}
 
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
-		if(!dropInSameList&& ControllerFocusProject.dropIsSuccessful){
+		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		 refreshGroup();
      	}
      		dropInSameList=false;
-     		ControllerFocusProject.setDropIsSuccessful(false);
+     		ControllerTheProject.setDropIsSuccessful(false);
 
 	}
 
@@ -244,7 +244,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void setDragSource(ListCell<Carte> cell) {
 		dragSource.set(cell);
-        ControllerFocusProject.setDragSource(dragSource);
+        ControllerTheProject.setDragSource(dragSource);
 	}
 
 	private String getIndexOfDragItem(ListCell<Carte> cell) {
@@ -290,7 +290,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void setDragSourceToNull() {
 		dragSource.set(null);
-        ControllerFocusProject.setDragSourceToNull();
+        ControllerTheProject.setDragSourceToNull();
 	}
 
 	private boolean dragSourceCameFromSameList( ListView<Carte> listView) {

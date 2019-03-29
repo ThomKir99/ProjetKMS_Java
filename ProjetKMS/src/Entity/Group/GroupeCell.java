@@ -6,8 +6,8 @@ import java.util.ResourceBundle;
 
 import Entity.Position;
 import Entity.Carte.Carte;
-import Entity.Projet.ControllerFocusProject;
-import Entity.Projet.ProjectCell;
+import Entity.Projet.ControllerTheProject;
+import Entity.Projet.ControllerTheGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,9 +40,9 @@ public class GroupeCell extends ListCell<Carte> {
 	private FXMLLoader mLLoader;
 
 	private Carte carte;
-	private ProjectCell projectCellController;
+	private ControllerTheGroup projectCellController;
 
-	public GroupeCell(ProjectCell projectCell){
+	public GroupeCell(ControllerTheGroup projectCell){
 		projectCellController = projectCell;
 	}
 
