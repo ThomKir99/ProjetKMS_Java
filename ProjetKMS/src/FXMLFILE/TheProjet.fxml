@@ -50,5 +50,6 @@
             <ListView fx:id="listViewProjet" layoutX="-1.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="602.0" prefWidth="1134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
          </children>
       </AnchorPane>
+      <Button fx:id="btn_backToMenu" layoutX="21.0" layoutY="45.0" mnemonicParsing="false" onAction="#BackToMenu" prefHeight="37.0" prefWidth="71.0" text="&lt;-- Back" />
    </children>
 </AnchorPane>
