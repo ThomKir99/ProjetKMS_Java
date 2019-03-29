@@ -16,6 +16,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -77,10 +79,10 @@ public class GroupeCell extends ListCell<Carte> {
         }
 
     }
+
 	private void setHandler() {
 		setButtonHandler();
 		setTextHandler();
-
 	}
 
 	private void setButtonHandler() {
@@ -92,7 +94,6 @@ public class GroupeCell extends ListCell<Carte> {
 
 			}
 		});
-
 	}
 
 	private void setTextHandler() {
@@ -114,6 +115,23 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 		});
 
+		textField2.focusedProperty().addListener((ov,oldV,newV) -> {
+			if (!newV){
+				if (textField2.getText().trim().equals("")){
+					errorMessage();
+					textField2.requestFocus();
+				}
+			}
+		});
+	}
+
+	public void errorMessage(){
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Remplir le nom de la carte avant de continuer!");
+
+		alert.showAndWait();
 	}
 
 	private void removeCarte(){
