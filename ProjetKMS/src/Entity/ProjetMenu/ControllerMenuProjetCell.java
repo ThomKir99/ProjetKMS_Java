@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import Entity.Projet.ControllerProjectList;
+import Entity.Projet.ControllerFocusProject;
 import Entity.Projet.Project;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -21,28 +21,26 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class MenuProjetCell extends ListCell<Project>{
+public class ControllerMenuProjetCell extends ListCell<Project>{
 
-	@FXML
-	private TextField idText;
 	@FXML
 	private TextField txt_projectName;
 	@FXML
 	private Button btn_Delete;
 	@FXML
-	private Button btn_openProjet;
+	private Button btn_openProject;
 
 	private ControllerPageProjet controllerPageProjet;
 
-	private Project projet;
+	private Project currentProjet;
 
 	@FXML
-	private GridPane gridPane1;
+	private GridPane gridPane_projectCell;
 
 	private FXMLLoader mLLoader;
 
 
-	public MenuProjetCell(ControllerPageProjet controllerPageProjet){
+	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
 		this.controllerPageProjet = controllerPageProjet;
 	}
 
@@ -68,7 +66,7 @@ public class MenuProjetCell extends ListCell<Project>{
 		 txt_projectName.setText(projet.getName());
 
          setListener();
-         setGraphic(gridPane1);
+         setGraphic(gridPane_projectCell);
 
 	}
 
@@ -76,7 +74,7 @@ public class MenuProjetCell extends ListCell<Project>{
         txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				projet.setName(txt_projectName.getText());
+				currentProjet.setName(txt_projectName.getText());
 			}
 		});
 
@@ -87,25 +85,25 @@ public class MenuProjetCell extends ListCell<Project>{
 
 			}
 		});
-        btn_openProjet.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					openProject(event);
-				} catch (IOException e) {
-					showLoadingError();
-				}
+        btn_openProject.setOnAction(new EventHandler<ActionEvent>() {
 
-			}
+    			@Override
+    			public void handle(ActionEvent event) {
+    				try {
+    					openProject(event);
+    				} catch (IOException e) {
+    					showLoadingError();
+    				}
 
-		});
+    			}
 
+    		});
 	}
 
 	public void deleteProjet(){
     	if (showConfirmationMessage()){
-    		controllerPageProjet.DeleteProjet(projet);
+    		controllerPageProjet.DeleteProjet(currentProjet);
     	}
     }
 
@@ -114,8 +112,8 @@ public class MenuProjetCell extends ListCell<Project>{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
-        ControllerProjectList controller = fxmlLoader.getController();
-        controller.setProject(projet);
+        ControllerFocusProject controllerProjectList = fxmlLoader.getController();
+        controllerProjectList.setProject(currentProjet);
 
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -127,7 +125,7 @@ public class MenuProjetCell extends ListCell<Project>{
 	private void loadTheMenuProjetView(Project projet) {
 		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheMenuProjet.fxml"));
         mLLoader.setController(this);
-        this.projet=projet;
+        this.currentProjet=projet;
         try {
             mLLoader.load();
         } catch (IOException e) {

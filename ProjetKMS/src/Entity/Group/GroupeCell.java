@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import Entity.Position;
 import Entity.Carte.Carte;
-import Entity.Projet.ControllerProjectList;
+import Entity.Projet.ControllerFocusProject;
 import Entity.Projet.ProjectCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

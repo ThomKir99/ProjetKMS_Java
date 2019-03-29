@@ -29,12 +29,12 @@ import Entity.*;
 import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.*;
-import Entity.ProjetMenu.MenuProjetCell;
+import Entity.ProjetMenu.ControllerMenuProjetCell;
 
-public class ControllerProjectList  extends AnchorPane implements Initializable{
+public class ControllerFocusProject  extends AnchorPane implements Initializable{
 
 	@FXML
-	public  ListView<Group> listViewProjet;
+	public  ListView<Group> listOfAllGroup;
 
 	@FXML
 	public TextField txt_projectName;
@@ -44,9 +44,9 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	public ObservableList<Group> groupObservableList;
 	public Project leProjet;
-	public MenuProjetCell menuProjetCellController;
+	public ControllerMenuProjetCell menuProjetCellController;
 
-	public ControllerProjectList(){
+	public ControllerFocusProject(){
 		leProjet = new Project();
 
 	}
@@ -57,7 +57,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 		refreshGroupList();
 	}
 
-	public void setMenuCellController(MenuProjetCell menuProjetCellController){
+	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){
 		this.menuProjetCellController = menuProjetCellController;
 	}
 
@@ -70,8 +70,8 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 
 		refreshGroupList();
-		listViewProjet.setItems(groupObservableList);
-		listViewProjet.setCellFactory(projectListView ->{
+		listOfAllGroup.setItems(groupObservableList);
+		listOfAllGroup.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
 	}
@@ -105,7 +105,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
 		if(event.getTarget().toString().contains("Group")){
 			dropIsSuccessful=true;
-			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerProjectList.getDragSource().get().getItem());
+			listOfAllGroup.getItems().get(cell.getIndex()).addCarte(ControllerFocusProject.getDragSource().get().getItem());
 			refreshGroupList();
 		}
 	}
@@ -113,7 +113,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
 		if(dropIsSuccessful){
-			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerProjectList.getDragSource().get().getItem());
+			listOfAllGroup.getItems().get(cell.getIndex()).removeCarte(ControllerFocusProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
@@ -172,8 +172,8 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	public void refreshGroupList(){
 		getAllGroup();
-		listViewProjet.setItems(groupObservableList);
-		listViewProjet.setCellFactory(projectListView ->{
+		listOfAllGroup.setItems(groupObservableList);
+		listOfAllGroup.setCellFactory(projectListView ->{
 
 		return setCellDragAndDropHandler();
 		});

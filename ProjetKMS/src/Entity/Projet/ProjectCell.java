@@ -53,11 +53,11 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	private boolean dropInSameList=false;
 	@FXML
 	private Button btn_delete;
-	private ControllerProjectList controllerProjectList;
+	private ControllerFocusProject controllerProjectList;
 
 	private Group group;
 
-	public ProjectCell(ControllerProjectList controllerProjectList){
+	public ProjectCell(ControllerFocusProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 	}
 
@@ -172,8 +172,8 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
-		 ControllerProjectList.setDropIsSuccessful(true);
-		 dragSource = ControllerProjectList.getDragSource();
+		 ControllerFocusProject.setDropIsSuccessful(true);
+		 dragSource = ControllerFocusProject.getDragSource();
          Dragboard db = event.getDragboard();
 
          if (db.hasString() && dragSource.get() != null) {
@@ -195,12 +195,12 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	}
 
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
-		if(!dropInSameList&& ControllerProjectList.dropIsSuccessful){
+		if(!dropInSameList&& ControllerFocusProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		 refreshGroup();
      	}
      		dropInSameList=false;
-     		ControllerProjectList.setDropIsSuccessful(false);
+     		ControllerFocusProject.setDropIsSuccessful(false);
 
 	}
 
@@ -233,7 +233,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void setDragSource(ListCell<Carte> cell) {
 		dragSource.set(cell);
-        ControllerProjectList.setDragSource(dragSource);
+        ControllerFocusProject.setDragSource(dragSource);
 	}
 
 	private String getIndexOfDragItem(ListCell<Carte> cell) {
@@ -279,7 +279,7 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 
 	private void setDragSourceToNull() {
 		dragSource.set(null);
-        ControllerProjectList.setDragSourceToNull();
+        ControllerFocusProject.setDragSourceToNull();
 	}
 
 	private boolean dragSourceCameFromSameList( ListView<Carte> listView) {
