@@ -43,8 +43,6 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public static boolean dropIsSuccessful=false;
 
 	public ObservableList<Group> groupObservableList;
-	private boolean dropsuccessful=false;
-
 	public Project leProjet;
 	public MenuProjetCell menuProjetCellController;
 
@@ -131,7 +129,9 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 
 	}
 
+	public void BackToMenu(){
 
+	}
 
 
 

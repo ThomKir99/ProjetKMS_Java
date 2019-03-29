@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.Pane?>
 
-<ScrollPane fx:id="scrollPanePage" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="499.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Entity.ProjetMenu.ControllerUserProjetList">
+<ScrollPane fx:id="scrollPanePage" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="499.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Entity.ProjetMenu.ControllerPageProjet">
    <content>
       <Pane fx:id="paneBackground" prefHeight="676.0" prefWidth="497.0">
          <children>
