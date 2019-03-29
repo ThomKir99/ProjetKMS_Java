@@ -37,6 +37,7 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	public static boolean dropIsSuccessful=false;
 
 	public ObservableList<Group> groupObservableList;
+	private boolean dropsuccessful=false;
 
 	public Project leProjet;
 
@@ -93,8 +94,56 @@ public class ControllerProjectList  extends AnchorPane implements Initializable{
 	private ListCell<Group> setCellDragAndDropHandler() {
 
 		ListCell<Group> cell = new ProjectCell(this);
+
+
+        cell.setOnDragOver(event -> {
+       	 setDragOverHandler(event);
+
+        });
+        cell.setOnDragDone(event -> {
+       	 setOnDragDoneHandler(cell);
+
+     });
+
+        cell.setOnDragDropped(event -> {
+       	 setOnDragDroppedHandler(event,cell);
+
+        });
 		return cell;
 	}
+
+
+	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
+		if(event.getTarget().toString().contains("Group")){
+			dropIsSuccessful=true;
+			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerProjectList.getDragSource().get().getItem());
+			refreshGroupList();
+		}
+	}
+
+
+	private void setOnDragDoneHandler(ListCell<Group> cell) {
+		if(dropIsSuccessful){
+			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerProjectList.getDragSource().get().getItem());
+			refreshGroupList();
+			dropIsSuccessful=false;
+		}
+
+
+	}
+
+	private void setDragOverHandler(DragEvent event) {
+		Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+
+	}
+
+
+
+
+
 
 	 public void createNewGroup(){
 		 ajouterGroup(new Group("test"));
