@@ -34,7 +34,7 @@ import Entity.ProjetMenu.ControllerMenuProjetCell;
 public class ControllerFocusProject  extends AnchorPane implements Initializable{
 
 	@FXML
-	public  ListView<Group> listOfAllGroup;
+	public  ListView<Group> listViewProjet;
 
 	@FXML
 	public TextField txt_projectName;
@@ -70,8 +70,8 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 	public void initialize(URL url, ResourceBundle resources) {
 
 		refreshGroupList();
-		listOfAllGroup.setItems(groupObservableList);
-		listOfAllGroup.setCellFactory(projectListView ->{
+		listViewProjet.setItems(groupObservableList);
+		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
 	}
@@ -105,7 +105,7 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
 		if(event.getTarget().toString().contains("Group")){
 			dropIsSuccessful=true;
-			listOfAllGroup.getItems().get(cell.getIndex()).addCarte(ControllerFocusProject.getDragSource().get().getItem());
+			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerFocusProject.getDragSource().get().getItem());
 			refreshGroupList();
 		}
 	}
@@ -113,7 +113,7 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
 		if(dropIsSuccessful){
-			listOfAllGroup.getItems().get(cell.getIndex()).removeCarte(ControllerFocusProject.getDragSource().get().getItem());
+			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerFocusProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
@@ -172,8 +172,8 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
 	public void refreshGroupList(){
 		getAllGroup();
-		listOfAllGroup.setItems(groupObservableList);
-		listOfAllGroup.setCellFactory(projectListView ->{
+		listViewProjet.setItems(groupObservableList);
+		listViewProjet.setCellFactory(projectListView ->{
 
 		return setCellDragAndDropHandler();
 		});
