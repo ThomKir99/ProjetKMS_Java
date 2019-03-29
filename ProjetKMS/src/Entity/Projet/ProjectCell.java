@@ -141,9 +141,20 @@ public class ProjectCell extends ListCell<Group> implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
 			refreshCarteList();
+			setListener();
 		}
-
 	}
+
+	public void setListener(){
+
+		textFieldGroupName.setOnKeyReleased(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+            	group.setName(textFieldGroupName.getText());
+            }
+        });
+	}
+
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
 		ListCell<Carte> cell = new GroupeCell(this);

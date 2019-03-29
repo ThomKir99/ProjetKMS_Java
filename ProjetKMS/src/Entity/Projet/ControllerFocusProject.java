@@ -57,6 +57,16 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 		refreshGroupList();
 	}
 
+	public void setListener(){
+		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+            	leProjet.setName(txt_projectName.getText());
+            }
+        });
+	}
+
+
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){
 		this.menuProjetCellController = menuProjetCellController;
 	}
@@ -68,7 +78,7 @@ public class ControllerFocusProject  extends AnchorPane implements Initializable
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
+		setListener();
 		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
