@@ -4,13 +4,19 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrollPanePage" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="499.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Entity.ProjetMenu.ControllerPageProjet">
+<ScrollPane fx:id="scrollPanePage" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.ProjetMenu.ControllerPageProjet">
    <content>
       <Pane fx:id="paneBackground" prefHeight="676.0" prefWidth="497.0">
          <children>
             <ListView fx:id="listViewProjet" layoutX="11.0" layoutY="69.0" prefHeight="607.0" prefWidth="481.0" />
             <Button fx:id="btn_projet" layoutX="22.0" layoutY="29.0" mnemonicParsing="false" onAction="#CreateProject" text="ajouter projet" />
+            <Button fx:id="btn_3D" layoutX="418.0" layoutY="29.0" mnemonicParsing="false" text="3D">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </content>

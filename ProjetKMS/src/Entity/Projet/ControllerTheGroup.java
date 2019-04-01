@@ -231,7 +231,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		String index="";
 
         if (!cell.isEmpty()) {
-
             Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent cc = new ClipboardContent();
             index = getIndexOfDragItem(cell);
