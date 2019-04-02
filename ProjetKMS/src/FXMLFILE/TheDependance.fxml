@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="173.0" prefWidth="282.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.ProjetMenu.ControllerPageDependance">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="173.0" prefWidth="282.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="21.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Projet :" />
       <DropdownButton layoutX="97.0" layoutY="17.0">
@@ -41,6 +40,6 @@
             <MenuItem text="Choice 3" />
          </items>
       </DropdownButton>
-      <Button fx:id="btn_createDependance" layoutX="192.0" layoutY="134.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="OK" />
+      <Button layoutX="206.0" layoutY="130.0" mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>
