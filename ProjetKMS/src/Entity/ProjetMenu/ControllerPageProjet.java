@@ -2,16 +2,20 @@ package Entity.ProjetMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Entity.Position;
 import Entity.Group.Group;
 import Entity.Projet.Project;
+import Main.FXMLLoder;
+import Scene3D.MainView3DController;
 import Entity.Projet.ControllerTheGroup;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +30,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
 public class ControllerPageProjet extends AnchorPane implements Initializable{
@@ -48,10 +53,25 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
+		setListener();
 	}
 
 
 
+
+	private void setListener() {
+		btn_3D.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+			show3DView(event);
+
+			}
+
+
+		});
+
+	}
 
 	public void refreshProjectList(){
 		getAllProjet();
@@ -85,6 +105,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		return (int) (Math.random() * (100000));
 	}
 
+
+	private void show3DView(Event event) {
+		 MainView3DController controller = new MainView3DController();
+		 controller.showCube();
+	}
 
 }
 

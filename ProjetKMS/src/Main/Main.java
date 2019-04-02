@@ -2,6 +2,8 @@ package Main;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Scene3D.MainView3DController;
 import User.Utilisateur;
 
 public class Main {
@@ -11,6 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		fillUserList();
 		FXMLLoder.launch(FXMLLoder.class);
+
 	}
 
 	public static void fillUserList(){
@@ -18,5 +21,7 @@ public class Main {
 		userList.add(new Utilisateur(1));
 		userList.add(new Utilisateur(2));
 	}
+
+
 
 }
