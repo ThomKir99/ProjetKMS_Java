@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="764.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Entity.Projet.ControllerTheProject">
+<AnchorPane prefHeight="764.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.Projet.ControllerTheProject">
    <children>
       <MenuBar layoutY="-2.0" prefHeight="29.0" prefWidth="1055.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
@@ -51,5 +51,6 @@
          </children>
       </AnchorPane>
       <Button fx:id="btn_backToMenu" layoutX="21.0" layoutY="45.0" mnemonicParsing="false" onAction="#BackToMenu" prefHeight="37.0" prefWidth="71.0" text="&lt;-- Back" />
+      <Button fx:id="btn_pageDependance" layoutX="489.0" layoutY="51.0" mnemonicParsing="false" text="add link" />
    </children>
 </AnchorPane>

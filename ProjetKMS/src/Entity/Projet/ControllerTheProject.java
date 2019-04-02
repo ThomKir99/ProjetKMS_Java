@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
@@ -40,7 +41,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public TextField txt_projectName;
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
-
+	public Button btn_pageDependance;
 	public static boolean dropIsSuccessful=false;
 
 	public ObservableList<Group> groupObservableList;
@@ -65,6 +66,20 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
             	leProjet.setName(txt_projectName.getText());
             }
         });
+
+		btn_pageDependance.setOnAction(new EventHandler<ActionEvent>() {
+
+    			@Override
+    			public void handle(ActionEvent event) {
+    				try {
+    					pageDependance(event);
+    				} catch (IOException e) {
+    					showLoadError();
+    				}
+
+    			}
+
+    		});
 	}
 
 
@@ -211,6 +226,32 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		}
 
 		return isAllowed;
+	}
+
+
+	private void pageDependance(Event event)throws IOException {
+        Parent root;
+      try {
+    	    System.out.println(1);
+             root = FXMLLoader.load((getClass().getResource("/FXMLFILE/pageDependance.fxml")));
+             System.out.println(2);
+             Stage stage = new Stage();
+             stage.setTitle("My New Stage Title");
+             stage.setScene(new Scene(root, 450, 450));
+             stage.show();
+             // Hide this current window (if this is what you want)
+         //    ((Node)(event.getSource())).getScene().getWindow().hide();
+         }
+         catch (IOException e) {
+             e.printStackTrace();
+         }
+    }
+
+	public void showLoadError(){
+		Alert alert = new Alert(AlertType.ERROR);
+    	alert.setTitle("Error");
+    	alert.setHeaderText("Fail to open your project");
+    	alert.setContentText("For an unknown reason, your project have fail to open");
 	}
 
 }
