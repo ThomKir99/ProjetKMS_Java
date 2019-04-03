@@ -1,22 +1,40 @@
 package Scene3D;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.jws.soap.SOAPBinding.Style;
+
+import org.fxyz3d.shapes.primitives.CuboidMesh;
+
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-public class MainView3DController{
+public class MainView3DController {
 private float carteZGap = 10;
 private float carteXGap = 2;
-
+private PerspectiveCamera camera;
+private Group cameraGroup;
 
 	public MainView3DController()
 	{
@@ -28,9 +46,9 @@ private float carteXGap = 2;
 		Group root3D = new Group();
 		Pane pane3D = new Pane(root3D);
 
-		root3D.getChildren().addAll(createCube());
-		PerspectiveCamera camera = new PerspectiveCamera(true);
-		Group cameraGroup = new Group(camera);
+		root3D.getChildren().addAll(generateCard("This is a test"));
+	    camera = new PerspectiveCamera(true);
+		 cameraGroup = new Group(camera);
 		root3D.getChildren().add(cameraGroup);
 
 
@@ -55,29 +73,76 @@ private float carteXGap = 2;
 		scene.setFill(Color.DARKGRAY);
 
 		 Stage stage = new Stage();
+		 addListener(stage);
 		stage.setTitle("My New Stage Title");
 		stage.setScene(scene);
 		stage.show();
+
       //    ((Node)(event.getSource())).getScene().getWindow().hide();
+	}
+
+	private void addListener(Stage stage) {
+		stage.addEventHandler(KeyEvent.KEY_PRESSED, event->{
+			switch (event.getCode()) {
+			case A:
+				translateTheCameraOnTheXAxis(-.1f);
+				break;
+			case D:
+				translateTheCameraOnTheXAxis(.1f);
+				break;
+			case W:
+				translateTheCameraOnTheYAxis(-.1f);
+				break;
+			case S:
+				translateTheCameraOnTheYAxis(.1f);
+				break;
+			case Q:
+				translateTheCameraOnTheZAxis(-.4f);
+				break;
+			case E:
+				translateTheCameraOnTheZAxis(.4f);
+				break;
 
 
-
-
-
-
+			default:
+				break;
+			}
+		});
 
 	}
+	private void translateTheCameraOnTheXAxis(float xTranslation){
+
+		Translate translate = new Translate();
+		translate.setX(xTranslation );
+		cameraGroup.getTransforms().addAll(translate);
+	}
+
+	private void translateTheCameraOnTheYAxis(float yTranslation){
+
+		Translate translate = new Translate();
+		translate.setY(yTranslation );
+		cameraGroup.getTransforms().addAll(translate);
+	}
+
+	private void translateTheCameraOnTheZAxis(float zTranslation){
+
+		Translate translate = new Translate();
+		translate.setZ(zTranslation );
+		cameraGroup.getTransforms().addAll(translate);
+	}
+
 	private ArrayList<Box> createCube() {
 		float currentZGap=0;
 		float currentXGap=0;
 		ArrayList<Box> cubeList = new ArrayList<Box>();
 		final PhongMaterial carteMaterial = createCarteMaterial();
-		for(int j=0;j<2;j++){
+		for(int j=0;j<10;j++){
 			for(int i =0; i<5;i++){
-				Box carte = new Box(1,1,0.1);
+				Box carte = new Box(1,2,0.1);
 				carte.setMaterial(carteMaterial);
 				carte.setTranslateZ(currentZGap);
 				carte.setTranslateX(-100 +currentXGap);
+				carte.setDrawMode(DrawMode.FILL);
 				currentZGap+=carteZGap;
 				cubeList.add(carte);
 			}
@@ -91,10 +156,61 @@ private float carteXGap = 2;
 	private PhongMaterial createCarteMaterial() {
 		 PhongMaterial carteMaterial= new PhongMaterial();
 			carteMaterial.setDiffuseColor(Color.WHITE);
-			carteMaterial.setSpecularColor(Color.WHITE);
+		
+
 
 		return carteMaterial;
 	}
+
+	private CuboidMesh generateCard(String message) {
+
+	    Text title = new Text(message);
+	    title.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 22));
+	    GridPane grid = new GridPane();
+	    grid.setAlignment(Pos.CENTER);
+
+	    CuboidMesh contentShape = new CuboidMesh(10, 10, 0.1);
+	    PhongMaterial material = createCarteMaterial();
+
+	    GridPane.setHalignment(title, HPos.CENTER);
+	    GridPane.setValignment(title, VPos.TOP);
+
+	    grid.add(title, 3, 1);
+
+	    double w = contentShape.getWidth() * 10; // more resolution
+	    double h = contentShape.getHeight() * 10;
+	    double d = contentShape.getDepth() * 10;
+	    final double W = 2 * d + 2 * w;
+	    final double H = 2 * d + h;
+
+	    ColumnConstraints col1 = new ColumnConstraints();
+	    col1.setPercentWidth(d * 100 / W);
+	    ColumnConstraints col2 = new ColumnConstraints();
+	    col2.setPercentWidth(w * 100 / W);
+	    ColumnConstraints col3 = new ColumnConstraints();
+	    col3.setPercentWidth(d * 100 / W);
+	    ColumnConstraints col4 = new ColumnConstraints();
+	    col4.setPercentWidth(w * 100 / W);
+	    grid.getColumnConstraints().addAll(col1, col2, col3, col4);
+
+	    RowConstraints row1 = new RowConstraints();
+	    row1.setPercentHeight(d * 100 / H);
+	    RowConstraints row2 = new RowConstraints();
+	    row2.setPercentHeight(h * 100 / H);
+	    RowConstraints row3 = new RowConstraints();
+	    row3.setPercentHeight(d * 100 / H);
+	    grid.getRowConstraints().addAll(row1, row2, row3);
+	    grid.setPrefSize(W, H);
+	    grid.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+	    new Scene(grid);
+	    WritableImage image = grid.snapshot(null, null);
+	    material.setDiffuseMap(image);
+	    contentShape.setMaterial(material);
+	    contentShape.setTranslateX(-100);
+	    contentShape.setTranslateZ(50);
+	    return contentShape;
+	}
+
 
     }
 
