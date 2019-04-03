@@ -1,6 +1,7 @@
 package Scene3D;
 
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -46,7 +48,7 @@ private Group cameraGroup;
 		Group root3D = new Group();
 		Pane pane3D = new Pane(root3D);
 
-		root3D.getChildren().addAll(generateCard("This is a test"));
+		root3D.getChildren().addAll(createCube());
 	    camera = new PerspectiveCamera(true);
 		 cameraGroup = new Group(camera);
 		root3D.getChildren().add(cameraGroup);
@@ -64,7 +66,7 @@ private Group cameraGroup;
 		PointLight light = new PointLight(Color.WHITE);
 		light.setTranslateX(-180);
 		light.setTranslateY(-90);
-		light.setTranslateZ(-400);
+		light.setTranslateZ(-500);
 		light.getScope().addAll(root3D);
 		root3D.getChildren().add(light);
 
@@ -156,30 +158,38 @@ private Group cameraGroup;
 	private PhongMaterial createCarteMaterial() {
 		 PhongMaterial carteMaterial= new PhongMaterial();
 			carteMaterial.setDiffuseColor(Color.WHITE);
-		
+
 
 
 		return carteMaterial;
 	}
 
-	private CuboidMesh generateCard(String message) {
+	private CuboidMesh generateCard(String title) {
+		TextArea titleTextArea = new TextArea(title);
+		titleTextArea.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 100));
+		titleTextArea.setWrapText(true);
 
-	    Text title = new Text(message);
-	    title.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 22));
+		TextArea ContentTextArea = new TextArea("this ");
+		ContentTextArea.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 60));
+		ContentTextArea.setWrapText(true);
+
 	    GridPane grid = new GridPane();
 	    grid.setAlignment(Pos.CENTER);
 
-	    CuboidMesh contentShape = new CuboidMesh(10, 10, 0.1);
+	    CuboidMesh contentShape = new CuboidMesh(15, 25, 0.1);
 	    PhongMaterial material = createCarteMaterial();
 
-	    GridPane.setHalignment(title, HPos.CENTER);
-	    GridPane.setValignment(title, VPos.TOP);
+	    GridPane.setHalignment(titleTextArea, HPos.CENTER);
+	    GridPane.setValignment(titleTextArea, VPos.TOP);
+	    GridPane.setHalignment(ContentTextArea, HPos.CENTER);
+	    GridPane.setValignment(ContentTextArea, VPos.CENTER);
 
-	    grid.add(title, 3, 1);
 
-	    double w = contentShape.getWidth() * 10; // more resolution
-	    double h = contentShape.getHeight() * 10;
-	    double d = contentShape.getDepth() * 10;
+	    grid.add(titleTextArea, 3, 0);
+	    grid.add(ContentTextArea, 3,1);
+	    double w = contentShape.getWidth() * 100; // more resolution
+	    double h = contentShape.getHeight() * 100;
+	    double d = contentShape.getDepth() * 100;
 	    final double W = 2 * d + 2 * w;
 	    final double H = 2 * d + h;
 
@@ -193,13 +203,10 @@ private Group cameraGroup;
 	    col4.setPercentWidth(w * 100 / W);
 	    grid.getColumnConstraints().addAll(col1, col2, col3, col4);
 
-	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(d * 100 / H);
-	    RowConstraints row2 = new RowConstraints();
-	    row2.setPercentHeight(h * 100 / H);
-	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(d * 100 / H);
-	    grid.getRowConstraints().addAll(row1, row2, row3);
+	   RowConstraints row1 = new RowConstraints();
+	    row1.setPercentHeight(50);
+	    
+	    grid.getRowConstraints().addAll(row1);
 	    grid.setPrefSize(W, H);
 	    grid.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 	    new Scene(grid);
@@ -207,7 +214,7 @@ private Group cameraGroup;
 	    material.setDiffuseMap(image);
 	    contentShape.setMaterial(material);
 	    contentShape.setTranslateX(-100);
-	    contentShape.setTranslateZ(50);
+	    contentShape.setTranslateZ(85);
 	    return contentShape;
 	}
 
