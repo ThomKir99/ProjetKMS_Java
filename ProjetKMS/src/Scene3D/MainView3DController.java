@@ -2,20 +2,31 @@ package Scene3D;
 
 
 
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.jws.soap.SOAPBinding.Style;
 
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
+import Entity.Projet.Project;
+import Entity.Carte.Carte;
+import Entity.Group.*;
+import User.Utilisateur;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -33,14 +44,19 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class MainView3DController {
-private float carteZGap = 10;
-private float carteXGap = 2;
+private float carteZGap = 55;
+private float carteXGap = 20;
+private float carteYGap = 20;
+private float defaultXPosition = -100;
+private float defaultYPosition = 0;
+private float defaultZPosition = 50;
 private PerspectiveCamera camera;
 private Group cameraGroup;
+private Utilisateur currentUser;
 
-	public MainView3DController()
+	public MainView3DController(Utilisateur userContext)
 	{
-
+		currentUser = userContext;
 
 
 	}
@@ -48,19 +64,18 @@ private Group cameraGroup;
 		Group root3D = new Group();
 		Pane pane3D = new Pane(root3D);
 
-		root3D.getChildren().addAll(createCube());
+		root3D.getChildren().addAll(generateCard("this is the title and i know it"));
 	    camera = new PerspectiveCamera(true);
+	    camera.setNearClip(25);
+	    camera.setFarClip(1000);
 		 cameraGroup = new Group(camera);
 		root3D.getChildren().add(cameraGroup);
+		Translate cameraTranslation = new Translate();
+		cameraTranslation.setZ(-10);
+		cameraTranslation.setY(-1);
+		cameraTranslation.setX(defaultXPosition);
 
-
-
-		Translate translateOnTheZAxis = new Translate();
-		translateOnTheZAxis.setZ(-10);
-		translateOnTheZAxis.setY(-1);
-		translateOnTheZAxis.setX(-100);
-
-		cameraGroup.getTransforms().addAll(translateOnTheZAxis);
+		cameraGroup.getTransforms().addAll(cameraTranslation);
 
 
 		PointLight light = new PointLight(Color.WHITE);
@@ -87,22 +102,22 @@ private Group cameraGroup;
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event->{
 			switch (event.getCode()) {
 			case A:
-				translateTheCameraOnTheXAxis(-.1f);
+				translateTheCameraOnTheXAxis(-.4f);
 				break;
 			case D:
-				translateTheCameraOnTheXAxis(.1f);
+				translateTheCameraOnTheXAxis(.4f);
 				break;
 			case W:
-				translateTheCameraOnTheYAxis(-.1f);
+				translateTheCameraOnTheYAxis(-.4f);
 				break;
 			case S:
-				translateTheCameraOnTheYAxis(.1f);
+				translateTheCameraOnTheYAxis(.4f);
 				break;
 			case Q:
-				translateTheCameraOnTheZAxis(-.4f);
+				translateTheCameraOnTheZAxis(-1f);
 				break;
 			case E:
-				translateTheCameraOnTheZAxis(.4f);
+				translateTheCameraOnTheZAxis(1f);
 				break;
 
 
@@ -133,89 +148,108 @@ private Group cameraGroup;
 		cameraGroup.getTransforms().addAll(translate);
 	}
 
-	private ArrayList<Box> createCube() {
-		float currentZGap=0;
-		float currentXGap=0;
-		ArrayList<Box> cubeList = new ArrayList<Box>();
-		final PhongMaterial carteMaterial = createCarteMaterial();
-		for(int j=0;j<10;j++){
-			for(int i =0; i<5;i++){
-				Box carte = new Box(1,2,0.1);
-				carte.setMaterial(carteMaterial);
-				carte.setTranslateZ(currentZGap);
-				carte.setTranslateX(-100 +currentXGap);
-				carte.setDrawMode(DrawMode.FILL);
-				currentZGap+=carteZGap;
-				cubeList.add(carte);
-			}
-			currentXGap+=carteXGap;
-			currentZGap=0;
-		}
 
-
-		return cubeList;
-	}
-	private PhongMaterial createCarteMaterial() {
+	private PhongMaterial createCarteMaterial(Image net,Color color) {
 		 PhongMaterial carteMaterial= new PhongMaterial();
-			carteMaterial.setDiffuseColor(Color.WHITE);
-
-
-
+			carteMaterial.setDiffuseMap(net);
+			carteMaterial.setDiffuseColor(color);
 		return carteMaterial;
 	}
+	private Color generateColor(){
+		Random rand = new Random();
+		 Double red = rand.nextDouble();
+		 Double green = rand.nextDouble();
+		 Double blue = rand.nextDouble();
+		 Color groupColor = new Color(red, green, blue, 1);
+		 return groupColor;
+	}
 
-	private CuboidMesh generateCard(String title) {
-		TextArea titleTextArea = new TextArea(title);
-		titleTextArea.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 100));
-		titleTextArea.setWrapText(true);
-
-		TextArea ContentTextArea = new TextArea("this ");
-		ContentTextArea.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 60));
-		ContentTextArea.setWrapText(true);
+	private Image generateNet(String face1, String face2, String face3, String title, String description, String face6) {
 
 	    GridPane grid = new GridPane();
 	    grid.setAlignment(Pos.CENTER);
 
-	    CuboidMesh contentShape = new CuboidMesh(15, 25, 0.1);
-	    PhongMaterial material = createCarteMaterial();
-
-	    GridPane.setHalignment(titleTextArea, HPos.CENTER);
-	    GridPane.setValignment(titleTextArea, VPos.TOP);
-	    GridPane.setHalignment(ContentTextArea, HPos.CENTER);
-	    GridPane.setValignment(ContentTextArea, VPos.CENTER);
 
 
-	    grid.add(titleTextArea, 3, 0);
-	    grid.add(ContentTextArea, 3,1);
-	    double w = contentShape.getWidth() * 100; // more resolution
-	    double h = contentShape.getHeight() * 100;
-	    double d = contentShape.getDepth() * 100;
-	    final double W = 2 * d + 2 * w;
-	    final double H = 2 * d + h;
+	    Label label4 = new Label(title);
+	    label4.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 45));
+	    GridPane.setHalignment(label4, HPos.CENTER);
+
+	    Label label5 = new Label(description);
+	    label5.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 35));
+	    GridPane.setHalignment(label5, HPos.CENTER);
+
+
+
+
+	    grid.add(label4, 2, 0);
+	    grid.add(label5, 2, 1);
+
+
+	    grid.setGridLinesVisible(true);
 
 	    ColumnConstraints col1 = new ColumnConstraints();
-	    col1.setPercentWidth(d * 100 / W);
+	    col1.setPercentWidth(50);
 	    ColumnConstraints col2 = new ColumnConstraints();
-	    col2.setPercentWidth(w * 100 / W);
+	    col2.setPercentWidth(0);
 	    ColumnConstraints col3 = new ColumnConstraints();
-	    col3.setPercentWidth(d * 100 / W);
+	    col3.setPercentWidth(50);
 	    ColumnConstraints col4 = new ColumnConstraints();
-	    col4.setPercentWidth(w * 100 / W);
+	    col4.setPercentWidth(0);
 	    grid.getColumnConstraints().addAll(col1, col2, col3, col4);
 
-	   RowConstraints row1 = new RowConstraints();
+	    RowConstraints row1 = new RowConstraints();
 	    row1.setPercentHeight(50);
-	    
-	    grid.getRowConstraints().addAll(row1);
-	    grid.setPrefSize(W, H);
-	    grid.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-	    new Scene(grid);
-	    WritableImage image = grid.snapshot(null, null);
-	    material.setDiffuseMap(image);
-	    contentShape.setMaterial(material);
-	    contentShape.setTranslateX(-100);
-	    contentShape.setTranslateZ(85);
-	    return contentShape;
+	    RowConstraints row2 = new RowConstraints();
+	    row2.setPercentHeight(50);
+	    RowConstraints row3 = new RowConstraints();
+	    row3.setPercentHeight(0);
+	    grid.getRowConstraints().addAll(row1, row2, row3);
+	    grid.setPrefSize(600, 450);
+
+	    Scene tmpScene = new Scene(grid);
+
+
+	    return grid.snapshot(null, null);
+	}
+	private ArrayList<CuboidMesh> generateCard(String title) {
+		double actualZGap = 0;
+		double actualXGap =0;
+		double actualYGab=0;
+		Color groupColor;
+		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
+
+		   for(Project aProject :currentUser.getProjets()){
+
+			   groupColor = generateColor();
+				   for(Entity.Group.Group aGroup:aProject.getGroups()){
+
+
+						   for(Carte aCarte:aGroup.getCartes()){
+							   Image net = generateNet("1", "2", "3", aCarte.getName(), aCarte.getDescription(), "6");
+
+							   CuboidMesh contentShape = new CuboidMesh(15, 10, 0.1);
+							   PhongMaterial material = createCarteMaterial(net,groupColor);
+							   contentShape.setMaterial(material);
+							   System.out.println(actualXGap);
+							    contentShape.setTranslateX(defaultXPosition+ actualXGap);
+							    contentShape.setTranslateY(defaultYPosition +actualYGab);
+							    contentShape.setTranslateZ(defaultZPosition+actualZGap);
+
+							    allCube.add(contentShape);
+							    actualZGap+=carteZGap;
+						   }
+						   actualXGap += carteXGap;
+						   actualZGap=0;
+			   }
+
+
+			   actualXGap=0;
+			   actualZGap=0;
+			   actualYGab+=carteYGap;
+		   }
+
+	    return allCube;
 	}
 
 
