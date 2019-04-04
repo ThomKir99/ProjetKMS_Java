@@ -32,7 +32,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_Delete;
 	@FXML
 	private Button btn_openProject;
-
+	@FXML
+	//private Button btn_Link;
 	private ControllerPageProjet controllerPageProjet;
 
 	private Project currentProjet;
@@ -80,6 +81,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			public void handle(Event event) {
 				currentProjet.setName(txt_projectName.getText());
 			}
+
+
 		});
 
         btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -103,6 +106,23 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     			}
 
     		});
+
+       // btn_Link.setOnAction(new EventHandler<ActionEvent>() {
+
+		//	@Override
+		//	public void handle(ActionEvent event) {
+			//	try {
+			//		pageDependance(event);
+			//	} catch (IOException e) {
+			//		showLoadingError();
+			//	}
+
+		//	}
+
+		//});
+
+
+
 	}
 
 	public void deleteProjet(){
@@ -156,4 +176,17 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     	alert.setContentText("For an unknown reason, your project have fail to open");
 
 	}
+
+	public void showLoadError(){
+		Alert alert = new Alert(AlertType.ERROR);
+    	alert.setTitle("Error");
+    	alert.setHeaderText("Fail to open your project");
+    	alert.setContentText("For an unknown reason, your project have fail to open");
+	}
+
+
+
+
+
+
 }

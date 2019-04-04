@@ -35,7 +35,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public ObservableList<Project> projetObservableList;
 	public Button btn_projet;
 	public ScrollPane scrollPanePage;
-
 	public Utilisateur userContext;
 
 	public  ControllerPageProjet(){

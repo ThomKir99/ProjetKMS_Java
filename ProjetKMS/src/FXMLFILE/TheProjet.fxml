@@ -51,6 +51,5 @@
          </children>
       </AnchorPane>
       <Button fx:id="btn_backToMenu" layoutX="21.0" layoutY="45.0" mnemonicParsing="false" onAction="#BackToMenu" prefHeight="37.0" prefWidth="71.0" text="&lt;-- Back" />
-      <Button fx:id="btn_pageDependance" layoutX="489.0" layoutY="51.0" mnemonicParsing="false" text="add link" />
    </children>
 </AnchorPane>

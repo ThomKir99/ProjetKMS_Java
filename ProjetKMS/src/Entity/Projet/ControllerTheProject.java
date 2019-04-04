@@ -67,19 +67,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
             }
         });
 
-		btn_pageDependance.setOnAction(new EventHandler<ActionEvent>() {
-
-    			@Override
-    			public void handle(ActionEvent event) {
-    				try {
-    					pageDependance(event);
-    				} catch (IOException e) {
-    					showLoadError();
-    				}
-
-    			}
-
-    		});
+		
 	}
 
 
@@ -229,29 +217,8 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 
-	private void pageDependance(Event event)throws IOException {
-        Parent root;
-      try {
-    	    System.out.println(1);
-             root = FXMLLoader.load((getClass().getResource("/FXMLFILE/pageDependance.fxml")));
-             System.out.println(2);
-             Stage stage = new Stage();
-             stage.setTitle("My New Stage Title");
-             stage.setScene(new Scene(root, 450, 450));
-             stage.show();
-             // Hide this current window (if this is what you want)
-         //    ((Node)(event.getSource())).getScene().getWindow().hide();
-         }
-         catch (IOException e) {
-             e.printStackTrace();
-         }
-    }
+	
 
-	public void showLoadError(){
-		Alert alert = new Alert(AlertType.ERROR);
-    	alert.setTitle("Error");
-    	alert.setHeaderText("Fail to open your project");
-    	alert.setContentText("For an unknown reason, your project have fail to open");
-	}
+	
 
 }

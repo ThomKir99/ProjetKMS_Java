@@ -16,6 +16,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -23,6 +26,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class GroupeCell extends ListCell<Carte> {
 
@@ -37,6 +41,9 @@ public class GroupeCell extends ListCell<Carte> {
 
 	@FXML
 	private Button btn_delete;
+
+	@FXML
+	private Button btn_Link;
 
 
 	private FXMLLoader mLLoader;
@@ -149,6 +156,15 @@ public class GroupeCell extends ListCell<Carte> {
 		carte.setDescription(description);
 	}
 
+	public void addLink(ActionEvent event)throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
+        Parent tableViewParent = (Parent)fxmlLoader.load();
 
+        Scene tableViewScene = new Scene(tableViewParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(tableViewScene);
+        window.show();
+	}
 
 }

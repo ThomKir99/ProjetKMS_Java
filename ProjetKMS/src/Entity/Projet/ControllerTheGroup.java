@@ -19,6 +19,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -28,6 +31,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class ControllerTheGroup extends ListCell<Group> implements Initializable{
 
@@ -54,7 +58,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	private Button btn_delete;
 	private ControllerTheProject controllerProjectList;
-
 	private Group group;
 
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
@@ -116,6 +119,9 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				}
 			});
 		}
+
+
+
 	}
 
 	public void addCarte(){
@@ -128,6 +134,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		group.removeCarte(listViewGroup.getItems().indexOf(carte));
 		refreshCarteList();
 	}
+
+
 
 	public void refreshCarteList(){
 		getAllCarte();
@@ -345,6 +353,18 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 
+		public void addLink(ActionEvent event)throws IOException{
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/Dependance.fxml"));
+	        Parent tableViewParent = (Parent)fxmlLoader.load();
+
+	        Scene tableViewScene = new Scene(tableViewParent);
+	        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+	        window.setScene(tableViewScene);
+	        window.show();
+	}
+		
+		
 
 
 }
