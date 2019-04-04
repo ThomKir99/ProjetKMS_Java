@@ -1,13 +1,16 @@
 package Main;
 
 import javax.ws.rs.Path;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Path("/main")
 public class Hello {
@@ -42,27 +45,39 @@ public class Hello {
 	  return "Hello Jersey Plain";
   }
 
-  @Path("/json")
+  @Path("/getAllUsers")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  //@Parameters()
-  public JsonObject sayJSONHello(String yo) {
-  	JsonObject model = Json.createObjectBuilder()
-  		   .add("firstName", yo)
-  		   .add("lastName", "Java")
-  		   .add("age", 18)
-  		   .add("streetAddress", "100 Internet Dr")
-  		   .add("city", "JavaTown")
-  		   .add("state", "JA")
-  		   .add("postalCode", "12345")
-  		   .add("phoneNumbers", Json.createArrayBuilder()
-  		      .add(Json.createObjectBuilder()
-  		         .add("type", "mobile")
-  		         .add("number", "111-111-1111"))
-  		      .add(Json.createObjectBuilder()
-  		         .add("type", "home")
-  		         .add("number", "222-222-2222")))
-  		   .build();
-    return model;
+  public String sayJSONHello() throws Exception {
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_utilisateur");
+
+  	Gson gson = new Gson();
+  	JsonObject parentObj = new JsonObject();
+  	JsonArray jsonArr = new JsonArray();
+
+  	while (result.next()){
+  		JsonObject obj = new JsonObject();
+
+  		obj = fillObjectWithDbData(result);
+
+  		obj.addProperty("ID", result.getInt(1));
+  		obj.addProperty("Name", result.getString(2));
+  		obj.addProperty("Password", result.getString(3));
+
+  		jsonArr.add(obj);
+  	}
+  	parentObj.add("Users", jsonArr);
+
+  	return gson.toJson(parentObj);
   }
+
+  public JsonObject fillObjectWithDbData(ResultSet result){
+  	JsonObject obj = new JsonObject();
+
+
+  	return obj;
+  }
+
+
 }
