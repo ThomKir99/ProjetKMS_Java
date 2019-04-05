@@ -130,7 +130,22 @@ public class GroupeCell extends ListCell<Carte> {
 				}
 			}
 		});
+		
+		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					addLink(event);
+				} catch (IOException e) {
+					showLoadingError();
+				}
+
+			}
+
+		});
 	}
+	
 
 	public void errorMessage(){
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -165,6 +180,13 @@ public class GroupeCell extends ListCell<Carte> {
 
         window.setScene(tableViewScene);
         window.show();
+	}
+	
+	public void showLoadingError(){
+		Alert alert = new Alert(AlertType.ERROR);
+    	alert.setTitle("Error");
+    	alert.setHeaderText("Fail to open your project");
+    	alert.setContentText("For an unknown reason, your project have fail to open");
 	}
 
 }

@@ -1,21 +1,14 @@
 package Entity.ProjetMenu;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
-
-import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,8 +25,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_Delete;
 	@FXML
 	private Button btn_openProject;
-	@FXML
-	//private Button btn_Link;
+	
+
 	private ControllerPageProjet controllerPageProjet;
 
 	private Project currentProjet;
@@ -107,22 +100,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
     		});
 
-       // btn_Link.setOnAction(new EventHandler<ActionEvent>() {
-
-		//	@Override
-		//	public void handle(ActionEvent event) {
-			//	try {
-			//		pageDependance(event);
-			//	} catch (IOException e) {
-			//		showLoadingError();
-			//	}
-
-		//	}
-
-		//});
-
-
-
 	}
 
 	public void deleteProjet(){
@@ -177,12 +154,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	}
 
-	public void showLoadError(){
-		Alert alert = new Alert(AlertType.ERROR);
-    	alert.setTitle("Error");
-    	alert.setHeaderText("Fail to open your project");
-    	alert.setContentText("For an unknown reason, your project have fail to open");
-	}
+
 
 
 
