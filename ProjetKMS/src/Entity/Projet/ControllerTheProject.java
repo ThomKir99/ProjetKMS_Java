@@ -39,6 +39,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	@FXML
 	public TextField txt_projectName;
 
+
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
 
 	public static boolean dropIsSuccessful=false;
@@ -65,6 +66,8 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
             	leProjet.setName(txt_projectName.getText());
             }
         });
+
+
 	}
 
 

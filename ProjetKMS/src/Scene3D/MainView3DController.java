@@ -89,7 +89,7 @@ private Group root3D;
 	    subScene.setFill(Color.DARKGRAY);
 	    subScene.setCamera(camera);
 	    pane.setCenter(subScene);
-	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);	    
+	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);
 	    ToolBar toolBar = new ToolBar(createMenuButton());
 	    toolBar.setOrientation(Orientation.HORIZONTAL);
 	    pane.setTop(toolBar);
@@ -345,8 +345,8 @@ private Group root3D;
 		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
 		   for(Project aProject :currentUser.getProjets()){
-
-			   groupColor = generateColor();
+			   ;
+			   groupColor = aProject.getProjectColor();
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
 
 
@@ -356,7 +356,7 @@ private Group root3D;
 							   CuboidMesh contentShape = new CuboidMesh(20, 15, 0.1);
 							   PhongMaterial material = createCarteMaterial(net,groupColor);
 							   contentShape.setMaterial(material);
-							 
+
 							    contentShape.setTranslateX(defaultXPosition+ actualXGap);
 							    contentShape.setTranslateY(defaultYPosition +actualYGab);
 							    contentShape.setTranslateZ(defaultZPosition+actualZGap);
