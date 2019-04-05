@@ -45,7 +45,7 @@ import javafx.stage.Stage;
 
 public class MainView3DController {
 private float carteZGap = 55;
-private float carteXGap = 20;
+private float carteXGap =25;
 private float carteYGap = 20;
 private float defaultXPosition = -100;
 private float defaultYPosition = 0;
@@ -53,6 +53,7 @@ private float defaultZPosition = 50;
 private PerspectiveCamera camera;
 private Group cameraGroup;
 private Utilisateur currentUser;
+private Group root3D;
 
 	public MainView3DController(Utilisateur userContext)
 	{
@@ -61,7 +62,7 @@ private Utilisateur currentUser;
 
 	}
 	public void showCube(){
-		Group root3D = new Group();
+		 root3D = new Group();
 		Pane pane3D = new Pane(root3D);
 
 		root3D.getChildren().addAll(generateCard("this is the title and i know it"));
@@ -119,12 +120,17 @@ private Utilisateur currentUser;
 			case E:
 				translateTheCameraOnTheZAxis(1f);
 				break;
-
+			case P:
+				growTheCard();
 
 			default:
 				break;
 			}
 		});
+
+	}
+	private void growTheCard() {
+
 
 	}
 	private void translateTheCameraOnTheXAxis(float xTranslation){
@@ -164,7 +170,7 @@ private Utilisateur currentUser;
 		 return groupColor;
 	}
 
-	private Image generateNet(String face1, String face2, String face3, String title, String description, String face6) {
+	private Image generateNet(String title, String description) {
 
 	    GridPane grid = new GridPane();
 	    grid.setAlignment(Pos.CENTER);
@@ -172,11 +178,11 @@ private Utilisateur currentUser;
 
 
 	    Label label4 = new Label(title);
-	    label4.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 45));
+	    label4.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 110));
 	    GridPane.setHalignment(label4, HPos.CENTER);
 
 	    Label label5 = new Label(description);
-	    label5.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 35));
+	    label5.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 70));
 	    GridPane.setHalignment(label5, HPos.CENTER);
 
 
@@ -205,7 +211,7 @@ private Utilisateur currentUser;
 	    RowConstraints row3 = new RowConstraints();
 	    row3.setPercentHeight(0);
 	    grid.getRowConstraints().addAll(row1, row2, row3);
-	    grid.setPrefSize(600, 450);
+	    grid.setPrefSize(1920,1080);
 
 	    Scene tmpScene = new Scene(grid);
 
@@ -226,9 +232,9 @@ private Utilisateur currentUser;
 
 
 						   for(Carte aCarte:aGroup.getCartes()){
-							   Image net = generateNet("1", "2", "3", aCarte.getName(), aCarte.getDescription(), "6");
+							   Image net = generateNet( aCarte.getName(), aCarte.getDescription());
 
-							   CuboidMesh contentShape = new CuboidMesh(15, 10, 0.1);
+							   CuboidMesh contentShape = new CuboidMesh(20, 15, 0.1);
 							   PhongMaterial material = createCarteMaterial(net,groupColor);
 							   contentShape.setMaterial(material);
 							   System.out.println(actualXGap);
