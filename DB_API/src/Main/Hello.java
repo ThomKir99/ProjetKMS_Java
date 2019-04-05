@@ -1,6 +1,7 @@
 package Main;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -45,21 +46,19 @@ public class Hello {
 	  return "Hello Jersey Plain";
   }
 
-  @Path("/getAllUsers")
+  @Path("/getUser/{user}/{password}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public String sayJSONHello() throws Exception {
+  public String getUser(@PathParam("user") String username,@PathParam("password") String password) throws Exception {
+
   	mySqlCon.openLocalConnection();
-  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_utilisateur");
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_utilisateur WHERE nom = \'" + username + "\' AND mots_de_passe = \'" + password + "\'");
 
   	Gson gson = new Gson();
-  	JsonObject parentObj = new JsonObject();
   	JsonArray jsonArr = new JsonArray();
 
   	while (result.next()){
   		JsonObject obj = new JsonObject();
-
-  		obj = fillObjectWithDbData(result);
 
   		obj.addProperty("ID", result.getInt(1));
   		obj.addProperty("Name", result.getString(2));
@@ -67,16 +66,8 @@ public class Hello {
 
   		jsonArr.add(obj);
   	}
-  	parentObj.add("Users", jsonArr);
 
-  	return gson.toJson(parentObj);
-  }
-
-  public JsonObject fillObjectWithDbData(ResultSet result){
-  	JsonObject obj = new JsonObject();
-
-
-  	return obj;
+  	return gson.toJson(jsonArr);
   }
 
 

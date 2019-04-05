@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.Position;
 import Entity.Group.Group;
 import Entity.Projet.Project;
@@ -35,11 +36,15 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public ObservableList<Project> projetObservableList;
 	public Button btn_projet;
 	public ScrollPane scrollPanePage;
+	public ApiConnector apiConnector;
 
 	public Utilisateur userContext;
 
-	public  ControllerPageProjet(){
-		userContext = Main.Main.userList.get(0);
+	public  ControllerPageProjet() throws IOException{
+
+		apiConnector = new ApiConnector();
+		userContext = apiConnector.getUser("Antoine","123456");
+
 	}
 
 	@Override
