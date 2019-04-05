@@ -20,7 +20,7 @@ public class Group extends Entity{
 
 	public Group(String name){
 		super();
-		this.cartes = null;
+		this.cartes = new ArrayList<Carte>();
 		this.setName(name);
 	}
 

@@ -16,40 +16,46 @@ import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import Entity.Group.*;
 import User.Utilisateur;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.effect.Effect;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class MainView3DController {
+
+	private float defaultWindowSize = 600;
+
 private float carteZGap = 55;
-private float carteXGap =25;
-private float carteYGap = 20;
-private float defaultXPosition = -100;
+private float carteXGap =24;
+private float carteYGap = 24;
+private float defaultXPosition = -10000;
 private float defaultYPosition = 0;
 private float defaultZPosition = 50;
+
+private float cameraDefaultZPosition= -50;
+private float cameraDefaultXPosition= -10000;
+private float cameraDefaultYPosition= 0;
+
+private int layer=0;
+
+
 private PerspectiveCamera camera;
 private Group cameraGroup;
 private Utilisateur currentUser;
@@ -62,43 +68,79 @@ private Group root3D;
 
 	}
 	public void showCube(){
-		 root3D = new Group();
+		root3D = new Group();
 		Pane pane3D = new Pane(root3D);
+		root3D.getChildren().addAll(generateCard());
 
-		root3D.getChildren().addAll(generateCard("this is the title and i know it"));
-	    camera = new PerspectiveCamera(true);
+		setCamera();
+		setCameraPosition();
+		setLight();
+		BorderPane pane = setMenuBar(pane3D);
+		Scene scene = new Scene(pane);
+		scene.setFill(Color.DARKGRAY);
+		createStage(scene);
+
+	}
+
+
+	private BorderPane setMenuBar(Pane pane3D) {
+		BorderPane pane = new BorderPane();
+		SubScene subScene = new SubScene(pane3D, defaultWindowSize, defaultWindowSize, true, SceneAntialiasing.DISABLED);
+	    subScene.setFill(Color.DARKGRAY);
+	    subScene.setCamera(camera);
+	    pane.setCenter(subScene);
+	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);	    
+	    ToolBar toolBar = new ToolBar(createMenuButton());
+	    toolBar.setOrientation(Orientation.HORIZONTAL);
+	    pane.setTop(toolBar);
+	    subScene.heightProperty().bind(pane.heightProperty());
+	    subScene.widthProperty().bind(pane.widthProperty());
+		return pane;
+	}
+	private Node[] createMenuButton() {
+		Button[] buttons = new Button[3];
+		  Button defaultCameraPosition = new Button("Default Position");
+		  Button layerFoward = new Button("Layer foward");
+		  Button layerBackward = new Button("Layer Backward");
+		  buttons[0]= defaultCameraPosition;
+		  buttons[1]= layerFoward;
+		  buttons[2] =layerBackward;
+		  setButtonsListener(buttons);
+		return buttons;
+	}
+
+	private void createStage(Scene scene) {
+    Stage stage = new Stage();
+	addListener(stage);
+	stage.setTitle("My New Stage Title");
+	stage.setScene(scene);
+	stage.show();
+
+	}
+	private void setCamera() {
+		camera = new PerspectiveCamera(true);
 	    camera.setNearClip(25);
 	    camera.setFarClip(1000);
-		 cameraGroup = new Group(camera);
+		cameraGroup = new Group(camera);
 		root3D.getChildren().add(cameraGroup);
+
+	}
+	private void setCameraPosition() {
 		Translate cameraTranslation = new Translate();
-		cameraTranslation.setZ(-10);
+		cameraTranslation.setZ(cameraDefaultZPosition);
 		cameraTranslation.setY(-1);
 		cameraTranslation.setX(defaultXPosition);
-
 		cameraGroup.getTransforms().addAll(cameraTranslation);
-
-
+	}
+	private void setLight() {
 		PointLight light = new PointLight(Color.WHITE);
-		light.setTranslateX(-180);
+		light.setTranslateX(defaultXPosition);
 		light.setTranslateY(-90);
 		light.setTranslateZ(-500);
 		light.getScope().addAll(root3D);
 		root3D.getChildren().add(light);
 
-		Scene scene = new Scene(pane3D,600,600,true);
-		scene.setCamera(camera);
-		scene.setFill(Color.DARKGRAY);
-
-		 Stage stage = new Stage();
-		 addListener(stage);
-		stage.setTitle("My New Stage Title");
-		stage.setScene(scene);
-		stage.show();
-
-      //    ((Node)(event.getSource())).getScene().getWindow().hide();
 	}
-
 	private void addListener(Stage stage) {
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event->{
 			switch (event.getCode()) {
@@ -121,18 +163,95 @@ private Group root3D;
 				translateTheCameraOnTheZAxis(1f);
 				break;
 			case P:
-				growTheCard();
+				returnCameraToDefaultPosition();
+				layer=0;
+				break;
+			case UP:
 
+				changeLayer();
+				layer++;
+				break;
+			case DOWN:
+				layer--;
+				changeLayer();
+				break;
 			default:
+
 				break;
 			}
 		});
 
 	}
-	private void growTheCard() {
+
+	private void setButtonsListener(Button[] buttons) {
+		buttons[0].setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				returnCameraToDefaultPosition();
+				layer=0;
+			}
+		});
+		buttons[1].setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				changeLayer();
+				layer++;
+			}
+		});
+
+		buttons[2].setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				layer--;
+				changeLayer();
+			}
+		});
+
+	}
+
+
+	private void changeLayer() {
+
+		returnCameraToDefaultPosition();
+		translateTheCameraOnTheZAxis(defaultZPosition);
+		translateTheCameraOnTheZAxis(carteZGap*layer);
+
+	}
+	private void returnCameraToDefaultPosition() {
+		float actualCameraXPosition = getCameraPositionInX();
+		float actualCameraYPosition =  getCameraPositionInY();
+		float actualCameraZPosition =  getCameraPositionInZ();
+
+		translateTheCameraOnTheXAxis(cameraDefaultXPosition - actualCameraXPosition);
+		translateTheCameraOnTheYAxis(cameraDefaultYPosition - actualCameraYPosition);
+		translateTheCameraOnTheZAxis(cameraDefaultZPosition-actualCameraZPosition );
+
+
 
 
 	}
+	private float getCameraPositionInX() {
+		float positionX =0;
+		for(Transform transform:cameraGroup.getTransforms()){
+			positionX+= transform.getTx();
+		}
+		return positionX;
+	}
+	private float getCameraPositionInY() {
+		float positionY =0;
+		for(Transform transform:cameraGroup.getTransforms()){
+			positionY+= transform.getTy();
+		}
+		return positionY;
+	}
+	private float getCameraPositionInZ() {
+		float positionZ =0;
+		for(Transform transform:cameraGroup.getTransforms()){
+			positionZ+= transform.getTz();
+		}
+		return positionZ;
+	}
+
 	private void translateTheCameraOnTheXAxis(float xTranslation){
 
 		Translate translate = new Translate();
@@ -218,7 +337,7 @@ private Group root3D;
 
 	    return grid.snapshot(null, null);
 	}
-	private ArrayList<CuboidMesh> generateCard(String title) {
+	private ArrayList<CuboidMesh> generateCard() {
 		double actualZGap = 0;
 		double actualXGap =0;
 		double actualYGab=0;
@@ -237,7 +356,7 @@ private Group root3D;
 							   CuboidMesh contentShape = new CuboidMesh(20, 15, 0.1);
 							   PhongMaterial material = createCarteMaterial(net,groupColor);
 							   contentShape.setMaterial(material);
-							   System.out.println(actualXGap);
+							 
 							    contentShape.setTranslateX(defaultXPosition+ actualXGap);
 							    contentShape.setTranslateY(defaultYPosition +actualYGab);
 							    contentShape.setTranslateZ(defaultZPosition+actualZGap);
