@@ -3,18 +3,10 @@ package Scene3D;
 
 
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.jws.soap.SOAPBinding.Style;
-
 import org.fxyz3d.shapes.primitives.CuboidMesh;
-
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
-import Entity.Group.*;
 import User.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -54,6 +46,8 @@ private float cameraDefaultXPosition= -10000;
 private float cameraDefaultYPosition= 0;
 
 private int layer=0;
+private int numberOfLayer=0;
+private String lastLayerChange="";
 
 
 private PerspectiveCamera camera;
@@ -166,8 +160,10 @@ private Group root3D;
 				returnCameraToDefaultPosition();
 				layer=0;
 				break;
+			case O:
+				System.out.println(getCameraPositionInZ());
+				break;
 			case UP:
-
 				changeLayer();
 				layer++;
 				break;
@@ -194,27 +190,48 @@ private Group root3D;
 		buttons[1].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				changeLayer();
-				layer++;
+				increaseLayer();
 			}
 		});
 
 		buttons[2].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				layer--;
-				changeLayer();
+				decreaseLayer();
 			}
 		});
 
 	}
 
+	private void increaseLayer(){
+	if(lastLayerChange.equals("down")){
+		layer+=2;
+	}
+
+		if(layer<numberOfLayer){
+			changeLayer();
+			layer++;
+			lastLayerChange="up";
+		}
+
+
+	}
+	private void decreaseLayer(){
+		if(lastLayerChange.equals("up")){
+			layer-=2;
+		}
+		if(layer>=0){
+		changeLayer();
+		layer--;
+		lastLayerChange="down";
+		}
+	}
+
 
 	private void changeLayer() {
-
-		returnCameraToDefaultPosition();
-		translateTheCameraOnTheZAxis(defaultZPosition);
-		translateTheCameraOnTheZAxis(carteZGap*layer);
+			returnCameraToDefaultPosition();
+			translateTheCameraOnTheZAxis(30);
+			translateTheCameraOnTheZAxis(carteZGap*layer);
 
 	}
 	private void returnCameraToDefaultPosition() {
@@ -269,7 +286,7 @@ private Group root3D;
 	private void translateTheCameraOnTheZAxis(float zTranslation){
 
 		Translate translate = new Translate();
-		translate.setZ(zTranslation );
+		translate.setZ(zTranslation);
 		cameraGroup.getTransforms().addAll(translate);
 	}
 
@@ -280,21 +297,11 @@ private Group root3D;
 			carteMaterial.setDiffuseColor(color);
 		return carteMaterial;
 	}
-	private Color generateColor(){
-		Random rand = new Random();
-		 Double red = rand.nextDouble();
-		 Double green = rand.nextDouble();
-		 Double blue = rand.nextDouble();
-		 Color groupColor = new Color(red, green, blue, 1);
-		 return groupColor;
-	}
 
 	private Image generateNet(String title, String description) {
 
 	    GridPane grid = new GridPane();
 	    grid.setAlignment(Pos.CENTER);
-
-
 
 	    Label label4 = new Label(title);
 	    label4.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 110));
@@ -304,32 +311,12 @@ private Group root3D;
 	    label5.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 70));
 	    GridPane.setHalignment(label5, HPos.CENTER);
 
-
-
-
 	    grid.add(label4, 2, 0);
 	    grid.add(label5, 2, 1);
 
-
 	    grid.setGridLinesVisible(true);
-
-	    ColumnConstraints col1 = new ColumnConstraints();
-	    col1.setPercentWidth(50);
-	    ColumnConstraints col2 = new ColumnConstraints();
-	    col2.setPercentWidth(0);
-	    ColumnConstraints col3 = new ColumnConstraints();
-	    col3.setPercentWidth(50);
-	    ColumnConstraints col4 = new ColumnConstraints();
-	    col4.setPercentWidth(0);
-	    grid.getColumnConstraints().addAll(col1, col2, col3, col4);
-
-	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(50);
-	    RowConstraints row2 = new RowConstraints();
-	    row2.setPercentHeight(50);
-	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(0);
-	    grid.getRowConstraints().addAll(row1, row2, row3);
+	    grid.getColumnConstraints().addAll(setColumnConstraint());
+	    grid.getRowConstraints().addAll(setRowContraint());
 	    grid.setPrefSize(1920,1080);
 
 	    Scene tmpScene = new Scene(grid);
@@ -337,15 +324,49 @@ private Group root3D;
 
 	    return grid.snapshot(null, null);
 	}
+
+	private ArrayList<RowConstraints> setRowContraint() {
+		ArrayList<RowConstraints> rowConstraints = new ArrayList<RowConstraints>();
+		RowConstraints row1 = new RowConstraints();
+	    row1.setPercentHeight(50);
+	    RowConstraints row2 = new RowConstraints();
+	    row2.setPercentHeight(50);
+	    RowConstraints row3 = new RowConstraints();
+	    row3.setPercentHeight(0);
+
+	    rowConstraints.add(row1);
+	    rowConstraints.add(row2);
+	    rowConstraints.add(row3);
+		return rowConstraints;
+	}
+	private ArrayList<ColumnConstraints> setColumnConstraint() {
+		ArrayList<ColumnConstraints> columnConstraints = new ArrayList<ColumnConstraints>();
+		ColumnConstraints col1 = new ColumnConstraints();
+	    col1.setPercentWidth(50);
+	    ColumnConstraints col2 = new ColumnConstraints();
+	    col2.setPercentWidth(0);
+	    ColumnConstraints col3 = new ColumnConstraints();
+	    col3.setPercentWidth(50);
+	    ColumnConstraints col4 = new ColumnConstraints();
+	    col4.setPercentWidth(0);
+
+	    columnConstraints.add(col1);
+	    columnConstraints.add(col2);
+	    columnConstraints.add(col3);
+	    columnConstraints.add(col4);
+
+		return columnConstraints;
+	}
 	private ArrayList<CuboidMesh> generateCard() {
 		double actualZGap = 0;
 		double actualXGap =0;
 		double actualYGab=0;
+		int numberOfLayer= 0;
 		Color groupColor;
 		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
 		   for(Project aProject :currentUser.getProjets()){
-			   ;
+
 			   groupColor = aProject.getProjectColor();
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
 
@@ -363,7 +384,10 @@ private Group root3D;
 
 							    allCube.add(contentShape);
 							    actualZGap+=carteZGap;
+							    numberOfLayer++;
 						   }
+						   setMaxNumberOfLayer(numberOfLayer);
+						   numberOfLayer =0;
 						   actualXGap += carteXGap;
 						   actualZGap=0;
 			   }
@@ -375,6 +399,11 @@ private Group root3D;
 		   }
 
 	    return allCube;
+	}
+	private void setMaxNumberOfLayer(int numberOfLayer) {
+		if(this.numberOfLayer < numberOfLayer){
+			this.numberOfLayer = numberOfLayer;
+		}
 	}
 
 

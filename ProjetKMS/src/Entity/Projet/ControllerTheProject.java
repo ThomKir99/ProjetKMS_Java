@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@FXML
 	public TextField txt_projectName;
+
+	@FXML
+	public ColorPicker colorPicker;
 
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
@@ -67,6 +71,15 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
             }
         });
 
+		colorPicker.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				leProjet.setProjectColor(colorPicker.getValue());
+
+			}
+		});
+
 
 	}
 
@@ -84,6 +97,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 		setListener();
 		refreshGroupList();
+
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
@@ -186,6 +200,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public void refreshGroupList(){
 		getAllGroup();
 		listViewProjet.setItems(groupObservableList);
+		colorPicker.setValue(leProjet.getProjectColor());
 		listViewProjet.setCellFactory(projectListView ->{
 
 		return setCellDragAndDropHandler();
