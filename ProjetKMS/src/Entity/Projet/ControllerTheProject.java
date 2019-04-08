@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.*;
-import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
@@ -40,16 +40,20 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public TextField txt_projectName;
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
-
 	public static boolean dropIsSuccessful=false;
-
 	public ObservableList<Group> groupObservableList;
 	public Project leProjet;
 	public ControllerMenuProjetCell menuProjetCellController;
+	public ApiConnector apiConnector;
 
-	public ControllerTheProject(){
+	public ControllerTheProject() throws IOException{
+		apiConnector = new ApiConnector();
 		leProjet = new Project();
+		getGroupsFromProject();
+	}
 
+	public void getGroupsFromProject() throws IOException{
+		leProjet.setGroups(apiConnector.groupList(leProjet.getId()));
 	}
 
 	public void setProject(Project unProjet){

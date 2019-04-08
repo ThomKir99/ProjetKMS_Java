@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
-import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
@@ -119,7 +118,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	public void addCarte(){
-		group.addCarte(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
+		group.addCarte(new Carte(randomId(),"ajout force","desc4"));
 		refreshCarteList();
 	}
 

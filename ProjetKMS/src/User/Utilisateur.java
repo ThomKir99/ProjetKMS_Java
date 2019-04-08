@@ -32,17 +32,19 @@ public class Utilisateur {
 
 	public void setProjets(ArrayList<Project> lesProjets){this.projets = lesProjets;}
 
+	public int getId() { return this.id;}
 
 	public void addProjet(Project projet){
 		this.projets.add(projet);
+	}
+
+	public void addAll(ArrayList<Project> lesProjets){
+		projets.addAll(lesProjets);
 	}
 
 	public void addAll(ObservableList<Project> lesProjets) {
 		projets.addAll(lesProjets);
 	}
 
-	private void getAllUserProject(){
-
-	}
 
 }

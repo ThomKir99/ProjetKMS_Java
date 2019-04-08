@@ -2,12 +2,13 @@ package Entity.ProjetMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import API.ApiConnector;
-import Entity.Position;
 import Entity.Group.Group;
 import Entity.Projet.Project;
+import Main.Main;
 import Entity.Projet.ControllerTheGroup;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
@@ -36,15 +37,10 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public ObservableList<Project> projetObservableList;
 	public Button btn_projet;
 	public ScrollPane scrollPanePage;
-	public ApiConnector apiConnector;
-
 	public Utilisateur userContext;
 
-	public  ControllerPageProjet() throws IOException{
-
-		apiConnector = new ApiConnector();
-		userContext = apiConnector.getUser("Antoine","123456");
-
+	public  ControllerPageProjet() throws IOException {
+		userContext = Main.userContext;
 	}
 
 	@Override
@@ -52,13 +48,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		refreshProjectList();
 	}
 
-
 	public void refreshProjectList(){
 		getAllProjet();
 		listViewProjet.setItems(projetObservableList);
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
-
 
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
@@ -69,7 +63,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	public void CreateProject(){
-		userContext.addProjet(new Project(randomId(),"testing",new Position(0,0,0),0,0));
+		userContext.addProjet(new Project(randomId(),"testing"));
 		refreshProjectList();
 	}
 

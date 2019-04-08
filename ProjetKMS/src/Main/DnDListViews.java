@@ -1,10 +1,7 @@
 package Main;
 import java.util.HashMap;
 import java.util.Map;
-
-import Entity.Position;
 import Entity.Carte.Carte;
-
 import Entity.Group.GroupeCell;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.ControllerTheGroup;
@@ -47,9 +44,9 @@ public class DnDListViews extends Application {
     	carteObservableList = FXCollections.observableArrayList();
     	ListView<Carte> listView = new ListView<>();
         for (int i=0; i<5; i++ ) {
-        	carteObservableList.add(new Carte(i,"this is carte test",new Position(0,0,0),0,0,"desc"));
+        	carteObservableList.add(new Carte(i,"this is carte test","desc"));
         }
-listView.setItems(carteObservableList);
+        listView.setItems(carteObservableList);
         listView.setCellFactory(lv -> {
            ListCell<Carte> cell = new GroupeCell(new ControllerTheGroup(new ControllerTheProject()));
 

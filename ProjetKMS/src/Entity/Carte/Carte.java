@@ -1,7 +1,6 @@
 package Entity.Carte;
 
 import Entity.Entity;
-import Entity.Position;
 
 
 public class Carte extends Entity{
@@ -16,13 +15,13 @@ public class Carte extends Entity{
         this.description = "";
     }
 
-    public Carte(int id, String name, Position position, float width, float height,String description){
-    	super(id,name,position,width,height);
+    public Carte(int id, String name, String description){
+    	super(id,name);
     	this.description = description;
     }
+
     public String getAllCarteByString(){
-    	return getId()+ "-" + getName() + "-" + getPosition().getPosition() + "-"+getWidth() + "-"
-    			+ getHeight() + "-" + description;
+    	return getId()+ "-" + getName() + "-" + description;
     }
 
 }

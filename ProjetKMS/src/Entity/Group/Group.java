@@ -24,6 +24,11 @@ public class Group extends Entity{
 		this.setName(name);
 	}
 
+	public Group(int id, String name){
+		super(id,name);
+		this.cartes = null;
+	}
+
 	public ArrayList<Carte> getCartes() {return cartes;}
 
 	public void setCartes(ArrayList<Carte> cartes) {this.cartes = cartes;}

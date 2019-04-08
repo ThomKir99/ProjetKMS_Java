@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.ControllerTheGroup;
