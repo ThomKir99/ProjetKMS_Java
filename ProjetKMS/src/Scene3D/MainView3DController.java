@@ -34,7 +34,7 @@ public class MainView3DController {
 
 	private float defaultWindowSize = 600;
 
-private float carteZGap = 55;
+private float carteZGap = 75;
 private float carteXGap =24;
 private float carteYGap = 24;
 private float defaultXPosition = -10000;
@@ -229,9 +229,14 @@ private Group root3D;
 
 
 	private void changeLayer() {
-			returnCameraToDefaultPosition();
-			translateTheCameraOnTheZAxis(30);
+			returnCameraToDefaultZ();
+			translateTheCameraOnTheZAxis(5);
 			translateTheCameraOnTheZAxis(carteZGap*layer);
+
+	}
+	private void returnCameraToDefaultZ() {
+		float actualCameraZPosition =  getCameraPositionInZ();
+		translateTheCameraOnTheZAxis(cameraDefaultZPosition-actualCameraZPosition );
 
 	}
 	private void returnCameraToDefaultPosition() {
@@ -362,42 +367,31 @@ private Group root3D;
 		double actualXGap =0;
 		double actualYGab=0;
 		int numberOfLayer= 0;
-		Color groupColor;
 		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
 		   for(Project aProject :currentUser.getProjets()){
-
-			   groupColor = aProject.getProjectColor();
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
-
-
 						   for(Carte aCarte:aGroup.getCartes()){
 							   Image net = generateNet( aCarte.getName(), aCarte.getDescription());
-
 							   CuboidMesh contentShape = new CuboidMesh(20, 15, 0.1);
-							   PhongMaterial material = createCarteMaterial(net,groupColor);
+							   PhongMaterial material = createCarteMaterial(net, aProject.getProjectColor());
 							   contentShape.setMaterial(material);
-
-							    contentShape.setTranslateX(defaultXPosition+ actualXGap);
-							    contentShape.setTranslateY(defaultYPosition +actualYGab);
-							    contentShape.setTranslateZ(defaultZPosition+actualZGap);
-
-							    allCube.add(contentShape);
-							    actualZGap+=carteZGap;
-							    numberOfLayer++;
+							   contentShape.setTranslateX(defaultXPosition+ actualXGap);
+							   contentShape.setTranslateY(defaultYPosition +actualYGab);
+							   contentShape.setTranslateZ(defaultZPosition+actualZGap);
+							   allCube.add(contentShape);
+							   actualZGap+=carteZGap;
+							   numberOfLayer++;
 						   }
 						   setMaxNumberOfLayer(numberOfLayer);
 						   numberOfLayer =0;
 						   actualXGap += carteXGap;
 						   actualZGap=0;
 			   }
-
-
 			   actualXGap=0;
 			   actualZGap=0;
 			   actualYGab+=carteYGap;
 		   }
-
 	    return allCube;
 	}
 	private void setMaxNumberOfLayer(int numberOfLayer) {
