@@ -102,7 +102,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					controllerProjectList.removeRow(getGroupIndex());
+					controllerProjectList.removeRow(getIndex());
 				}
 
 			});

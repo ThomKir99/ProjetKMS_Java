@@ -62,7 +62,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
-
          setListener();
          setGraphic(gridPane_projectCell);
 

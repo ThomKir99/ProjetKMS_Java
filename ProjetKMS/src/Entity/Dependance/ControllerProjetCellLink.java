@@ -1,7 +1,6 @@
 package Entity.Dependance;
 
 import java.io.IOException;
-import Entity.Dependance.ControllerDependance;
 import Entity.Projet.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,7 +22,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	public Pane pane1;
 	@FXML
 	public TextField txt_projectName;
-	
+
 	@FXML
     public Button btn_openProjetLink;
 
@@ -41,11 +40,10 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
         } else {
             if (mLLoader == null) {
-
-            	loadTheProjetView(projet);
+            	loadTheProjetView(projet);         	
             }
-
             initializeViewInfo(projet);
+
 
         }
     }
