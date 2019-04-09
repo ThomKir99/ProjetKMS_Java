@@ -16,12 +16,12 @@ public class Project extends Entity{
 
 	private List<Group> groups;
 	private Color projectColor;
-
+	private double y3DPosition;
 	public Project(){
 		super();
 		this.groups = new ArrayList<Group>();
 		projectColor = new Color(1,1, 1, 1);
-
+		y3DPosition =0;
 	}
 
 
@@ -42,5 +42,12 @@ public class Project extends Entity{
 	public Color getProjectColor() {return projectColor;}
 
 	public void setProjectColor(Color projectColor) {this.projectColor = projectColor;}
+
+	public double getY3DPosition() {
+		return y3DPosition;
+	}
+	public void setY3DPosition(double yPosition) {
+		y3DPosition = yPosition;
+	}
 
 }

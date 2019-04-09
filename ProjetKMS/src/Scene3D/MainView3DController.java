@@ -3,23 +3,27 @@ package Scene3D;
 
 
 
+import java.awt.MouseInfo;
+import java.io.IOException;
 import java.util.ArrayList;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import User.Utilisateur;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.PickResult;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -65,7 +69,6 @@ private Group root3D;
 		root3D = new Group();
 		Pane pane3D = new Pane(root3D);
 		root3D.getChildren().addAll(generateCard());
-
 		setCamera();
 		setCameraPosition();
 		setLight();
@@ -75,6 +78,7 @@ private Group root3D;
 		createStage(scene);
 
 	}
+
 
 
 	private BorderPane setMenuBar(Pane pane3D) {
@@ -92,13 +96,17 @@ private Group root3D;
 		return pane;
 	}
 	private Node[] createMenuButton() {
-		Button[] buttons = new Button[3];
+		Button[] buttons = new Button[5];
 		  Button defaultCameraPosition = new Button("Default Position");
 		  Button layerFoward = new Button("Layer foward");
 		  Button layerBackward = new Button("Layer Backward");
+		  Button backTo2D = new Button("2D");
+		  Button createLegend = new Button("Legend");
 		  buttons[0]= defaultCameraPosition;
 		  buttons[1]= layerFoward;
-		  buttons[2] =layerBackward;
+		  buttons[2]= layerBackward;
+		  buttons[3]= backTo2D;
+		  buttons[4]= createLegend;
 		  setButtonsListener(buttons);
 		return buttons;
 	}
@@ -160,9 +168,6 @@ private Group root3D;
 				returnCameraToDefaultPosition();
 				layer=0;
 				break;
-			case O:
-				System.out.println(getCameraPositionInZ());
-				break;
 			case UP:
 				changeLayer();
 				layer++;
@@ -200,9 +205,40 @@ private Group root3D;
 				decreaseLayer();
 			}
 		});
+		buttons[3].setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				open2DView();
+				((Node)(event.getSource())).getScene().getWindow().hide();
+			}
+		});
+		buttons[4].setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				createLegends(event);
+			}
+		});
 
 	}
 
+	protected void createLegends(ActionEvent event) {
+		LegendsController legendsController = new LegendsController();
+		legendsController.showLegend(currentUser.getProjets(),event);
+
+	}
+	protected void open2DView() {
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
+			Scene scene = new Scene(root);
+			scene.setFill(Color.DARKGRAY);
+			createStage(scene);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+	}
 	private void increaseLayer(){
 	if(lastLayerChange.equals("down")){
 		layer+=2;
@@ -326,7 +362,6 @@ private Group root3D;
 
 	    Scene tmpScene = new Scene(grid);
 
-
 	    return grid.snapshot(null, null);
 	}
 
@@ -370,16 +405,15 @@ private Group root3D;
 		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
 		   for(Project aProject :currentUser.getProjets()){
+			   aProject.setY3DPosition((defaultYPosition +actualYGab));
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
+					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
 						   for(Carte aCarte:aGroup.getCartes()){
-							   Image net = generateNet( aCarte.getName(), aCarte.getDescription());
-							   CuboidMesh contentShape = new CuboidMesh(20, 15, 0.1);
-							   PhongMaterial material = createCarteMaterial(net, aProject.getProjectColor());
-							   contentShape.setMaterial(material);
-							   contentShape.setTranslateX(defaultXPosition+ actualXGap);
-							   contentShape.setTranslateY(defaultYPosition +actualYGab);
-							   contentShape.setTranslateZ(defaultZPosition+actualZGap);
+							   aCarte.setZ3DPosition(defaultZPosition+actualZGap);
+							   CuboidMesh contentShape = createACarte(aCarte,aProject);
+							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
 							   allCube.add(contentShape);
+
 							   actualZGap+=carteZGap;
 							   numberOfLayer++;
 						   }
@@ -393,6 +427,20 @@ private Group root3D;
 			   actualYGab+=carteYGap;
 		   }
 	    return allCube;
+	}
+
+	private CuboidMesh createACarte(Carte aCarte, Project aProject) {
+			Image net = generateNet( aCarte.getName(), aCarte.getDescription());
+		   CuboidMesh contentShape = new CuboidMesh(aCarte.getCarteWeight(), aCarte.getCarteHeight(), aCarte.getCartedepth());
+		   PhongMaterial material = createCarteMaterial(net, aProject.getProjectColor());
+		   contentShape.setMaterial(material);
+		return contentShape;
+	}
+	private void setShapePosition(CuboidMesh contentShape, double actualXGap, double actualYGab, double actualZGap) {
+		contentShape.setTranslateX(defaultXPosition+ actualXGap);
+		   contentShape.setTranslateY(defaultYPosition +actualYGab);
+		   contentShape.setTranslateZ(defaultZPosition+actualZGap);
+
 	}
 	private void setMaxNumberOfLayer(int numberOfLayer) {
 		if(this.numberOfLayer < numberOfLayer){

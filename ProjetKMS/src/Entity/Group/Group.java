@@ -12,10 +12,12 @@ import javafx.fxml.Initializable;
 
 public class Group extends Entity{
 	private ArrayList<Carte> cartes;
+	private double x3DPosition;
 
 	public Group(){
 		super();
 		this.cartes = new ArrayList<Carte>();
+		setX3DPosition(0);
 	}
 
 	public Group(String name){
@@ -47,6 +49,14 @@ public class Group extends Entity{
 	public void removeCarte(Carte carte) {
 		cartes.remove(carte);
 
+	}
+
+	public double getX3DPosition() {
+		return x3DPosition;
+	}
+
+	public void setX3DPosition(double xPosition) {
+		x3DPosition = xPosition;
 	}
 
 }

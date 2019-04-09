@@ -107,8 +107,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 
 	private void show3DView(Event event) {
+
 		 MainView3DController controller = new MainView3DController(userContext);
 		 controller.showCube();
+		 ((Node)(event.getSource())).getScene().getWindow().hide();
+
 	}
 
 }
