@@ -14,20 +14,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
-
-import Entity.*;
-import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;

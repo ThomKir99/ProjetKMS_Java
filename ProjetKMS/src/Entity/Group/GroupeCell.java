@@ -6,7 +6,9 @@ import java.util.ResourceBundle;
 
 import Entity.Position;
 import Entity.Carte.Carte;
+import Entity.Dependance.ControllerDependance;
 import Entity.Projet.ControllerTheProject;
+import Entity.Projet.Project;
 import Entity.Projet.ControllerTheGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +47,7 @@ public class GroupeCell extends ListCell<Carte> {
 	@FXML
 	private Button btn_Link;
 
+	public Project currentProjet;
 
 	private FXMLLoader mLLoader;
 
@@ -130,7 +133,7 @@ public class GroupeCell extends ListCell<Carte> {
 				}
 			}
 		});
-		
+
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -145,7 +148,7 @@ public class GroupeCell extends ListCell<Carte> {
 
 		});
 	}
-	
+
 
 	public void errorMessage(){
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -175,13 +178,17 @@ public class GroupeCell extends ListCell<Carte> {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
+
+        //ControllerDependance ControllerDependance = fxmlLoader.getController();
+		//ControllerDependance.setProject(currentProjet);
+
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(tableViewScene);
         window.show();
 	}
-	
+
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);
     	alert.setTitle("Error");

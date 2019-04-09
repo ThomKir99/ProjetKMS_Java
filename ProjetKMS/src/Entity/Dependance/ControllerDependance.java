@@ -3,6 +3,8 @@ package Entity.Dependance;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
@@ -25,12 +27,12 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public Button btn_BackToProjet;
 	public Utilisateur user;
 	public TextField textFieldGroupName;
-
+	public Project leProjet;
 	public ObservableList<Project> projetObservableList;
-
 
 	public  ControllerDependance(){
 		user = Main.Main.userList.get(0);
+		leProjet = new Project();
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 		getAllProjet();
 		listViewLink.setItems(projetObservableList);
+		listViewLink.setCellFactory(listViewLink -> new ControllerProjetCellLink(this));
 	}
 
 
@@ -59,7 +62,8 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
 	Parent tableViewParent = (Parent)fxmlLoader.load();
-
+	ControllerTheProject controllerProjectList = fxmlLoader.getController();
+     controllerProjectList.setProject(leProjet);
 	Scene tableViewScene = new Scene(tableViewParent);
 	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

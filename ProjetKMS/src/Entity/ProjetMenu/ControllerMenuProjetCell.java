@@ -25,7 +25,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_Delete;
 	@FXML
 	private Button btn_openProject;
-	
+
 
 	private ControllerPageProjet controllerPageProjet;
 
@@ -111,7 +111,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
-
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
 
@@ -152,12 +151,5 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     	alert.setContentText("For an unknown reason, your project have fail to open");
 
 	}
-
-
-
-
-
-
-
 
 }

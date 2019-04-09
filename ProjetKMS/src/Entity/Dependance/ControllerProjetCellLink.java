@@ -1,7 +1,10 @@
 package Entity.Dependance;
 
 import java.io.IOException;
+
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.Dependance.ControllerDependance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +23,7 @@ import javafx.stage.Stage;
 public class ControllerProjetCellLink extends ListCell<Project>{
 	@FXML
 	public Pane pane1;
+
 	@FXML
 	public TextField txt_projectName;
 
@@ -28,7 +32,11 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
     private FXMLLoader mLLoader;
     private Project currentProjet;
+    private ControllerDependance controllerDependance;
 
+    public ControllerProjetCellLink(ControllerDependance controllerPageDependance){
+		this.controllerDependance = controllerPageDependance;
+	}
 	@Override
     protected void updateItem(Project projet, boolean empty) {
         super.updateItem(projet, empty);
@@ -40,13 +48,14 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
         } else {
             if (mLLoader == null) {
-            	loadTheProjetView(projet);         	
+            	loadTheProjetView(projet);
             }
             initializeViewInfo(projet);
 
 
         }
     }
+
 
 
 	private void initializeViewInfo(Project projet) {
@@ -85,18 +94,15 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
 
 	public void openProject(ActionEvent event)throws IOException{
+FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
+Parent tableViewParent = (Parent)fxmlLoader.load();
+ControllerTheDependance controllerProjectList = fxmlLoader.getController();
+controllerProjectList.setProject(currentProjet);
+Scene tableViewScene = new Scene(tableViewParent);
+Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
-        Parent tableViewParent = (Parent)fxmlLoader.load();
-
-        ControllerTheDependance controllerDependanceProjectList = fxmlLoader.getController();
-        controllerDependanceProjectList.setProject(currentProjet);
-
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(tableViewScene);
-        window.show();
+window.setScene(tableViewScene);
+window.show();
     }
 
 	public void showLoadingError(){
