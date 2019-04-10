@@ -49,28 +49,30 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public ControllerTheProject() throws IOException{
 		apiConnector = new ApiConnector();
 		leProjet = new Project();
-		getGroupsFromProject();
 	}
 
 	public void getGroupsFromProject() throws IOException{
-		leProjet.setGroups(apiConnector.groupList(leProjet.getId()));
+		if (apiConnector.groupList(leProjet.getId()) != null){
+			leProjet.setGroups(apiConnector.groupList(leProjet.getId()));
+		}
 	}
 
-	public void setProject(Project unProjet){
+	public void setProject(Project unProjet) throws IOException{
+
 		this.leProjet = unProjet;
 		txt_projectName.setText(leProjet.getName());
+		getGroupsFromProject();
 		refreshGroupList();
 	}
 
 	public void setListener(){
 		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-            	leProjet.setName(txt_projectName.getText());
-            }
-        });
+        @Override
+        public void handle(Event event) {
+        	leProjet.setName(txt_projectName.getText());
+        }
+    });
 	}
-
 
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){
 		this.menuProjetCellController = menuProjetCellController;
@@ -125,14 +127,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 			refreshGroupList();
 		}
 	}
+
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
 		if(dropIsSuccessful){
 			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerTheProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
-
-
 	}
 
 	private void setDragOverHandler(DragEvent event) {
@@ -140,14 +141,11 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
         if (db.hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
-
 	}
 
 	public void BackToMenu(){
 
 	}
-
-
 
 
 	 public void createNewGroup(){

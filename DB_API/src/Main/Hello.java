@@ -3,6 +3,7 @@ package Main;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
@@ -33,16 +34,23 @@ public class Hello {
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
 
-  	while (result.next()){
-  		JsonObject obj = new JsonObject();
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+    		JsonObject obj = new JsonObject();
 
-  		obj.addProperty("ID", result.getInt(1));
-  		obj.addProperty("Name", result.getString(2));
-  		obj.addProperty("Password", result.getString(3));
+    		obj.addProperty("ID", result.getInt(1));
+    		obj.addProperty("Name", result.getString(2));
+    		obj.addProperty("Password", result.getString(3));
 
-  		jsonArr.add(obj);
+    		jsonArr.add(obj);
+    	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
   	}
 
+  	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
 
@@ -57,15 +65,22 @@ public class Hello {
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
 
-  	while (result.next()){
-  		JsonObject obj = new JsonObject();
+  	if (result.isBeforeFirst()){
+			while (result.next()){
+				JsonObject obj = new JsonObject();
 
-  		obj.addProperty("projectID", result.getInt(1));
-  		obj.addProperty("projectName", result.getString(2));
+				obj.addProperty("projectID", result.getInt(1));
+				obj.addProperty("projectName", result.getString(2));
 
-  		jsonArr.add(obj);
+				jsonArr.add(obj);
+			}
+  	}
+  	else {
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
   	}
 
+  	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
 
@@ -73,23 +88,69 @@ public class Hello {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public String getGroups(@PathParam("projectId") String projectId) throws Exception {
-
   	mySqlCon.openLocalConnection();
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_groupe WHERE id_projet = \'" + projectId + "\'");
 
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
 
-  	while (result.next()){
-  		JsonObject obj = new JsonObject();
-  		obj.addProperty("groupId", result.getInt(1));
-  		obj.addProperty("groupName", result.getString(2));
+  	if (result.isBeforeFirst()){
+	  	while (result.next()){
 
-  		jsonArr.add(obj);
+	  		JsonObject obj = new JsonObject();
+	  		obj.addProperty("groupId", result.getInt(1));
+	  		obj.addProperty("groupName", result.getString(2));
+
+	  		jsonArr.add(obj);
+
+	  	}
   	}
-
+  	else{
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
+  	}
+  	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/getCartes/{groupId}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getCarte(@PathParam("groupId") String groupId) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_carte WHERE id_groupe = \'" + groupId + "\'");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+	  	while (result.next()){
+
+	  		JsonObject obj = new JsonObject();
+	  		obj.addProperty("carteId", result.getInt(1));
+	  		obj.addProperty("carteName", result.getString(2));
+	  		obj.addProperty("carteDesc", result.getString(3));
+	  		obj.addProperty("carteOrder", result.getInt(4));
+	  		obj.addProperty("carteComplete", result.getBoolean(5));
+
+	  		jsonArr.add(obj);
+	  	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
+  	}
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+  @Path("/deleteProject/{projectID}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public void deleteProject(@PathParam("projectID") String projectID) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("DELETE FROM tbl_projet WHERE id_projet = \'" + projectID + "\'");
+  	mySqlCon.closeConnection();
+  }
 
 }

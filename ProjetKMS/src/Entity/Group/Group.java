@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 public class Group extends Entity{
-	private ArrayList<Carte> cartes;
+	private List<Carte> cartes;
 
 	public Group(){
 		super();
@@ -29,9 +29,9 @@ public class Group extends Entity{
 		this.cartes = null;
 	}
 
-	public ArrayList<Carte> getCartes() {return cartes;}
+	public List<Carte> getCartes() {return cartes;}
 
-	public void setCartes(ArrayList<Carte> cartes) {this.cartes = cartes;}
+	public void setCartes(List<Carte> cartes) {this.cartes = cartes;}
 
 	public void addCarte(Carte carte){
 		if(cartes==null){

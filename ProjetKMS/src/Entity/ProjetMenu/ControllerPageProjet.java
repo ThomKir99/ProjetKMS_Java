@@ -38,8 +38,10 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public Button btn_projet;
 	public ScrollPane scrollPanePage;
 	public Utilisateur userContext;
+	public ApiConnector apiConnector;
 
 	public  ControllerPageProjet() throws IOException {
+		apiConnector= new ApiConnector();
 		userContext = Main.userContext;
 	}
 
@@ -59,7 +61,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		if(userContext.getProjets() != null){
 			projetObservableList.addAll(userContext.getProjets());
 		}
-
 	}
 
 	public void CreateProject(){
@@ -67,15 +68,14 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		refreshProjectList();
 	}
 
-
-	public void DeleteProjet(Project projet){
-
+	public void DeleteProjet(Project projet) throws IOException{
+		apiConnector.deleteProject(projet.getId());
 		userContext.getProjets().remove(projet);
 		refreshProjectList();
 	}
 
-	private int randomId(){
 
+	private int randomId(){
 		return (int) (Math.random() * (100000));
 	}
 

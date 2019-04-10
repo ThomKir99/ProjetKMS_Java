@@ -2,9 +2,13 @@ package Entity.Projet;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
+
+import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
@@ -56,41 +60,58 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private Group group;
 
+	private ApiConnector apiConnector;
+
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
+		this.apiConnector = new ApiConnector();
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-        super.updateItem(group, empty);
+      super.updateItem(group, empty);
 
-        this.group = group;
+      this.group = group;
 
-        if(empty || group == null) {
+      if(empty || group == null) {
 
-            setText(null);
-            setGraphic(null);
+          setText(null);
+          setGraphic(null);
 
-        } else {
-        		if (mLLoader == null) {
-                    mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
-                    mLLoader.setController(this);
+      } else {
+      		if (mLLoader == null) {
+                  mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
+                  mLLoader.setController(this);
 
-                    try {
-                        mLLoader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-        		}
-        		if(textFieldGroupName!=null){
-        			textFieldGroupName.setText(String.valueOf(group.getName()));
-        		}
-        		refreshCarteList();
-                setHandler();
-                setText(null);
-                setGraphic(gridPaneGroup);
-        }
+                  try {
+                      mLLoader.load();
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+      		}
+      		if(textFieldGroupName!=null){
+      			textFieldGroupName.setText(String.valueOf(group.getName()));
+      		}
+
+      		try {
+    				getCarteFromGroup();
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+
+      		refreshCarteList();
+          setHandler();
+          setText(null);
+          setGraphic(gridPaneGroup);
+      }
     }
+
+	private void getCarteFromGroup() throws IOException{
+		if (apiConnector.carteList(this.group.getId()) != null){
+			this.group.setCartes(apiConnector.carteList(this.group.getId()));
+		}
+	}
 
 	private void setHandler() {
 		if(btn_delete!=null){
@@ -111,7 +132,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				@Override
 				public void handle(ActionEvent event) {
 					addCarte();
-
 				}
 			});
 		}
@@ -141,6 +161,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		if(listViewGroup!=null){
 			refreshCarteList();
 			setListener();
+
 		}
 	}
 

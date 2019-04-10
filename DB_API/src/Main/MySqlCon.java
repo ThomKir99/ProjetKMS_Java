@@ -46,4 +46,18 @@ class MySqlCon{
 		 return rs;
 
 	}
+
+	public void executeNonQuery(String query) {
+		Statement stmt = null;
+
+		try{
+		  stmt = con.createStatement();
+		  stmt.executeUpdate(query);
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+
+
+	}
 }
