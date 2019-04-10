@@ -69,17 +69,13 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
         super.updateItem(group, empty);
 
         this.group = group;
-
         if(empty || group == null) {
-
             setText(null);
             setGraphic(null);
-
         } else {
         		if (mLLoader == null) {
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
                     mLLoader.setController(this);
-
                     try {
                         mLLoader.load();
                     } catch (IOException e) {

@@ -33,6 +33,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public  ControllerDependance(){
 		user = Main.Main.userList.get(0);
 		leProjet = new Project();
+		
 	}
 
 	@Override

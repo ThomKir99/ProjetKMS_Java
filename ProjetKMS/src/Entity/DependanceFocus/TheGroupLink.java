@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Group.Group;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -30,9 +32,11 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	private Pane pane;
 	private FXMLLoader mLLoader;
 	private ControllerTheDependance controllerProjectList;
+	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 
 	public TheGroupLink(ControllerTheDependance controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
+
 	}
 
 	@Override
@@ -40,15 +44,20 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
         super.updateItem(group, empty);
 
         this.group = group;
+
         if(empty || group == null) {
+
             setText(null);
             setGraphic(null);
         } else {
         		if (mLLoader == null) {
+
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkGroupCell.fxml"));
                     mLLoader.setController(this);
+
                     try {
                         mLLoader.load();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -64,7 +73,11 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 	public void refreshCarteList(){
 		getAllCarte();
+		listViewGroup = new ListView<Carte>();
 		listViewGroup.setItems(carteObservableList);
+		//listViewGroup.setCellFactory(group->{
+			//return setFactory();
+		//});
 	}
 
 	@Override
@@ -80,7 +93,9 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 		textFieldGroupName.setOnKeyReleased(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
+
             	group.setName(textFieldGroupName.getText());
+
             }
         });
 	}

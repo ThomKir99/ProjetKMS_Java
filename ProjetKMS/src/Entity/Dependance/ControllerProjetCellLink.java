@@ -94,15 +94,15 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
 
 	public void openProject(ActionEvent event)throws IOException{
-FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
-Parent tableViewParent = (Parent)fxmlLoader.load();
-ControllerTheDependance controllerProjectList = fxmlLoader.getController();
-controllerProjectList.setProject(currentProjet);
-Scene tableViewScene = new Scene(tableViewParent);
-Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
+		Parent tableViewParent = (Parent)fxmlLoader.load();
+		ControllerTheDependance controllerProjectList = fxmlLoader.getController();
+		controllerProjectList.setProject(currentProjet);
+		Scene tableViewScene = new Scene(tableViewParent);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-window.setScene(tableViewScene);
-window.show();
+		window.setScene(tableViewScene);
+		window.show();
     }
 
 	public void showLoadingError(){

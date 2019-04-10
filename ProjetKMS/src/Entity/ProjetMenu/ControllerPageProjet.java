@@ -49,7 +49,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 		getAllProjet();
 		listViewProjet.setItems(projetObservableList);
-
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
 
