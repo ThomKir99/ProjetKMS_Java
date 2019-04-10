@@ -7,9 +7,13 @@ import java.awt.MouseInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
+
+import com.sun.javafx.application.LauncherImpl;
+
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import User.Utilisateur;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -33,6 +37,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MainView3DController {
 
@@ -79,46 +84,38 @@ private Group root3D;
 
 	}
 
+	private ArrayList<CuboidMesh> generateCard() {
+		double actualZGap = 0;
+		double actualXGap =0;
+		double actualYGab=0;
+		int numberOfLayer= 0;
+		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
+		   for(Project aProject :currentUser.getProjets()){
+			   aProject.setY3DPosition((defaultYPosition +actualYGab));
+				   for(Entity.Group.Group aGroup:aProject.getGroups()){
+					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
+						   for(Carte aCarte:aGroup.getCartes()){
+							   aCarte.setZ3DPosition(defaultZPosition+actualZGap);
+							   CuboidMesh contentShape = createACarte(aCarte,aProject);
+							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
+							   allCube.add(contentShape);
 
-	private BorderPane setMenuBar(Pane pane3D) {
-		BorderPane pane = new BorderPane();
-		SubScene subScene = new SubScene(pane3D, defaultWindowSize, defaultWindowSize, true, SceneAntialiasing.DISABLED);
-	    subScene.setFill(Color.DARKGRAY);
-	    subScene.setCamera(camera);
-	    pane.setCenter(subScene);
-	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);
-	    ToolBar toolBar = new ToolBar(createMenuButton());
-	    toolBar.setOrientation(Orientation.HORIZONTAL);
-	    pane.setTop(toolBar);
-	    subScene.heightProperty().bind(pane.heightProperty());
-	    subScene.widthProperty().bind(pane.widthProperty());
-		return pane;
+							   actualZGap+=carteZGap;
+							   numberOfLayer++;
+						   }
+						   setMaxNumberOfLayer(numberOfLayer);
+						   numberOfLayer =0;
+						   actualXGap += carteXGap;
+						   actualZGap=0;
+			   }
+			   actualXGap=0;
+			   actualZGap=0;
+			   actualYGab+=carteYGap;
+		   }
+	    return allCube;
 	}
-	private Node[] createMenuButton() {
-		Button[] buttons = new Button[5];
-		  Button defaultCameraPosition = new Button("Default Position");
-		  Button layerFoward = new Button("Layer foward");
-		  Button layerBackward = new Button("Layer Backward");
-		  Button backTo2D = new Button("2D");
-		  Button createLegend = new Button("Legend");
-		  buttons[0]= defaultCameraPosition;
-		  buttons[1]= layerFoward;
-		  buttons[2]= layerBackward;
-		  buttons[3]= backTo2D;
-		  buttons[4]= createLegend;
-		  setButtonsListener(buttons);
-		return buttons;
-	}
 
-	private void createStage(Scene scene) {
-    Stage stage = new Stage();
-	addListener(stage);
-	stage.setTitle("My New Stage Title");
-	stage.setScene(scene);
-	stage.show();
-
-	}
 	private void setCamera() {
 		camera = new PerspectiveCamera(true);
 	    camera.setNearClip(25);
@@ -143,6 +140,52 @@ private Group root3D;
 		root3D.getChildren().add(light);
 
 	}
+
+	private BorderPane setMenuBar(Pane pane3D) {
+		BorderPane pane = new BorderPane();
+	    pane.setCenter(setSubScene(pane3D,pane));
+	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);
+	    pane.setTop(createTopMenu());
+		return pane;
+	}
+
+	private Node createTopMenu() {
+		 HBox menu = new HBox(createMenuButton());
+		 menu.setPrefHeight(26);
+		return menu;
+	}
+	private SubScene setSubScene(Pane pane3D, BorderPane pane) {
+		SubScene subScene=new SubScene(pane3D, defaultWindowSize, defaultWindowSize, true, SceneAntialiasing.DISABLED);
+	    subScene.setFill(Color.DARKGRAY);
+	    subScene.setCamera(camera);
+	    subScene.heightProperty().bind(pane.heightProperty());
+	    subScene.widthProperty().bind(pane.widthProperty());
+		return subScene;
+	}
+	private Node[] createMenuButton() {
+		Button[] buttons = new Button[5];
+		  Button defaultCameraPosition = new Button("Default Position");
+		  Button layerFoward = new Button("Layer foward");
+		  Button layerBackward = new Button("Layer Backward");
+		  Button backTo2D = new Button("2D");
+		  Button createLegend = new Button("Legend");
+		  buttons[0]= defaultCameraPosition;
+		  buttons[1]= layerFoward;
+		  buttons[2]= layerBackward;
+		  buttons[3]= backTo2D;
+		  buttons[4]= createLegend;
+		  setButtonsListener(buttons);
+		return buttons;
+	}
+
+	private void createStage(Scene scene) {
+    Stage stage = new Stage();
+	addListener(stage);
+	stage.setTitle("My New Stage Title");
+	stage.setScene(scene);
+	stage.show();
+	}
+
 	private void addListener(Stage stage) {
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event->{
 			switch (event.getCode()) {
@@ -215,17 +258,11 @@ private Group root3D;
 		buttons[4].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				createLegends(event);
-			}
+							}
 		});
 
 	}
 
-	protected void createLegends(ActionEvent event) {
-		LegendsController legendsController = new LegendsController();
-		legendsController.showLegend(currentUser.getProjets(),event);
-
-	}
 	protected void open2DView() {
 		Parent root;
 		try {
@@ -239,6 +276,13 @@ private Group root3D;
 
 
 	}
+
+	protected Node createLegends() {
+		LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
+		return legendViewLauncher.launchLegend(currentUser.getProjets());
+
+	}
+
 	private void increaseLayer(){
 	if(lastLayerChange.equals("down")){
 		layer+=2;
@@ -397,37 +441,7 @@ private Group root3D;
 
 		return columnConstraints;
 	}
-	private ArrayList<CuboidMesh> generateCard() {
-		double actualZGap = 0;
-		double actualXGap =0;
-		double actualYGab=0;
-		int numberOfLayer= 0;
-		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 
-		   for(Project aProject :currentUser.getProjets()){
-			   aProject.setY3DPosition((defaultYPosition +actualYGab));
-				   for(Entity.Group.Group aGroup:aProject.getGroups()){
-					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
-						   for(Carte aCarte:aGroup.getCartes()){
-							   aCarte.setZ3DPosition(defaultZPosition+actualZGap);
-							   CuboidMesh contentShape = createACarte(aCarte,aProject);
-							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
-							   allCube.add(contentShape);
-
-							   actualZGap+=carteZGap;
-							   numberOfLayer++;
-						   }
-						   setMaxNumberOfLayer(numberOfLayer);
-						   numberOfLayer =0;
-						   actualXGap += carteXGap;
-						   actualZGap=0;
-			   }
-			   actualXGap=0;
-			   actualZGap=0;
-			   actualYGab+=carteYGap;
-		   }
-	    return allCube;
-	}
 
 	private CuboidMesh createACarte(Carte aCarte, Project aProject) {
 			Image net = generateNet( aCarte.getName(), aCarte.getDescription());
@@ -447,9 +461,7 @@ private Group root3D;
 			this.numberOfLayer = numberOfLayer;
 		}
 	}
-
-
-    }
+}
 
 
 
