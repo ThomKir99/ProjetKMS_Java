@@ -42,6 +42,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
+		
 	}
 
 
@@ -64,6 +65,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public void CreateProject(){
 		userContext.addProjet(new Project(randomId(),"testing",new Position(0,0,0),0,0));
 		refreshProjectList();
+		
 	}
 
 

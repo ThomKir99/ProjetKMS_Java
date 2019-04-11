@@ -54,6 +54,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         } else {
             if (mLLoader == null) {
             	loadTheMenuProjetView(projet);
+            	System.out.println(projet.getId());
             }
             initializeViewInfo(projet);
         }
@@ -113,10 +114,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         Parent tableViewParent = (Parent)fxmlLoader.load();
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
-
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(tableViewScene);
         window.show();
     }

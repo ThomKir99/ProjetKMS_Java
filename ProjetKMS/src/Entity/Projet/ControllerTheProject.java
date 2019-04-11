@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import Entity.Carte.Carte;
+import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
 
@@ -50,6 +51,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		this.leProjet = unProjet;
 		txt_projectName.setText(leProjet.getName());
 		refreshGroupList();
+		System.out.println(leProjet.getId());
 	}
 
 	public void setListener(){
@@ -75,10 +77,12 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		
 		setListener();
 		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
+			
 			return setCellDragAndDropHandler();
 		});
 	}
@@ -180,10 +184,11 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		getAllGroup();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
-
 		return setCellDragAndDropHandler();
 		});
 	}
+	
+	
 
 	public int getItemIndex(Group group) {
 		return groupObservableList.indexOf(group);

@@ -20,50 +20,41 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-
-
-
 public class TheGroupLink extends ListCell<Group> implements Initializable {
 	@FXML
 	public ListView<Carte> listViewGroup;
+	@FXML
     public TextField textFieldGroupName;
 	public ObservableList<Carte> carteObservableList;
 	private Group group;
+	@FXML
 	private Pane pane;
 	private FXMLLoader mLLoader;
 	private ControllerTheDependance controllerProjectList;
-	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
-
 	public TheGroupLink(ControllerTheDependance controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
-
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
         super.updateItem(group, empty);
-
         this.group = group;
-
         if(empty || group == null) {
-
             setText(null);
             setGraphic(null);
         } else {
         		if (mLLoader == null) {
-
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkGroupCell.fxml"));
                     mLLoader.setController(this);
-
                     try {
                         mLLoader.load();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
         		}
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
+        			System.out.println(group.getName());
         		}
         		refreshCarteList();
                 setText(null);
@@ -73,16 +64,19 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 	public void refreshCarteList(){
 		getAllCarte();
-		listViewGroup = new ListView<Carte>();
+
 		listViewGroup.setItems(carteObservableList);
-		//listViewGroup.setCellFactory(group->{
-			//return setFactory();
-		//});
+		System.out.println("sup");
+		listViewGroup.setCellFactory(carte->{
+			return setFactory();
+		});
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		listViewGroup = new ListView<Carte>();
 		if(listViewGroup!=null){
+
 			refreshCarteList();
 			setListener();
 		}
@@ -93,7 +87,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 		textFieldGroupName.setOnKeyReleased(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-
             	group.setName(textFieldGroupName.getText());
 
             }
@@ -110,7 +103,10 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 
 
-
+	public ListCell<Carte> setFactory(){
+		ListCell<Carte> cell = new ControllerLinkGroupCell(this);
+		return cell;
+	}
 
 
 

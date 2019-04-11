@@ -34,26 +34,18 @@ public class GroupeCell extends ListCell<Carte> {
 
 	@FXML
 	private TextField textField1;
-
 	@FXML
 	private TextField textField2;
-
 	@FXML
 	private GridPane gridPane1;
-
 	@FXML
 	private Button btn_delete;
-
 	@FXML
 	private Button btn_Link;
-
 	public Project currentProjet;
-
 	private FXMLLoader mLLoader;
-
 	private Carte carte;
 	private ControllerTheGroup projectCellController;
-
 	public GroupeCell(ControllerTheGroup projectCell){
 		projectCellController = projectCell;
 	}
@@ -61,25 +53,20 @@ public class GroupeCell extends ListCell<Carte> {
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
-
-
         this.carte = carte;
         if(empty || carte == null) {
             setText(null);
             setGraphic(null);
-
         } else {
             if (mLLoader == null) {
                 mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheCarte.fxml"));
                 mLLoader.setController(this);
-
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
             textField1.setText(String.valueOf(carte.getId()));
             textField2.setText(carte.getName());
             setHandler();
@@ -133,7 +120,7 @@ public class GroupeCell extends ListCell<Carte> {
 				}
 			}
 		});
-
+		System.out.println("dd");
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -142,6 +129,8 @@ public class GroupeCell extends ListCell<Carte> {
 					addLink(event);
 				} catch (IOException e) {
 					showLoadingError();
+				}catch(Exception e){
+					System.err.println(e.getMessage());
 				}
 
 			}
@@ -174,20 +163,28 @@ public class GroupeCell extends ListCell<Carte> {
 		carte.setDescription(description);
 	}
 
+
 	public void addLink(ActionEvent event)throws IOException{
+		 System.out.println("test123");
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
-        Parent tableViewParent = (Parent)fxmlLoader.load();
-
-
-        //ControllerDependance ControllerDependance = fxmlLoader.getController();
-		//ControllerDependance.setProject(currentProjet);
-
+		  System.out.println("test33");
+		  try{
+		Parent tableViewParent = (Parent)fxmlLoader.load();
+		System.out.println("test44");
+        ControllerDependance controllerProjectList = fxmlLoader.getController();
+        controllerProjectList.setProject(currentProjet);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(tableViewScene);
         window.show();
-	}
+		  }catch(Exception e){
+			  System.out.println("HELLO");
+			  e.printStackTrace();
+		  }
+
+
+    }
 
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);

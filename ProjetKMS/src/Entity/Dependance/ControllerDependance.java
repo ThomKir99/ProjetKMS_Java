@@ -4,41 +4,51 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Entity.DependanceFocus.TheGroupLink;
+import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ControllerDependance extends AnchorPane implements Initializable {
-
+	@FXML
 	public ListView<Project> listViewLink;
+	@FXML
 	public Button btn_BackToProjet;
 	public Utilisateur user;
+	@FXML
 	public TextField textFieldGroupName;
 	public Project leProjet;
 	public ObservableList<Project> projetObservableList;
 
 	public  ControllerDependance(){
-		user = Main.Main.userList.get(0);
 		leProjet = new Project();
-		
+		setProject(leProjet);
+
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		refreshProjectList();
+		listViewLink.setCellFactory(projet->{
+			return setFactory();
+		});
 	}
 
 	public void refreshProjectList(){
@@ -54,6 +64,14 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 		if(user.getProjets() != null){
 		projetObservableList.addAll(user.getProjets());
 		}
+
+
+
+	}
+
+	public void setProject(Project unProjet){
+		this.leProjet = unProjet;
+		System.out.println(leProjet.getId());
 
 	}
 
@@ -74,6 +92,10 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 
 
+	public ListCell<Project> setFactory(){
+		ListCell<Project> cell = new ControllerProjetCellLink(this);
+		return cell;
+	}
 
 
 

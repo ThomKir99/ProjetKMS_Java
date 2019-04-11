@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import Entity.Carte.Carte;
 import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.*;
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
 import javafx.beans.property.ObjectProperty;
@@ -42,11 +43,12 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
 	@FXML
 	public ListView<Group> listViewLinkGroupe;
+	private Project currentProjet;
 
 
 	public ControllerTheDependance(){
 		leProjet = new Project();
-		
+
 
 	}
 
@@ -54,7 +56,7 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 
 	public void setProject(Project unProjet){
 		this.leProjet = unProjet;
-		
+
 		txt_nomProjet.setText(leProjet.getName());
 		refreshGroupList();
 	}
@@ -68,16 +70,17 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public void refreshGroupList(){
 		getAllGroup();
 		listViewLinkGroupe.setItems(groupObservableList);
-
+		listViewLinkGroupe.setCellFactory(group->{
+			System.out.println("merendtjr");
+			return setFactory();
+		});
 	}
-
 	private void setTextHandler() {
 		btn_backToMenu.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					
+
 					BackToMenu(event);
 				} catch (IOException e) {
 					showLoadingError();
@@ -92,16 +95,17 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		setTextHandler();
+		listViewLinkGroupe = new ListView<Group>();
 		listViewLinkGroupe.setItems(groupObservableList);
-		listViewLinkGroupe.setCellFactory(group->{
-			return setFactory();
-		});
 	}
 
 
 	public void BackToMenu(ActionEvent event)throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
+
+       // ControllerDependance controllerProjectList = fxmlLoader.getController();
+        //controllerProjectList.setProject(currentProjet);
 
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -118,6 +122,7 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	}
 
 	public ListCell<Group> setFactory(){
+		System.out.println("setGRoup");
 		ListCell<Group> cell = new TheGroupLink(this);
 		return cell;
 	}

@@ -68,7 +68,6 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	private void loadTheProjetView(Project projet) {
 		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkProjetCell.fxml"));
         mLLoader.setController(this);
-        this.currentProjet=projet;
         try {
             mLLoader.load();
         } catch (IOException e) {

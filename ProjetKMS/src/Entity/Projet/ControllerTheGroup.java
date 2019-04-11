@@ -39,19 +39,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	public ListView<Carte> listViewGroup;
 
 	public ObservableList<Carte> carteObservableList;
-
 	@FXML
 	private TextField textFieldGroupName;
-
 	@FXML
 	private GridPane gridPane_emptyGroup;
-
 	@FXML
 	private GridPane gridPaneGroup;
-
 	@FXML
 	private Button btn_addCarte;
-
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
@@ -59,7 +54,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private Button btn_delete;
 	private ControllerTheProject controllerProjectList;
 	private Group group;
-
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 	}
@@ -84,6 +78,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
         		}
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
+        		
         		}
         		refreshCarteList();
                 setHandler();
@@ -143,6 +138,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+
 		if(listViewGroup!=null){
 			refreshCarteList();
 			setListener();
