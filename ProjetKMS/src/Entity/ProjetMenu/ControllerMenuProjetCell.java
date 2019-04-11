@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -41,11 +42,12 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private GridPane gridPane_projectCell;
 
 	private FXMLLoader mLLoader;
-
+	private ApiConnector apiConnector;
 
 
 	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
 		this.controllerPageProjet = controllerPageProjet;
+		apiConnector = new ApiConnector();
 	}
 
 	@Override
@@ -68,19 +70,22 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
-
      setListener();
      setGraphic(gridPane_projectCell);
 	}
 
 	public void setListener(){
-		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
+		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+        	currentProjet.setName(txt_projectName.getText());
+					apiConnector.modifyProject(currentProjet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
+		});
 
-			@Override
-			public void handle(Event event) {
-				currentProjet.setName(txt_projectName.getText());
-			}
-			});
 
       btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

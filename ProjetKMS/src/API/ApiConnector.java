@@ -68,7 +68,9 @@ public class ApiConnector {
 
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
-        userName = userName.replace("\"", "");
+
+        userName = removeQuote(userName);
+
         projectList.add(new Project(projectID,userName));
       }
     }
@@ -96,8 +98,9 @@ public class ApiConnector {
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupId").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
 
-        groupName = groupName.replace("\"", "");
+        groupName = removeQuote(groupName);
         groupList.add(new Group(groupID,groupName));
+
       }
   		return groupList;
     }
@@ -125,10 +128,8 @@ public class ApiConnector {
         String carteDesc = obj.getAsJsonObject().get("carteDesc").toString();
         boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteOrder").toString());
 
-        System.out.println(carteID);
-
-        carteName = carteName.replace("\"", "");
-        carteDesc = carteDesc.replace("\"", "");
+        carteName = removeQuote(carteName);
+        carteDesc = removeQuote(carteDesc);
 
         carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,carteComplete));
       }
@@ -146,6 +147,53 @@ public class ApiConnector {
     request.setDoOutput(false);
     request.connect();
     request.getInputStream();
+  }
+
+  public void modifyProject(Project currentProject) throws IOException{
+  	Project dbProject = new Project();
+    String sURL = this.baseURL +"getSingleProject/" + currentProject.getId();
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+    	int projectID = -1;
+    	String projectName = "Something went wrong";
+      for (JsonElement obj : rootarray){
+        projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());;
+        projectName = obj.getAsJsonObject().get("projectName").toString();
+
+        projectName = removeQuote(projectName);
+
+      }
+      dbProject = new Project(projectID,projectName);
+    }
+
+    if (!currentProject.isEqualTo(dbProject)){
+    	//Project As Been Modified
+    	updateMenuProject(currentProject);
+    }
+
+  }
+
+  public void updateMenuProject(Project currentProject) throws IOException{
+    String sURL = this.baseURL +"updateProject/" + currentProject.getId() + "/"+  currentProject.getName();
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.setDoOutput(false);
+    request.connect();
+    request.getInputStream();
+
+  }
+
+  private String removeQuote(String theString){
+  		theString = theString.substring(0, theString.length() -1);
+  		theString = theString.substring(1, theString.length());
+  		return theString;
   }
 
 

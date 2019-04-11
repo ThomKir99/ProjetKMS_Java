@@ -66,12 +66,17 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	public void setListener(){
-		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
-        @Override
-        public void handle(Event event) {
-        	leProjet.setName(txt_projectName.getText());
-        }
-    });
+		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+      		leProjet.setName(txt_projectName.getText());
+					apiConnector.modifyProject(leProjet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
+		});
+
 	}
 
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){

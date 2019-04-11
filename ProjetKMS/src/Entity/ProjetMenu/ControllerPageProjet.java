@@ -14,6 +14,8 @@ import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +35,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	@FXML
 	public ListView<Project> listViewProjet;
+
 	public Pane paneBackground;
 	public ObservableList<Project> projetObservableList;
 	public Button btn_projet;
@@ -43,12 +46,14 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public  ControllerPageProjet() throws IOException {
 		apiConnector= new ApiConnector();
 		userContext = Main.userContext;
+
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
 	}
+
 
 	public void refreshProjectList(){
 		getAllProjet();

@@ -24,5 +24,14 @@ public class Project extends Entity{
 
 	public void addGroup(Group group) { this.groups.add(group);}
 
+	public boolean isEqualTo(Project aProject){
+		if (this.getName().equals(aProject.getName())){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
 
 }

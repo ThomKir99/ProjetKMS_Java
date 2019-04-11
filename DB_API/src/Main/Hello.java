@@ -153,4 +153,41 @@ public class Hello {
   	mySqlCon.closeConnection();
   }
 
+  @Path("/getSingleProject/{projectID}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getSingleProject(@PathParam("projectID") String projectID) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet = \'" + projectID + "\'");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+	  	while (result.next()){
+
+	  		JsonObject obj = new JsonObject();
+	  		obj.addProperty("projectID", result.getInt(1));
+	  		obj.addProperty("projectName", result.getString(2));
+
+	  		jsonArr.add(obj);
+	  	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
+  	}
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+  @Path("/updateProject/{projectID}/{projectName}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public void updateProject(@PathParam("projectID") String projectID,@PathParam("projectName") String projectName) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("UPDATE tbl_projet SET nom_projet = \'"+ projectName +"\' WHERE id_projet = \'" + projectID + "\'");
+  	mySqlCon.closeConnection();
+  }
+
 }
