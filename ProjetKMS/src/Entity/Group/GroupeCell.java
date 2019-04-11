@@ -46,9 +46,12 @@ public class GroupeCell extends ListCell<Carte> {
 	private FXMLLoader mLLoader;
 	private Carte carte;
 	private ControllerTheGroup projectCellController;
-	public GroupeCell(ControllerTheGroup projectCell){
+	private ControllerTheProject projectController;
+	public GroupeCell(ControllerTheGroup projectCell,ControllerTheProject currentProject){
 		projectCellController = projectCell;
+		projectController = currentProject;
 	}
+
 
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
@@ -77,11 +80,18 @@ public class GroupeCell extends ListCell<Carte> {
 
     }
 
+
+
 	private void setHandler() {
 		setButtonHandler();
 		setTextHandler();
+		setCurrentProject();
+
 	}
 
+	public void setCurrentProject(){
+		currentProjet = projectController.getProject();
+	}
 	private void setButtonHandler() {
 		btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -120,7 +130,7 @@ public class GroupeCell extends ListCell<Carte> {
 				}
 			}
 		});
-		System.out.println("dd");
+
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -171,8 +181,10 @@ public class GroupeCell extends ListCell<Carte> {
 		  try{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		System.out.println("test44");
-        ControllerDependance controllerProjectList = fxmlLoader.getController();
-        controllerProjectList.setProject(currentProjet);
+		System.out.println(this.currentProjet.getName());
+		System.out.println(currentProjet.getId());
+        //ControllerDependance controllerProjectList = fxmlLoader.getController();
+        //controllerProjectList.setProject(currentProjet);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

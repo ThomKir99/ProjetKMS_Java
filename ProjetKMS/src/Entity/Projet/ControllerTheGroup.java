@@ -78,7 +78,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
         		}
         		if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
-        		
+
         		}
         		refreshCarteList();
                 setHandler();
@@ -157,7 +157,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
-		ListCell<Carte> cell = new GroupeCell(this);
+		ListCell<Carte> cell = new GroupeCell(this,controllerProjectList);
 
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);

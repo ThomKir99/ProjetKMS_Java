@@ -51,8 +51,17 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		this.leProjet = unProjet;
 		txt_projectName.setText(leProjet.getName());
 		refreshGroupList();
-		System.out.println(leProjet.getId());
+		
 	}
+	
+	public Project getProject(){
+		Project projet;
+		projet = leProjet;
+		System.out.println(leProjet.getId());
+		return projet;
+	}
+	
+	
 
 	public void setListener(){
 		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
@@ -77,7 +86,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		
+		//System.out.println(getProject().getId());
 		setListener();
 		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
