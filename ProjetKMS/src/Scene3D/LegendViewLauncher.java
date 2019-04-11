@@ -29,7 +29,6 @@ public class LegendViewLauncher {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("rrhrh");
 		return (new Rectangle(20,20,Color.BLACK));
 	}
 }

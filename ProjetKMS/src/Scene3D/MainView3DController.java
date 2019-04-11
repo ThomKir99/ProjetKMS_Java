@@ -3,31 +3,31 @@ package Scene3D;
 
 
 
-import java.awt.MouseInfo;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
-import com.sun.javafx.application.LauncherImpl;
+
 
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import User.Utilisateur;
-import javafx.beans.property.ReadOnlyDoubleProperty;
+
 import javafx.event.ActionEvent;
-import javafx.event.Event;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
+
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.PickResult;
+
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -37,7 +37,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
 
 public class MainView3DController {
 
@@ -143,9 +143,11 @@ private Group root3D;
 
 	private BorderPane setMenuBar(Pane pane3D) {
 		BorderPane pane = new BorderPane();
-	    pane.setCenter(setSubScene(pane3D,pane));
 	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);
 	    pane.setTop(createTopMenu());
+	    pane.setRight(createLegends());
+	    pane.setCenter(setSubScene(pane3D,pane));
+	    pane.setManaged(false);
 		return pane;
 	}
 
@@ -160,6 +162,7 @@ private Group root3D;
 	    subScene.setCamera(camera);
 	    subScene.heightProperty().bind(pane.heightProperty());
 	    subScene.widthProperty().bind(pane.widthProperty());
+
 		return subScene;
 	}
 	private Node[] createMenuButton() {
@@ -258,6 +261,7 @@ private Group root3D;
 		buttons[4].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				createLegends();
 							}
 		});
 

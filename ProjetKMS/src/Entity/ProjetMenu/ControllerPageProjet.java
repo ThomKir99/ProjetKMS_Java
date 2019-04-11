@@ -9,6 +9,7 @@ import Entity.Position;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import Main.FXMLLoder;
+import Scene3D.LegendViewLauncher;
 import Scene3D.MainView3DController;
 import Entity.Projet.ControllerTheGroup;
 import User.Utilisateur;
@@ -64,8 +65,8 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 			@Override
 			public void handle(ActionEvent event) {
-			show3DView(event);
-
+			//show3DView(event);
+				createOld3DView(event);
 			}
 
 
@@ -108,12 +109,26 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	private void show3DView(Event event) {
 
-		 MainView3DController controller = new MainView3DController(userContext);
-		 controller.showCube();
-		 ((Node)(event.getSource())).getScene().getWindow().hide();
+		Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/FXMLFILE/View3D.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 600, 600));
+            stage.show();
 
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+}
+
+	private void createOld3DView(Event event){
+		MainView3DController mainView3DController = new MainView3DController(userContext);
+		mainView3DController.showCube();
 	}
-
 }
 
 
