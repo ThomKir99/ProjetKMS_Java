@@ -61,7 +61,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
     protected void updateItem(Group group, boolean empty) {
         super.updateItem(group, empty);
-
         this.group = group;
         if(empty || group == null) {
             setText(null);
@@ -138,7 +137,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
 		if(listViewGroup!=null){
 			refreshCarteList();
 			setListener();
@@ -157,7 +155,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
-		ListCell<Carte> cell = new GroupeCell(this,controllerProjectList);
+		ListCell<Carte> cell = new GroupeCell(controllerProjectList,this);
 
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
@@ -309,7 +307,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 		carteObservableList.addAll(listViewGroup.getItems());
-
 		ListCell<Carte> dragSourceCell = dragSource.get();
 		carteObservableList.add(dragSourceCell.getItem());
 		listViewGroup.setItems(carteObservableList);

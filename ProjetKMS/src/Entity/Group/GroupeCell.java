@@ -45,16 +45,17 @@ public class GroupeCell extends ListCell<Carte> {
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
 	private Carte carte;
-	private ControllerTheGroup projectCellController;
+	private ControllerTheGroup groupController;
 	private ControllerTheProject projectController;
-	public GroupeCell(ControllerTheGroup projectCell,ControllerTheProject currentProject){
-		projectCellController = projectCell;
+	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
+		groupController = projectCell;
 		projectController = currentProject;
 	}
 
 
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
+
         super.updateItem(carte, empty);
         this.carte = carte;
         if(empty || carte == null) {
@@ -159,7 +160,7 @@ public class GroupeCell extends ListCell<Carte> {
 	}
 
 	private void removeCarte(){
-		projectCellController.removeCarte(carte);
+		groupController.removeCarte(carte);
 	}
 
 	private void setCarteId(int id){
@@ -175,16 +176,15 @@ public class GroupeCell extends ListCell<Carte> {
 
 
 	public void addLink(ActionEvent event)throws IOException{
-		 System.out.println("test123");
+
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
-		  System.out.println("test33");
+
 		  try{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
-		System.out.println("test44");
 		System.out.println(this.currentProjet.getName());
 		System.out.println(currentProjet.getId());
-        //ControllerDependance controllerProjectList = fxmlLoader.getController();
-        //controllerProjectList.setProject(currentProjet);
+        ControllerDependance controllerProjectList = fxmlLoader.getController();
+        controllerProjectList.setProject(currentProjet);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

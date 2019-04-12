@@ -57,7 +57,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public Project getProject(){
 		Project projet;
 		projet = leProjet;
-		System.out.println(leProjet.getId());
 		return projet;
 	}
 	
@@ -86,12 +85,11 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		//System.out.println(getProject().getId());
+		
 		setListener();
 		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
-			
 			return setCellDragAndDropHandler();
 		});
 	}
@@ -101,7 +99,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private ListCell<Group> setCellDragAndDropHandler() {
-
 		ListCell<Group> cell = new ControllerTheGroup(this);
 
 

@@ -56,18 +56,23 @@ public class ControllerProjetCellLink extends ListCell<Project>{
         }
     }
 
-
+	public void setCurrentProject(){
+		currentProjet = controllerDependance.getProject();
+	}
 
 	private void initializeViewInfo(Project projet) {
 		txt_projectName.setText(projet.getName());
+		setCurrentProject();
         setListener();
         setGraphic(pane1);
+
 
 	}
 
 	private void loadTheProjetView(Project projet) {
 		mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkProjetCell.fxml"));
         mLLoader.setController(this);
+
         try {
             mLLoader.load();
         } catch (IOException e) {
@@ -99,7 +104,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 		controllerProjectList.setProject(currentProjet);
 		Scene tableViewScene = new Scene(tableViewParent);
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
+		System.out.println("TestAlex1");
 		window.setScene(tableViewScene);
 		window.show();
     }

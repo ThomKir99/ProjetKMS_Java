@@ -3,10 +3,12 @@ package Entity.DependanceFocus;
 import java.io.IOException;
 
 import Entity.Carte.Carte;
+import Entity.Dependance.ControllerTheDependance;
 import Entity.Projet.ControllerTheGroup;
 import Entity.Projet.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -19,7 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class ControllerLinkGroupCell extends ListCell<Carte>{
+public class ControllerLinkGroupCell extends ListCell<Carte> {
 
 
 	public Project currentProjet;
@@ -27,22 +29,28 @@ public class ControllerLinkGroupCell extends ListCell<Carte>{
 	private FXMLLoader mLLoader;
 
 	private Carte carte;
+	@FXML
 	private TextField txt_description;
+	@FXML
 	private TextField txt_nomCarte;
-	private TheGroupLink projectCellController;
+	private TheGroupLink groupController;
+	private ControllerTheDependance projectController;
+	@FXML
 	private GridPane gridPane1;
+	@FXML
 	private Button btn_createLink;
 
-	public ControllerLinkGroupCell(TheGroupLink projectCell){
-		projectCellController = projectCell;
+	public ControllerLinkGroupCell(TheGroupLink groupCell,ControllerTheDependance projectCell){
+		groupController = groupCell;
+		projectController = projectCell;
+		 System.out.println("carte");
 	}
 
 
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
-
-
+        System.out.println("carte");
         this.carte = carte;
         if(empty || carte == null) {
             setText(null);
@@ -71,10 +79,17 @@ public class ControllerLinkGroupCell extends ListCell<Carte>{
 
     }
 
+	public void setCurrentProject(){
+		currentProjet = projectController.getProject();
+	}
+
 	private void setHandler() {
 
 		setTextHandler();
+		setCurrentProject();
+
 	}
+
 
 	private void setTextHandler() {
 		btn_createLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -99,8 +114,8 @@ public class ControllerLinkGroupCell extends ListCell<Carte>{
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
 
-        //ControllerDependance ControllerDependance = fxmlLoader.getController();
-		//ControllerDependance.setProject(currentProjet);
+       // ControllerDependance ControllerDependance = fxmlLoader.getController();
+       //	ControllerDependance.setProject(currentProjet);
 
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

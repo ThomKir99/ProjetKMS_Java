@@ -1,22 +1,20 @@
 package Main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import User.Utilisateur;
 
 public class Main {
 	public static int idUser;
-	public static List<Utilisateur> userList;
+	public static Utilisateur userContext;
 
-	public static void main(String[] args) {
-		fillUserList();
+	public static void main(String[] args) throws IOException {
+		fillUser();
 		FXMLLoder.launch(FXMLLoder.class);
 	}
 
-	public static void fillUserList(){
-		userList = new ArrayList<Utilisateur>();
-		userList.add(new Utilisateur(1));
-		userList.add(new Utilisateur(2));
+
+	public static void fillUser() throws IOException{
+		userContext = new Utilisateur(1,"bob");
 	}
 
 }

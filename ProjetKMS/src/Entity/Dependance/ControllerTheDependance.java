@@ -3,15 +3,9 @@ package Entity.Dependance;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import Entity.Carte.Carte;
 import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.*;
-import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
-import Entity.ProjetMenu.ControllerMenuProjetCell;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,52 +29,54 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	@FXML
 	public TextField txt_nomProjet;
 
-	public ObservableList<Group> groupObservableList;
+	private ObservableList<Group> groupObservableListLink;
 	public Project leProjet;
-	public ControllerMenuProjetCell menuProjetCellController;
+
 	@FXML
 	public Button btn_backToMenu;
-	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
+	//public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
 	@FXML
 	public ListView<Group> listViewLinkGroupe;
-	private Project currentProjet;
-
 
 	public ControllerTheDependance(){
+
 		leProjet = new Project();
-
-
 	}
 
-
+	public Project getProject(){
+		Project projet;
+		projet= leProjet;
+		return projet;
+	}
 
 	public void setProject(Project unProjet){
-		this.leProjet = unProjet;
 
+		this.leProjet = unProjet;
 		txt_nomProjet.setText(leProjet.getName());
 		refreshGroupList();
 	}
 
 
 	public void getAllGroup(){
-		groupObservableList = FXCollections.observableArrayList();
-		groupObservableList.addAll(leProjet.getGroups());
-	}
+
+		groupObservableListLink = FXCollections.observableArrayList();
+		groupObservableListLink.addAll(leProjet.getGroups());
+		}
 
 	public void refreshGroupList(){
 		getAllGroup();
-		listViewLinkGroupe.setItems(groupObservableList);
+		listViewLinkGroupe.setItems(groupObservableListLink);
+		//erreur commence ici
 		listViewLinkGroupe.setCellFactory(group->{
-			System.out.println("merendtjr");
 			return setFactory();
 		});
+
 	}
-	private void setTextHandler() {
+	private void setListener() {
 		btn_backToMenu.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-
 					BackToMenu(event);
 				} catch (IOException e) {
 					showLoadingError();
@@ -94,19 +90,20 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		setTextHandler();
-		listViewLinkGroupe = new ListView<Group>();
-		listViewLinkGroupe.setItems(groupObservableList);
+		setListener();
+		refreshGroupList();
+		listViewLinkGroupe.setItems(groupObservableListLink);
+		listViewLinkGroupe.setCellFactory(group->{
+			return setFactory();
+		});
 	}
 
 
 	public void BackToMenu(ActionEvent event)throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
-
-       // ControllerDependance controllerProjectList = fxmlLoader.getController();
-        //controllerProjectList.setProject(currentProjet);
-
+        ControllerDependance controllerProjectList = fxmlLoader.getController();
+        controllerProjectList.setProject(leProjet);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -122,9 +119,12 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	}
 
 	public ListCell<Group> setFactory(){
-		System.out.println("setGRoup");
 		ListCell<Group> cell = new TheGroupLink(this);
 		return cell;
+	}
+
+	public int getItemIndex(Group group) {
+		return groupObservableListLink.indexOf(group);
 	}
 
 

@@ -38,8 +38,9 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 	public  ControllerDependance(){
 		leProjet = new Project();
-		setProject(leProjet);
-	
+		user = new Utilisateur();
+		user = Main.Main.userContext;
+
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
 		if(leProjet != null){
-		//projetObservableList.addAll(user.getProjets());
+		projetObservableList.addAll(user.getProjets());
 		}
 
 
@@ -71,8 +72,13 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 	public void setProject(Project unProjet){
 		this.leProjet = unProjet;
-		System.out.println(leProjet.getId());
+	}
+	
 
+	public Project getProject(){
+		Project projet;
+		projet= leProjet;
+		return projet;
 	}
 
 
