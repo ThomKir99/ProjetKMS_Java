@@ -24,13 +24,6 @@ public class Utilisateur {
 		this.projets = new ArrayList<Project>();
 	}
 
-	public Utilisateur(int id,String nom){
-		this.id = id;
-		this.nom = nom;
-		this.projets = new ArrayList<Project>();
-		this.name = name;
-	}
-
 	public ArrayList<Project> getProjets(){	return this.projets;}
 
 	public void setProjets(ArrayList<Project> lesProjets){this.projets = lesProjets;}

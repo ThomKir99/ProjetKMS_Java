@@ -1,51 +1,60 @@
 package Entity.ProjetMenu;
 
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+<<<<<<< HEAD
 import API.ApiConnector;
 import Entity.Projet.Project;
-<<<<<<< HEAD
 import Main.FXMLLoder;
+import Main.Main;
 import Scene3D.LegendViewLauncher;
 import Scene3D.MainView3DController;
-import Entity.Projet.ControllerTheGroup;
 import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 =======
-import Main.Main;
+
+import Entity.Position;
+
+import Entity.Projet.Project;
+
 import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
->>>>>>> origin/API
+
 import javafx.fxml.FXML;
+
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Button;
+
+>>>>>>> origin/Sprint2
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 <<<<<<< HEAD
 import javafx.scene.paint.Stop;
-import javafx.stage.Stage;
 =======
->>>>>>> origin/API
+
+>>>>>>> origin/Sprint2
 
 public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	@FXML
 	public ListView<Project> listViewProjet;
-<<<<<<< HEAD
 	@FXML
 	public Button btn_3D;
-=======
 
->>>>>>> origin/API
 	public Pane paneBackground;
 	public ObservableList<Project> projetObservableList;
 	public Button btn_projet;
@@ -53,15 +62,24 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public Utilisateur userContext;
 	public ApiConnector apiConnector;
 
+<<<<<<< HEAD
 	public  ControllerPageProjet() throws IOException {
 		apiConnector= new ApiConnector();
 		userContext = Main.userContext;
+=======
+	public  ControllerPageProjet(){
+		userContext = Main.Main.userContext;
+>>>>>>> origin/Sprint2
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
+<<<<<<< HEAD
 		setListener();
+=======
+
+>>>>>>> origin/Sprint2
 	}
 
 
@@ -73,14 +91,16 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 			@Override
 			public void handle(ActionEvent event) {
 				createOld3DView(event);
+
 			}
-
-
 		});
+
+
 
 	}
 
 	public void refreshProjectList(){
+
 		getAllProjet();
 		listViewProjet.setItems(projetObservableList);
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
@@ -94,6 +114,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	public void CreateProject(){
+<<<<<<< HEAD
 		Project unProjet = new Project();
 		try {
 			unProjet = apiConnector.createProject(userContext.getId());
@@ -101,6 +122,12 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+=======
+		userContext.addProjet(new Project(randomId(),"testing",new Position(0,0,0),0,0));
+		refreshProjectList();
+
+	}
+>>>>>>> origin/Sprint2
 
 
 		refreshProjectList();
@@ -112,14 +139,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		refreshProjectList();
 	}
 
-<<<<<<< HEAD
 	private void createOld3DView(Event event){
 		MainView3DController mainView3DController = new MainView3DController(userContext);
 		mainView3DController.showCube();
 		((Node)(event.getSource())).getScene().getWindow().hide();
 	}
-=======
->>>>>>> origin/API
 }
 
 
