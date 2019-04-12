@@ -37,8 +37,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	public ListView<Carte> listViewGroup;
 
-	public ObservableList<Carte> carteObservableList;
-
 	@FXML
 	private TextField textFieldGroupName;
 
@@ -51,16 +49,16 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	private Button btn_addCarte;
 
+	@FXML
+	private Button btn_delete;
+
+	private ControllerTheProject controllerProjectList;
+	public ObservableList<Carte> carteObservableList;
+	private Group group;
+	private ApiConnector apiConnector;
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
-	@FXML
-	private Button btn_delete;
-	private ControllerTheProject controllerProjectList;
-
-	private Group group;
-
-	private ApiConnector apiConnector;
 
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
@@ -119,7 +117,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					controllerProjectList.removeRow(getGroupIndex());
+					try {
+						apiConnector.deleteGroup(group.getId());
+						controllerProjectList.removeRow(getGroupIndex());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 
 			});
@@ -131,15 +134,40 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 				@Override
 				public void handle(ActionEvent event) {
-					addCarte();
+					try {
+						addCarte();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			});
 		}
+
+		textFieldGroupName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+      		group.setName(textFieldGroupName.getText());
+					apiConnector.modifyGroup(group);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
+		});
+
+
+
 	}
 
-	public void addCarte(){
-		group.addCarte(new Carte(randomId(),"ajout force","desc4"));
-		refreshCarteList();
+	public void addCarte() throws InterruptedException{
+		Carte uneCarte = new Carte();
+		try {
+			uneCarte = apiConnector.createCarte(group.getId());
+			group.addCarte(uneCarte);
+			refreshCarteList();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void removeCarte(Carte carte){

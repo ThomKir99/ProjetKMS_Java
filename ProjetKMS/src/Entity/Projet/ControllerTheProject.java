@@ -76,7 +76,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 				}
      }
 		});
-
 	}
 
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){
@@ -153,8 +152,15 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 
-	 public void createNewGroup(){
-		 ajouterGroup(new Group("test"));
+	 public void createNewGroup() throws InterruptedException{
+		 Group unGroup = new Group();
+			try {
+				unGroup = apiConnector.createGroup(leProjet.getId());
+				ajouterGroup(unGroup);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		 refreshGroupList();
 	 }
 
@@ -202,13 +208,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	public void BackToMenu(ActionEvent event)throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
-        Parent tableViewParent = (Parent)fxmlLoader.load();
+    Parent tableViewParent = (Parent)fxmlLoader.load();
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    Scene tableViewScene = new Scene(tableViewParent);
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(tableViewScene);
-        window.show();
+    window.setScene(tableViewScene);
+    window.show();
 	}
 
 	private boolean targetIsAllowed(String target) {

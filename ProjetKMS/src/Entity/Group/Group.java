@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Entity.Entity;
 import Entity.Carte.Carte;
+import Entity.Projet.Project;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
@@ -51,6 +52,15 @@ public class Group extends Entity{
 
 	public void removeCarte(Carte carte) {
 		cartes.remove(carte);
+
+	}
+
+	public boolean isEqualTo(Group aGroup){
+		if (this.getName().equals(aGroup.getName())){
+			return true;
+		}else{
+			return false;
+		}
 
 	}
 

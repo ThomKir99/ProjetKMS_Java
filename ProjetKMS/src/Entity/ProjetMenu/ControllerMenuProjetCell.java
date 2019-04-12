@@ -108,7 +108,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 				} catch (IOException e) {
 					showLoadingError();
 				}
-
 			}
 
 		});

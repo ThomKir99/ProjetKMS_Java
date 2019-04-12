@@ -1,6 +1,7 @@
 package Entity.Carte;
 
 import Entity.Entity;
+import Entity.Group.Group;
 
 
 public class Carte extends Entity{
@@ -31,6 +32,10 @@ public class Carte extends Entity{
   	this.description = description;
   }
 
+  public Carte(int id, String name){
+  	super(id,name);
+  }
+
   public Carte(int id, String name, String description,int order, boolean complete){
   	super(id,name);
   	this.description = description;
@@ -41,5 +46,15 @@ public class Carte extends Entity{
   public String getAllCarteByString(){
   	return getId()+ "-" + getName() + "-" + description;
   }
+
+
+	public boolean isEqualTo(Carte aCarte){
+		if (this.getName().equals(aCarte.getName())){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 
 }
