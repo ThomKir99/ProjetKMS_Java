@@ -97,8 +97,8 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 			   aProject.setY3DPosition((defaultYPosition +actualYGab));
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
 					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
+					   if(aGroup.getCartes()!=null){
 						   for(Carte aCarte:aGroup.getCartes()){
-							   aCarte.setZ3DPosition(defaultZPosition+actualZGap);
 							   CuboidMesh contentShape = createACarte(aCarte,aProject);
 							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
 							   allCube.add(contentShape);
@@ -106,6 +106,8 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 							   actualZGap+=carteZGap;
 							   numberOfLayer++;
 						   }
+					   }
+
 						   setMaxNumberOfLayer(numberOfLayer);
 						   numberOfLayer =0;
 						   actualXGap += carteXGap;

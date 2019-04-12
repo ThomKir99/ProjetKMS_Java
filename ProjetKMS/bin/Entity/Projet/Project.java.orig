@@ -22,8 +22,15 @@ public class Project extends Entity{
 		y3DPosition =0;
 	}
 
+<<<<<<< HEAD
+
+
+	public Project(int id,String name,Position position,int width,int height){
+		super(id,name,position,width,height);
+=======
 	public Project(int id,String name){
 		super(id,name);
+>>>>>>> origin/API
 		this.groups = new ArrayList<Group>();
 		projectColor = new Color(1, 1, 1, 1);
 
@@ -35,15 +42,7 @@ public class Project extends Entity{
 
 	public void addGroup(Group group) { this.groups.add(group);}
 
-	public boolean isEqualTo(Project aProject){
-		if (this.getName().equals(aProject.getName())){
-			return true;
-		}else{
-			return false;
-		}
-
-	}
-
+<<<<<<< HEAD
 	public Color getProjectColor() {return projectColor;}
 
 	public void setProjectColor(Color projectColor) {this.projectColor = projectColor;}
@@ -54,5 +53,16 @@ public class Project extends Entity{
 	public void setY3DPosition(double yPosition) {
 		y3DPosition = yPosition;
 	}
+=======
+	public boolean isEqualTo(Project aProject){
+		if (this.getName().equals(aProject.getName())){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+>>>>>>> origin/API
 
 }

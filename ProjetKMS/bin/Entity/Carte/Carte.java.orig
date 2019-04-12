@@ -5,13 +5,18 @@ import Entity.Group.Group;
 
 
 public class Carte extends Entity{
+<<<<<<< HEAD
+    private String description;
+    private double z3DPosition;
+    private final double carteHeight = 15;
+    private final double carteWeight = 20;
+    private final double cartedepth = 0.1;
+=======
+>>>>>>> origin/API
 
 	private String description;
 	private int order;
 	private boolean complete;
-    private final double carteHeight = 15;
-    private final double carteWeight = 20;
-    private final double cartedepth = 0.1;
 
 	public String getDescription() {return this.description;}
 
@@ -21,6 +26,22 @@ public class Carte extends Entity{
 
 	public void setDescription(String description) {this.description = description;}
 
+<<<<<<< HEAD
+    public Carte(){
+    	super();
+        this.description = "";
+        setZ3DPosition(0);
+    }
+
+    public Carte(int id, String name, Position position, float width, float height,String description){
+    	super(id,name,position,width,height);
+    	this.description = description;
+    }
+    public String getAllCarteByString(){
+    	return getId()+ "-" + getName() + "-" + getPosition().getPosition() + "-"+getWidth() + "-"
+    			+ getHeight() + "-" + description;
+    }
+=======
 	public void setOrder(int order){this.order = order;}
 
 	public void setComplete(boolean complete){this.complete = complete;}
@@ -50,7 +71,26 @@ public class Carte extends Entity{
   	return getId()+ "-" + getName() + "-" + description;
   }
 
-public double getCarteHeight() {
+
+	public boolean isEqualTo(Carte aCarte){
+		if (this.getName().equals(aCarte.getName())){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+>>>>>>> origin/API
+
+	public double getZ3DPosition() {
+		return z3DPosition;
+	}
+
+	public void setZ3DPosition(double zPosition) {
+		z3DPosition = zPosition;
+	}
+
+	public double getCarteHeight() {
 		return carteHeight;
 	}
 
@@ -60,13 +100,6 @@ public double getCarteHeight() {
 
 	public double getCartedepth() {
 		return cartedepth;
-	}
-	public boolean isEqualTo(Carte aCarte){
-		if (this.getName().equals(aCarte.getName())){
-			return true;
-		}else{
-			return false;
-		}
 	}
 
 }
