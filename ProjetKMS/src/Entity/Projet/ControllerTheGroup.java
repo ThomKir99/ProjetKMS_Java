@@ -22,10 +22,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -94,7 +96,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       		try {
     				getCarteFromGroup();
     			} catch (IOException e) {
-    				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
 
@@ -146,8 +147,15 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		textFieldGroupName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
       	try {
-      		group.setName(textFieldGroupName.getText());
-					apiConnector.modifyGroup(group);
+
+  				if (textFieldGroupName.getText().trim().equals("")){
+  					errorMessage();
+  					textFieldGroupName.requestFocus();
+  				}
+  				else{
+        		group.setName(textFieldGroupName.getText());
+  					apiConnector.modifyGroup(group);
+  				}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -157,6 +165,17 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 
 	}
+
+	public void errorMessage() throws IOException{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Remplir le nom du groupe avant de continuer!");
+		alert.showAndWait();
+
+		textFieldGroupName.setText(apiConnector.getSingleGroup(group.getId()).getName());
+	}
+
 
 	public void addCarte() throws InterruptedException{
 		Carte uneCarte = new Carte();
@@ -196,11 +215,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	public void setListener(){
 
 		textFieldGroupName.setOnKeyReleased(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-            	group.setName(textFieldGroupName.getText());
-            }
-        });
+        @Override
+        public void handle(Event event) {
+        	group.setName(textFieldGroupName.getText());
+        }
+    });
 	}
 
 	private ListCell<Carte> setCellDragAndDropHandler() {
@@ -233,15 +252,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
-         Dragboard db = event.getDragboard();
+     Dragboard db = event.getDragboard();
 
-         if (db.hasString() && dragSource.get() != null) {
-        	 doDragAndDrop(event,cell);
-        	 refreshGroup();
-         } else {
-             event.setDropCompleted(false);
-         }
-
+     if (db.hasString() && dragSource.get() != null) {
+    	 doDragAndDrop(event,cell);
+    	 refreshGroup();
+     } else {
+         event.setDropCompleted(false);
+     }
 	}
 
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
@@ -270,24 +288,22 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private void setDragOverHandler(DragEvent event) {
 		Dragboard db = event.getDragboard();
-        if (db.hasString()) {
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
+    if (db.hasString()) {
+        event.acceptTransferModes(TransferMode.MOVE);
+    }
 	}
 
 	private void setDragDetectHandler(ListCell<Carte> cell) {
 		String index="";
 
-        if (!cell.isEmpty()) {
-
-            Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent cc = new ClipboardContent();
-            index = getIndexOfDragItem(cell);
-            cc.putString(index);
-            db.setContent(cc);
-            setDragSource(cell);
-        }
-
+	  if (!cell.isEmpty()) {
+	      Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+	      ClipboardContent cc = new ClipboardContent();
+	      index = getIndexOfDragItem(cell);
+	      cc.putString(index);
+	      db.setContent(cc);
+	      setDragSource(cell);
+	  }
 	}
 
 	private void setDragSource(ListCell<Carte> cell) {

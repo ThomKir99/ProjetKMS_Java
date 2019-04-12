@@ -29,18 +29,18 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	@FXML
 	private TextField txt_projectName;
+
 	@FXML
 	private Button btn_Delete;
+
 	@FXML
 	private Button btn_openProject;
-
-	private ControllerPageProjet controllerPageProjet;
-
-	private Project currentProjet;
 
 	@FXML
 	private GridPane gridPane_projectCell;
 
+	private ControllerPageProjet controllerPageProjet;
+	private Project currentProjet;
 	private FXMLLoader mLLoader;
 	private ApiConnector apiConnector;
 
@@ -78,8 +78,14 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
       	try {
-        	currentProjet.setName(txt_projectName.getText());
-					apiConnector.modifyProject(currentProjet);
+  				if (txt_projectName.getText().trim().equals("")){
+  					errorMessage();
+  					txt_projectName.requestFocus();
+  				}
+  				else{
+          	currentProjet.setName(txt_projectName.getText());
+  					apiConnector.modifyProject(currentProjet);
+  				}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -111,6 +117,16 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			}
 
 		});
+	}
+
+	public void errorMessage() throws IOException{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Remplir le nom du projet avant de continuer!");
+		alert.showAndWait();
+
+		txt_projectName.setText(apiConnector.getSingleProject(currentProjet.getId()).getName());
 	}
 
 	public void deleteProjet() throws IOException{

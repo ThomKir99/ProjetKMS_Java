@@ -113,15 +113,6 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 		});
 
-		textFieldName.setOnKeyReleased(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-
-
-			}
-		});
-
 		textFieldName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
       	try {
@@ -131,7 +122,6 @@ public class GroupeCell extends ListCell<Carte> {
   				}
   				else{
   					carte.setName(textFieldName.getText());
-        		carte.setName(textFieldName.getText());
   					apiConnector.modifyCarte(carte);
   				}
 				} catch (IOException e) {
@@ -142,13 +132,15 @@ public class GroupeCell extends ListCell<Carte> {
 
 	}
 
-	public void errorMessage(){
+	public void errorMessage() throws IOException{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
 		alert.setContentText("Remplir le nom de la carte avant de continuer!");
 
 		alert.showAndWait();
+
+		textFieldName.setText(apiConnector.getSingleCarte(carte.getId()).getName());
 	}
 
 	private void removeCarte(){

@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
@@ -69,13 +70,29 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
       	try {
-      		leProjet.setName(txt_projectName.getText());
-					apiConnector.modifyProject(leProjet);
+  				if (txt_projectName.getText().trim().equals("")){
+  					errorMessage();
+  					txt_projectName.requestFocus();
+  				}
+  				else{
+        		leProjet.setName(txt_projectName.getText());
+  					apiConnector.modifyProject(leProjet);
+  				}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
      }
 		});
+	}
+
+	public void errorMessage() throws IOException{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Remplir le nom du projet avant de continuer!");
+		alert.showAndWait();
+
+		txt_projectName.setText(apiConnector.getSingleProject(leProjet.getId()).getName());
 	}
 
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){

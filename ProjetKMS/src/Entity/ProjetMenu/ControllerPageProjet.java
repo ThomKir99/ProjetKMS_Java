@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import API.ApiConnector;
+import Entity.Group.Group;
 import Entity.Projet.Project;
 import Main.Main;
 import User.Utilisateur;
@@ -32,6 +33,12 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public  ControllerPageProjet() throws IOException {
 		apiConnector= new ApiConnector();
 		userContext = Main.userContext;
+		fillProject();
+	}
+
+	public void fillProject() throws IOException{
+		userContext.setProjets(apiConnector.projectList(userContext.getId()));
+		fillGroup();
 	}
 
 	@Override
@@ -39,6 +46,14 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		refreshProjectList();
 	}
 
+	public void fillGroup() throws IOException{
+		for (Project projet: userContext.getProjets()){
+			projet.setGroups(apiConnector.groupList(projet.getId()));
+			for (Group group : projet.getGroups()){
+				group.setCartes(apiConnector.carteList(group.getId()));
+			}
+		}
+	}
 
 	public void refreshProjectList(){
 		getAllProjet();
@@ -61,7 +76,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 
 		refreshProjectList();
 	}
