@@ -2,10 +2,13 @@ package Entity.Projet;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
-import Entity.Position;
+
+import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
@@ -34,8 +37,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	public ListView<Carte> listViewGroup;
 
-	public ObservableList<Carte> carteObservableList;
-
 	@FXML
 	private TextField textFieldGroupName;
 
@@ -48,50 +49,67 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	private Button btn_addCarte;
 
+	@FXML
+	private Button btn_delete;
+
+	private ControllerTheProject controllerProjectList;
+	public ObservableList<Carte> carteObservableList;
+	private Group group;
+	private ApiConnector apiConnector;
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
-	@FXML
-	private Button btn_delete;
-	private ControllerTheProject controllerProjectList;
-
-	private Group group;
 
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
+		this.apiConnector = new ApiConnector();
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-        super.updateItem(group, empty);
+      super.updateItem(group, empty);
 
-        this.group = group;
+      this.group = group;
 
-        if(empty || group == null) {
+      if(empty || group == null) {
 
-            setText(null);
-            setGraphic(null);
+          setText(null);
+          setGraphic(null);
 
-        } else {
-        		if (mLLoader == null) {
-                    mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
-                    mLLoader.setController(this);
+      } else {
+      		if (mLLoader == null) {
+                  mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
+                  mLLoader.setController(this);
 
-                    try {
-                        mLLoader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-        		}
-        		if(textFieldGroupName!=null){
-        			textFieldGroupName.setText(String.valueOf(group.getName()));
-        		}
-        		refreshCarteList();
-                setHandler();
-                setText(null);
-                setGraphic(gridPaneGroup);
-        }
+                  try {
+                      mLLoader.load();
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+      		}
+      		if(textFieldGroupName!=null){
+      			textFieldGroupName.setText(String.valueOf(group.getName()));
+      		}
+
+      		try {
+    				getCarteFromGroup();
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+
+      		refreshCarteList();
+          setHandler();
+          setText(null);
+          setGraphic(gridPaneGroup);
+      }
     }
+
+	private void getCarteFromGroup() throws IOException{
+		if (apiConnector.carteList(this.group.getId()) != null){
+			this.group.setCartes(apiConnector.carteList(this.group.getId()));
+		}
+	}
 
 	private void setHandler() {
 		if(btn_delete!=null){
@@ -99,7 +117,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					controllerProjectList.removeRow(getGroupIndex());
+					try {
+						apiConnector.deleteGroup(group.getId());
+						controllerProjectList.removeRow(getGroupIndex());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 
 			});
@@ -111,16 +134,40 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 				@Override
 				public void handle(ActionEvent event) {
-					addCarte();
-
+					try {
+						addCarte();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			});
 		}
+
+		textFieldGroupName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+      		group.setName(textFieldGroupName.getText());
+					apiConnector.modifyGroup(group);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
+		});
+
+
+
 	}
 
-	public void addCarte(){
-		group.addCarte(new Carte(randomId(),"ajout force",new Position(0,0,0),0,0,"desc4"));
-		refreshCarteList();
+	public void addCarte() throws InterruptedException{
+		Carte uneCarte = new Carte();
+		try {
+			uneCarte = apiConnector.createCarte(group.getId());
+			group.addCarte(uneCarte);
+			refreshCarteList();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void removeCarte(Carte carte){
@@ -142,6 +189,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		if(listViewGroup!=null){
 			refreshCarteList();
 			setListener();
+
 		}
 	}
 

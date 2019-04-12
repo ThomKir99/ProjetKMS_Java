@@ -1,25 +1,32 @@
 package Main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import Scene3D.MainView3DController;
+import API.ApiConnector;
+import Entity.Projet.Project;
 import User.Utilisateur;
 
 public class Main {
-	public static int idUser;
-	public static List<Utilisateur> userList;
+	public static ApiConnector apiConnector;
+	public static Utilisateur userContext;
 
-	public static void main(String[] args) {
-		fillUserList();
+	public static void main(String[] args) throws IOException {
+		fillUser();
 		FXMLLoder.launch(FXMLLoder.class);
 
 	}
 
-	public static void fillUserList(){
-		userList = new ArrayList<Utilisateur>();
-		userList.add(new Utilisateur(1));
-		userList.add(new Utilisateur(2));
+	public static void fillUser() throws IOException{
+		apiConnector = new ApiConnector();
+		userContext = apiConnector.getUser("Antoine","123456");
+		ArrayList<Project> projectList = apiConnector.projectList(userContext.getId());
+
+		if (projectList != null){
+			userContext.addAll(projectList);
+		}
 	}
 
 

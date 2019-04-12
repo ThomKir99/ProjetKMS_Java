@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entity.Position;
+import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.ControllerTheGroup;
@@ -30,7 +30,7 @@ public class GroupeCell extends ListCell<Carte> {
 	private TextField textField1;
 
 	@FXML
-	private TextField textField2;
+	private TextField textFieldName;
 
 	@FXML
 	private GridPane gridPane1;
@@ -43,9 +43,11 @@ public class GroupeCell extends ListCell<Carte> {
 
 	private Carte carte;
 	private ControllerTheGroup projectCellController;
+	private ApiConnector apiConnector;
 
 	public GroupeCell(ControllerTheGroup projectCell){
 		projectCellController = projectCell;
+		apiConnector = new ApiConnector();
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class GroupeCell extends ListCell<Carte> {
             }
 
             textField1.setText(String.valueOf(carte.getId()));
-            textField2.setText(carte.getName());
+            textFieldName.setText(carte.getName());
             setHandler();
 
             setText(null);
@@ -90,6 +92,11 @@ public class GroupeCell extends ListCell<Carte> {
 
 			@Override
 			public void handle(ActionEvent event) {
+				try {
+					apiConnector.deleteCarte(carte.getId());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				removeCarte();
 
 			}
@@ -106,23 +113,33 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 		});
 
-		textField2.setOnKeyReleased(new EventHandler<Event>() {
+		textFieldName.setOnKeyReleased(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event event) {
-				carte.setName(textField2.getText());
+
 
 			}
 		});
 
-		textField2.focusedProperty().addListener((ov,oldV,newV) -> {
-			if (!newV){
-				if (textField2.getText().trim().equals("")){
-					errorMessage();
-					textField2.requestFocus();
+		textFieldName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+  				if (textFieldName.getText().trim().equals("")){
+  					errorMessage();
+  					textFieldName.requestFocus();
+  				}
+  				else{
+  					carte.setName(textFieldName.getText());
+        		carte.setName(textFieldName.getText());
+  					apiConnector.modifyCarte(carte);
+  				}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}
+     }
 		});
+
 	}
 
 	public void errorMessage(){

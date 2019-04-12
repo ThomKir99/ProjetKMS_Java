@@ -1,44 +1,58 @@
 package Entity.Carte;
 
 import Entity.Entity;
-import Entity.Position;
+import Entity.Group.Group;
 
 
 public class Carte extends Entity{
-    private String description;
+
+	private String description;
+	private int order;
+	private boolean complete;
     private double z3DPosition;
     private final double carteHeight = 15;
     private final double carteWeight = 20;
     private final double cartedepth = 0.1;
 
-	public String getDescription() {return description;}
+	public String getDescription() {return this.description;}
+
+	public int getOrder() {return this.order;}
+
+	public boolean getIfComplete() {return this.complete;}
 
 	public void setDescription(String description) {this.description = description;}
 
-    public Carte(){
-    	super();
-        this.description = "";
+	public void setOrder(int order){this.order = order;}
+
+	public void setComplete(boolean complete){this.complete = complete;}
+
+  public Carte(){
+  	super();
+    this.description = "";
         setZ3DPosition(0);
-    }
+  }
 
-    public Carte(int id, String name, Position position, float width, float height,String description){
-    	super(id,name,position,width,height);
-    	this.description = description;
-    }
-    public String getAllCarteByString(){
-    	return getId()+ "-" + getName() + "-" + getPosition().getPosition() + "-"+getWidth() + "-"
-    			+ getHeight() + "-" + description;
-    }
+  public Carte(int id, String name, String description){
+  	super(id,name);
+  	this.description = description;
+  }
 
-	public double getZ3DPosition() {
-		return z3DPosition;
-	}
+  public Carte(int id, String name){
+  	super(id,name);
+  }
 
-	public void setZ3DPosition(double zPosition) {
-		z3DPosition = zPosition;
-	}
+  public Carte(int id, String name, String description,int order, boolean complete){
+  	super(id,name);
+  	this.description = description;
+  	this.order = order;
+  	this.complete = complete;
+  }
 
-	public double getCarteHeight() {
+  public String getAllCarteByString(){
+  	return getId()+ "-" + getName() + "-" + description;
+  }
+
+public double getCarteHeight() {
 		return carteHeight;
 	}
 
@@ -48,6 +62,13 @@ public class Carte extends Entity{
 
 	public double getCartedepth() {
 		return cartedepth;
+	}
+	public boolean isEqualTo(Carte aCarte){
+		if (this.getName().equals(aCarte.getName())){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.*;
-import Entity.Position;
 import Entity.Carte.Carte;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
@@ -45,31 +45,42 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
-
 	public static boolean dropIsSuccessful=false;
-
 	public ObservableList<Group> groupObservableList;
 	public Project leProjet;
 	public ControllerMenuProjetCell menuProjetCellController;
+	public ApiConnector apiConnector;
 
-	public ControllerTheProject(){
+	public ControllerTheProject() throws IOException{
+		apiConnector = new ApiConnector();
 		leProjet = new Project();
-
 	}
 
-	public void setProject(Project unProjet){
+	public void getGroupsFromProject() throws IOException{
+		if (apiConnector.groupList(leProjet.getId()) != null){
+			leProjet.setGroups(apiConnector.groupList(leProjet.getId()));
+		}
+	}
+
+	public void setProject(Project unProjet) throws IOException{
+
 		this.leProjet = unProjet;
 		txt_projectName.setText(leProjet.getName());
+		getGroupsFromProject();
 		refreshGroupList();
 	}
 
 	public void setListener(){
-		txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-            	leProjet.setName(txt_projectName.getText());
-            }
-        });
+		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+      		leProjet.setName(txt_projectName.getText());
+					apiConnector.modifyProject(leProjet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
+		});
 
 		colorPicker.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -82,7 +93,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 
 	}
-
 
 	public void setMenuCellController(ControllerMenuProjetCell menuProjetCellController){
 		this.menuProjetCellController = menuProjetCellController;
@@ -138,14 +148,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 			refreshGroupList();
 		}
 	}
+
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
 		if(dropIsSuccessful){
 			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerTheProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
-
-
 	}
 
 	private void setDragOverHandler(DragEvent event) {
@@ -153,7 +162,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
         if (db.hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
-
 	}
 
 	public void BackToMenu(){
@@ -161,10 +169,15 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 
+	 public void createNewGroup() throws InterruptedException{
+		 Group unGroup = new Group();
+			try {
+				unGroup = apiConnector.createGroup(leProjet.getId());
+				ajouterGroup(unGroup);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-
-	 public void createNewGroup(){
-		 ajouterGroup(new Group("test"));
 		 refreshGroupList();
 	 }
 
@@ -213,13 +226,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	public void BackToMenu(ActionEvent event)throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
-        Parent tableViewParent = (Parent)fxmlLoader.load();
+    Parent tableViewParent = (Parent)fxmlLoader.load();
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    Scene tableViewScene = new Scene(tableViewParent);
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(tableViewScene);
-        window.show();
+    window.setScene(tableViewScene);
+    window.show();
 	}
 
 	private boolean targetIsAllowed(String target) {

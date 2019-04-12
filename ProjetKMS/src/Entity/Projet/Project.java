@@ -2,9 +2,7 @@ package Entity.Projet;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import Entity.Entity;
-import Entity.Position;
 import Entity.Group.Group;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,8 +22,6 @@ public class Project extends Entity{
 		y3DPosition =0;
 	}
 
-
-
 	public Project(int id,String name,Position position,int width,int height){
 		super(id,name,position,width,height);
 		this.groups = new ArrayList<Group>();
@@ -38,6 +34,15 @@ public class Project extends Entity{
 	public void setGroups(List<Group> groups) {this.groups = groups;}
 
 	public void addGroup(Group group) { this.groups.add(group);}
+
+	public boolean isEqualTo(Project aProject){
+		if (this.getName().equals(aProject.getName())){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
 
 	public Color getProjectColor() {return projectColor;}
 

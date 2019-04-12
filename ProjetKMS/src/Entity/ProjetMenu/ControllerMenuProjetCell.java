@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -41,11 +42,12 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private GridPane gridPane_projectCell;
 
 	private FXMLLoader mLLoader;
-
+	private ApiConnector apiConnector;
 
 
 	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
 		this.controllerPageProjet = controllerPageProjet;
+		apiConnector = new ApiConnector();
 	}
 
 	@Override
@@ -68,44 +70,50 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
-
-         setListener();
-         setGraphic(gridPane_projectCell);
-
+     setListener();
+     setGraphic(gridPane_projectCell);
 	}
 
 	public void setListener(){
-        txt_projectName.setOnKeyReleased(new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				currentProjet.setName(txt_projectName.getText());
-			}
+		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
+      if (!newV) {
+      	try {
+        	currentProjet.setName(txt_projectName.getText());
+					apiConnector.modifyProject(currentProjet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+     }
 		});
 
-        btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
+
+      btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				deleteProjet();
+				try {
+					deleteProjet();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 			}
 		});
 
-        btn_openProject.setOnAction(new EventHandler<ActionEvent>() {
+    btn_openProject.setOnAction(new EventHandler<ActionEvent>() {
 
-    			@Override
-    			public void handle(ActionEvent event) {
-    				try {
-    					openProject(event);
-    				} catch (IOException e) {
-    					showLoadingError();
-    				}
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					openProject(event);
+				} catch (IOException e) {
+					showLoadingError();
+				}
+			}
 
-    			}
-
-    		});
+		});
 	}
 
-	public void deleteProjet(){
+	public void deleteProjet() throws IOException{
     	if (showConfirmationMessage()){
     		controllerPageProjet.DeleteProjet(currentProjet);
     	}
@@ -113,7 +121,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	public void openProject(ActionEvent event)throws IOException{
 
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
@@ -121,7 +129,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(tableViewScene);
         window.show();
     }
