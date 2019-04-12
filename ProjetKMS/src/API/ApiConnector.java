@@ -198,14 +198,93 @@ public class ApiConnector {
 
   }
 
-  private void updateMenuProject(Project currentProject) throws IOException{
-    String sURL = this.baseURL +"updateProject/" + currentProject.getId() + "/"+  currentProject.getName();
+  public Carte getSingleCarte(int carteId) throws IOException{
+    String sURL = this.baseURL +"getSingleCarte/" + carteId;
     URL url = new URL(sURL);
     URLConnection request = url.openConnection();
-    request.setDoOutput(false);
     request.connect();
-    request.getInputStream();
+
+    if (request.getContent() != null){
+
+      Carte laCarte =  new Carte();
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+      for (JsonElement obj : rootarray){
+
+        int carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
+        String carteName = obj.getAsJsonObject().get("carteName").toString();
+
+        carteName = removeQuote(carteName);
+        laCarte = new Carte(carteID,carteName);
+
+      }
+  		return laCarte;
+    }
+    else{
+    	return null;
+    }
   }
+
+  public Group getSingleGroup(int groupId) throws IOException{
+    String sURL = this.baseURL +"getSingleGroup/" + groupId;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+
+      Group leGroup =  new Group();
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+      for (JsonElement obj : rootarray){
+
+        int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
+        String groupName = obj.getAsJsonObject().get("groupName").toString();
+
+        groupName = removeQuote(groupName);
+        leGroup = new Group(groupID,groupName);
+
+      }
+  		return leGroup;
+    }
+    else{
+    	return null;
+    }
+  }
+
+  public Project getSingleProject(int projectId) throws IOException{
+    String sURL = this.baseURL +"getSingleProject/" + projectId;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+
+      Project leProjet =  new Project();
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+      for (JsonElement obj : rootarray){
+
+        int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
+        String projectName = obj.getAsJsonObject().get("projectName").toString();
+
+        projectName = removeQuote(projectName);
+        leProjet = new Project(projectID,projectName);
+
+      }
+  		return leProjet;
+    }
+    else{
+    	return null;
+    }
+  }
+
 
   public void modifyGroup(Group currentGroup) throws IOException{
   	Group dbGroup = new Group();
@@ -269,11 +348,36 @@ public class ApiConnector {
 
   }
 
-  private void updateCarte(Carte currentCarte)throws IOException{
-    String sURL = this.baseURL +"updateCarte/" + currentCarte.getId() + "/"+  currentCarte.getName();
+  private void updateMenuProject(Project currentProject) throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(currentProject);
+    String sURL = this.baseURL +"updateProject";
     URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.setDoOutput(false);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+  }
+
+  private void updateCarte(Carte currentCarte)throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(currentCarte);
+    String sURL = this.baseURL +"updateCarte";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
     request.connect();
     request.getInputStream();
   }

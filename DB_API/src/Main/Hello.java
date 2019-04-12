@@ -258,12 +258,12 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
-  @Path("/updateProject/{projectID}/{projectName}")
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public void updateProject(@PathParam("projectID") String projectID,@PathParam("projectName") String projectName) throws Exception {
+  @Path("/updateProject")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void updateProject(ProjectModel project) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("UPDATE tbl_projet SET nom_projet = \'"+ projectName +"\' WHERE id_projet = \'" + projectID + "\'");
+  	mySqlCon.executeNonQuery("UPDATE tbl_projet SET nom_projet = \'"+ project.getName() +"\' WHERE id_projet = \'" + project.getID() + "\'");
   	mySqlCon.closeConnection();
   }
 
@@ -276,12 +276,12 @@ public class Hello {
   	mySqlCon.closeConnection();
   }
 
-  @Path("/updateCarte/{carteID}/{carteName}")
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public void updateCarte(@PathParam("carteID") String carteID,@PathParam("carteName") String carteName) throws Exception {
+  @Path("/updateCarte")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void updateCarte(CarteModel carte) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("UPDATE tbl_carte SET nom = \'"+ carteName +"\' WHERE id_carte = \'" + carteID + "\'");
+  	mySqlCon.executeNonQuery("UPDATE tbl_carte SET nom = \'"+ carte.getName() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
   	mySqlCon.closeConnection();
   }
 
