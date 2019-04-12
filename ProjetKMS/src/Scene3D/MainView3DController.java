@@ -15,7 +15,7 @@ import Entity.Carte.Carte;
 import User.Utilisateur;
 
 import javafx.event.ActionEvent;
-
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -37,6 +37,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class MainView3DController {
@@ -63,6 +64,7 @@ private PerspectiveCamera camera;
 private Group cameraGroup;
 private Utilisateur currentUser;
 private Group root3D;
+private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	public MainView3DController(Utilisateur userContext)
 	{
@@ -145,7 +147,6 @@ private Group root3D;
 		BorderPane pane = new BorderPane();
 	    pane.setPrefSize(defaultWindowSize,defaultWindowSize);
 	    pane.setTop(createTopMenu());
-	    pane.setRight(createLegends());
 	    pane.setCenter(setSubScene(pane3D,pane));
 	    pane.setManaged(false);
 		return pane;
@@ -186,9 +187,24 @@ private Group root3D;
 	addListener(stage);
 	stage.setTitle("My New Stage Title");
 	stage.setScene(scene);
+	setOnClosingListener(stage);
 	stage.show();
+
+
 	}
 
+	private void setOnClosingListener(Stage stage) {
+
+	 stage.setOnHiding(new EventHandler<WindowEvent>() {
+
+		@Override
+		public void handle(WindowEvent event) {
+		legendViewLauncher.closeStage();
+
+		}
+	});
+
+	}
 	private void addListener(Stage stage) {
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event->{
 			switch (event.getCode()) {
@@ -261,7 +277,7 @@ private Group root3D;
 		buttons[4].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				createLegends();
+				createLegends(event);
 							}
 		});
 
@@ -281,10 +297,8 @@ private Group root3D;
 
 	}
 
-	protected Node createLegends() {
-		LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
-		return legendViewLauncher.launchLegend(currentUser.getProjets());
-
+	protected void createLegends(Event event) {
+		 legendViewLauncher.launchLegend(currentUser.getProjets());
 	}
 
 	private void increaseLayer(){
