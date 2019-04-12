@@ -1,22 +1,15 @@
 package Entity.ProjetMenu;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
-
 import API.ApiConnector;
-import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +26,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_Delete;
 	@FXML
 	private Button btn_openProject;
+
 
 	private ControllerPageProjet controllerPageProjet;
 
@@ -62,6 +56,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         } else {
             if (mLLoader == null) {
             	loadTheMenuProjetView(projet);
+            	System.out.println(projet.getId());
             }
             initializeViewInfo(projet);
         }
@@ -84,6 +79,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 					e.printStackTrace();
 				}
      }
+
+
 		});
 
 
@@ -111,6 +108,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			}
 
 		});
+
 	}
 
 	public void deleteProjet() throws IOException{
@@ -123,10 +121,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
-
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
-
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -163,4 +159,5 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     	alert.setContentText("For an unknown reason, your project have fail to open");
 
 	}
+
 }

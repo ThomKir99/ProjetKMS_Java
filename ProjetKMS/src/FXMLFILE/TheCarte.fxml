@@ -7,13 +7,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="221.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="221.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="textFieldName" layoutY="29.0" prefHeight="39.0" prefWidth="221.0" text="Test2" GridPane.rowIndex="1" />
       <Pane prefHeight="36.0" prefWidth="221.0">
          <children>
             <TextField fx:id="textField1" disable="true" layoutY="1.0" prefHeight="30.0" prefWidth="221.0" text="Test" />
             <Button fx:id="btn_delete" layoutX="197.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: FF0000;" text="-" />
+            <Button fx:id="btn_Link" layoutX="161.0" layoutY="4.0" mnemonicParsing="false" onAction="#addLink" prefHeight="25.0" prefWidth="36.0" text="link" />
          </children>
       </Pane>
    </children>

@@ -22,6 +22,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -31,6 +34,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class ControllerTheGroup extends ListCell<Group> implements Initializable{
 
@@ -39,19 +43,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	@FXML
 	private TextField textFieldGroupName;
-
 	@FXML
 	private GridPane gridPane_emptyGroup;
-
 	@FXML
 	private GridPane gridPaneGroup;
-
 	@FXML
 	private Button btn_addCarte;
-
 	@FXML
 	private Button btn_delete;
-
 	private ControllerTheProject controllerProjectList;
 	public ObservableList<Carte> carteObservableList;
 	private Group group;
@@ -59,7 +58,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
-
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 		this.apiConnector = new ApiConnector();
@@ -68,19 +66,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
     protected void updateItem(Group group, boolean empty) {
       super.updateItem(group, empty);
-
       this.group = group;
-
       if(empty || group == null) {
-
           setText(null);
           setGraphic(null);
-
       } else {
       		if (mLLoader == null) {
                   mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
                   mLLoader.setController(this);
-
                   try {
                       mLLoader.load();
                   } catch (IOException e) {
@@ -89,6 +82,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       		}
       		if(textFieldGroupName!=null){
       			textFieldGroupName.setText(String.valueOf(group.getName()));
+
       		}
 
       		try {
@@ -176,6 +170,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		refreshCarteList();
 	}
 
+
+
 	public void refreshCarteList(){
 		getAllCarte();
 		listViewGroup.setItems(carteObservableList);
@@ -205,7 +201,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
-		ListCell<Carte> cell = new GroupeCell(this);
+		ListCell<Carte> cell = new GroupeCell(controllerProjectList,this);
 
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
@@ -356,7 +352,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 		carteObservableList.addAll(listViewGroup.getItems());
-
 		ListCell<Carte> dragSourceCell = dragSource.get();
 		carteObservableList.add(dragSourceCell.getItem());
 		listViewGroup.setItems(carteObservableList);
@@ -390,8 +385,5 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		int index =	controllerProjectList.getItemIndex(group);
 		return index;
 	}
-
-
-
 
 }

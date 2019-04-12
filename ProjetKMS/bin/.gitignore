@@ -1,8 +1,9 @@
 /API/
-/CSS/
 /Entity/
 /FXMLFILE/
 /Lib/
-/Main/
 /Scene3D/
 /User/
+/Entity.DependanceFocus/
+/TheDependanceGruop.class
+/Main/

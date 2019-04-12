@@ -17,18 +17,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
-
 import API.ApiConnector;
-import Entity.*;
 import Entity.Carte.Carte;
+import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.*;
 import Entity.ProjetMenu.ControllerMenuProjetCell;
 
@@ -42,7 +38,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@FXML
 	public ColorPicker colorPicker;
-
+	public Button btn_pageDependance;
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
 	public static boolean dropIsSuccessful=false;
@@ -68,7 +64,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		txt_projectName.setText(leProjet.getName());
 		getGroupsFromProject();
 		refreshGroupList();
+		
 	}
+	
+	public Project getProject(){
+		Project projet;
+		projet = leProjet;
+		return projet;
+	}
+	
+	
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
@@ -105,6 +110,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		
 		setListener();
 		refreshGroupList();
 
@@ -119,7 +125,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private ListCell<Group> setCellDragAndDropHandler() {
-
 		ListCell<Group> cell = new ControllerTheGroup(this);
 
 
@@ -215,10 +220,11 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		listViewProjet.setItems(groupObservableList);
 		colorPicker.setValue(leProjet.getProjectColor());
 		listViewProjet.setCellFactory(projectListView ->{
-
 		return setCellDragAndDropHandler();
 		});
 	}
+	
+	
 
 	public int getItemIndex(Group group) {
 		return groupObservableList.indexOf(group);
@@ -243,5 +249,10 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 		return isAllowed;
 	}
+
+
+
+
+
 
 }
