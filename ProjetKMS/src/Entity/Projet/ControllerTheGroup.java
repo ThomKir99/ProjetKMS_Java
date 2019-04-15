@@ -261,15 +261,19 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
 		if(dragSourceCameFromSameList(listViewGroup)){
   		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
+  		   	saveCarteOrder();
   	   }else{
 
   		   addCarteToOtherList(event);
   	   }
 	}
 
+
+
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
+     		saveCarteOrder();
      		 refreshGroup();
      	}
      		dropInSameList=false;
@@ -377,6 +381,22 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	}
 
+	private void saveCarteOrder() {
+		for(int order =0; order<listViewGroup.getItems().size();order++){
+			listViewGroup.getItems().get(order).setOrder(order+1);
+
+		}
+		group.getCartes().clear();
+		group.setCartes(listViewGroup.getItems());
+		refreshCarteList();
+		try {
+			apiConnector.saveCarteOrder(group);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 	public void getAllCarte(){
 
@@ -402,5 +422,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		int index =	controllerProjectList.getItemIndex(group);
 		return index;
 	}
+
+
+
 
 }

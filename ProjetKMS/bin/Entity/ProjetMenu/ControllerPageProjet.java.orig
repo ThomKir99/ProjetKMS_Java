@@ -1,11 +1,16 @@
 package Entity.ProjetMenu;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-<<<<<<< HEAD
 import API.ApiConnector;
+<<<<<<< HEAD
+
+=======
+import Entity.Group.Group;
+>>>>>>> origin/API
 import Entity.Projet.Project;
 import Main.FXMLLoder;
 import Main.Main;
@@ -21,32 +26,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-=======
-
-import Entity.Position;
-
-import Entity.Projet.Project;
-
-import User.Utilisateur;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javafx.fxml.FXML;
-
-import javafx.fxml.Initializable;
-
-import javafx.scene.control.Button;
-
->>>>>>> origin/Sprint2
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-<<<<<<< HEAD
 import javafx.scene.paint.Stop;
-=======
-
->>>>>>> origin/Sprint2
 
 public class ControllerPageProjet extends AnchorPane implements Initializable{
 
@@ -62,26 +46,31 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public Utilisateur userContext;
 	public ApiConnector apiConnector;
 
-<<<<<<< HEAD
 	public  ControllerPageProjet() throws IOException {
 		apiConnector= new ApiConnector();
 		userContext = Main.userContext;
-=======
-	public  ControllerPageProjet(){
-		userContext = Main.Main.userContext;
->>>>>>> origin/Sprint2
+		fillProject();
+	}
+
+	public void fillProject() throws IOException{
+		userContext.setProjets(apiConnector.projectList(userContext.getId()));
+		fillGroup();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
-<<<<<<< HEAD
 		setListener();
-=======
-
->>>>>>> origin/Sprint2
 	}
 
+	public void fillGroup() throws IOException{
+		for (Project projet: userContext.getProjets()){
+			projet.setGroups(apiConnector.groupList(projet.getId()));
+			for (Group group : projet.getGroups()){
+				group.setCartes(apiConnector.carteList(group.getId()));
+			}
+		}
+	}
 
 
 
@@ -94,8 +83,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 			}
 		});
-
-
 
 	}
 
@@ -114,7 +101,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	public void CreateProject(){
-<<<<<<< HEAD
 		Project unProjet = new Project();
 		try {
 			unProjet = apiConnector.createProject(userContext.getId());
@@ -122,13 +108,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-=======
-		userContext.addProjet(new Project(randomId(),"testing",new Position(0,0,0),0,0));
-		refreshProjectList();
-
-	}
->>>>>>> origin/Sprint2
-
 
 		refreshProjectList();
 	}

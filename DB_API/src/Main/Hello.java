@@ -13,6 +13,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.security.acl.Group;
 import java.sql.*;
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -376,6 +378,17 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/saveCarteOrder")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void saveCarteOrder(ArrayList<CarteModel> cartes) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	for(CarteModel carte : cartes ){
+  		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
+  	}
+
+  	mySqlCon.closeConnection();
+  }
 
 
 }

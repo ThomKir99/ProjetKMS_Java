@@ -348,6 +348,23 @@ public class ApiConnector {
 
   }
 
+  public void saveCarteOrder(Group currentGroup) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentGroup.getCartes());
+	    String sURL = this.baseURL +"saveCarteOrder";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+  }
+
   private void updateMenuProject(Project currentProject) throws IOException{
   	Gson gson = new Gson();
   	String projectJson = gson.toJson(currentProject);
