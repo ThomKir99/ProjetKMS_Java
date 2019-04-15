@@ -384,6 +384,8 @@ public class Hello {
   public void saveCarteOrder(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
   	for(CarteModel carte : cartes ){
+  		System.out.println(carte.getOrdre_de_priorite());
+  		Thread.sleep(1000);
   		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
   	}
 

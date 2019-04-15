@@ -382,18 +382,19 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	private void saveCarteOrder() {
-		for(int order =0; order<listViewGroup.getItems().size();order++){
-			listViewGroup.getItems().get(order).setOrder(order+1);
-
-		}
-		group.getCartes().clear();
-		group.setCartes(listViewGroup.getItems());
-		refreshCarteList();
 		try {
+			for(int order =0; order<group.getCartes().size();order++){
+				group.getCartes().get(order).setOrder(order+1);
+				System.out.println(group.getCartes().get(order).getOrder());
+			}
+			listViewGroup.getItems().clear();
+			listViewGroup.getItems().addAll(group.getCartes());
 			apiConnector.saveCarteOrder(group);
+			refreshCarteList();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 	}
 
