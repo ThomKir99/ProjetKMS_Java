@@ -1,33 +1,22 @@
 package Scene3D;
 
-
-
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
-
-
-
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import User.Utilisateur;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
