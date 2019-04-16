@@ -7,7 +7,7 @@ import Entity.Group.Group;
 public class Carte extends Entity{
 
 	private String description;
-	private int order;
+	private int ordre_de_priorite;
 	private boolean complete;
     private final double carteHeight = 15;
     private final double carteWeight = 20;
@@ -15,13 +15,13 @@ public class Carte extends Entity{
 
 	public String getDescription() {return this.description;}
 
-	public int getOrder() {return this.order;}
+	public int getOrder() {return this.ordre_de_priorite;}
 
 	public boolean getIfComplete() {return this.complete;}
 
 	public void setDescription(String description) {this.description = description;}
 
-	public void setOrder(int order){this.order = order;}
+	public void setOrder(int order){this.ordre_de_priorite = order;}
 
 	public void setComplete(boolean complete){this.complete = complete;}
 
@@ -42,7 +42,7 @@ public class Carte extends Entity{
   public Carte(int id, String name, String description,int order, boolean complete){
   	super(id,name);
   	this.description = description;
-  	this.order = order;
+  	this.ordre_de_priorite = order;
   	this.complete = complete;
   }
 

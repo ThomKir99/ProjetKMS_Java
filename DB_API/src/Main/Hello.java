@@ -123,7 +123,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String getCarte(@PathParam("groupId") String groupId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_carte WHERE id_groupe = \'" + groupId + "\'");
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_carte WHERE id_groupe = \'" + groupId + "\' order by ordre_de_priorite");
 
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
@@ -384,8 +384,6 @@ public class Hello {
   public void saveCarteOrder(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
   	for(CarteModel carte : cartes ){
-  		System.out.println(carte.getOrdre_de_priorite());
-  		Thread.sleep(1000);
   		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
   	}
 

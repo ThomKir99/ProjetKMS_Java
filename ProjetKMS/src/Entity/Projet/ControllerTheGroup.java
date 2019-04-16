@@ -384,11 +384,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void saveCarteOrder() {
 		try {
 			for(int order =0; order<group.getCartes().size();order++){
-				group.getCartes().get(order).setOrder(order+1);
-				System.out.println(group.getCartes().get(order).getOrder());
+				listViewGroup.getItems().get(order).setOrder(order+1);
+
 			}
-			listViewGroup.getItems().clear();
-			listViewGroup.getItems().addAll(group.getCartes());
+			group.setCartes(listViewGroup.getItems());
+
 			apiConnector.saveCarteOrder(group);
 			refreshCarteList();
 		} catch (IOException e) {
