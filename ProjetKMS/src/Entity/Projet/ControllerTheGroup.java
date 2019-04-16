@@ -103,6 +103,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void getCarteFromGroup() throws IOException{
 		if (apiConnector.carteList(this.group.getId()) != null){
 			this.group.setCartes(apiConnector.carteList(this.group.getId()));
+
 		}
 	}
 
@@ -273,7 +274,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
-     		saveCarteOrder();
      		 refreshGroup();
      	}
      		dropInSameList=false;
@@ -371,13 +371,21 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private void addCarteToOtherList( DragEvent event) {
 
-		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
-		carteObservableList.addAll(listViewGroup.getItems());
-		ListCell<Carte> dragSourceCell = dragSource.get();
-		carteObservableList.add(dragSourceCell.getItem());
-		listViewGroup.setItems(carteObservableList);
-        event.setDropCompleted(true);
-        setDragSourceToNull();
+
+		try {
+			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
+			carteObservableList.addAll(listViewGroup.getItems());
+			ListCell<Carte> dragSourceCell = dragSource.get();
+			carteObservableList.add(dragSourceCell.getItem());
+			dragSourceCell.getItem().setGroupId(group.getId());
+			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			listViewGroup.setItems(carteObservableList);
+	        event.setDropCompleted(true);
+	        setDragSourceToNull();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 

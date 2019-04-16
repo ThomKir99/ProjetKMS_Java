@@ -137,6 +137,7 @@ public class Hello {
 	  		obj.addProperty("carteDesc", result.getString(3));
 	  		obj.addProperty("carteOrder", result.getInt(4));
 	  		obj.addProperty("carteComplete", result.getBoolean(5));
+	  		obj.addProperty("id_groupe", result.getInt(6));
 
 	  		jsonArr.add(obj);
 	  	}
@@ -387,6 +388,15 @@ public class Hello {
   		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
   	}
 
+  	mySqlCon.closeConnection();
+  }
+
+  @Path("/changeCarteGroupId")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void changeCarteGroupId(CarteModel carte) throws Exception {
+  	mySqlCon.openLocalConnection();
+  		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
   	mySqlCon.closeConnection();
   }
 

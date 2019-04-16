@@ -12,6 +12,7 @@ public class Carte extends Entity{
     private final double carteHeight = 15;
     private final double carteWeight = 20;
     private final double cartedepth = 0.1;
+    private int groupId;
 
 	public String getDescription() {return this.description;}
 
@@ -33,17 +34,19 @@ public class Carte extends Entity{
   public Carte(int id, String name, String description){
   	super(id,name);
   	this.description = description;
+
   }
 
   public Carte(int id, String name){
   	super(id,name);
   }
 
-  public Carte(int id, String name, String description,int order, boolean complete){
+  public Carte(int id, String name, String description,int order, boolean complete,int carteGroupId){
   	super(id,name);
   	this.description = description;
   	this.ordre_de_priorite = order;
   	this.complete = complete;
+  	this.groupId = carteGroupId;
   }
 
   public String getAllCarteByString(){
@@ -67,6 +70,14 @@ public double getCarteHeight() {
 		}else{
 			return false;
 		}
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 
 }
