@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 public class Group extends Entity{
 	private List<Carte> cartes;
 	private double x3DPosition;
+	private int order_in_projet;
 
 	public Group(){
 		super();
@@ -72,6 +73,14 @@ public class Group extends Entity{
 
 	public void setX3DPosition(double xPosition) {
 		x3DPosition = xPosition;
+	}
+
+	public int getOrder_in_projet() {
+		return order_in_projet;
+	}
+
+	public void setOrder_in_projet(int order_in_projet) {
+		this.order_in_projet = order_in_projet;
 	}
 
 }

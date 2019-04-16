@@ -42,7 +42,10 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public Button btn_pageDependance;
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
+	private ObjectProperty<ListCell<Group>> dragSourceGroup = new SimpleObjectProperty<>();
+	private int dragGroupIndex;
 	public static boolean dropIsSuccessful=false;
+	private boolean dragFromGroup = false;
 	public ObservableList<Group> groupObservableList;
 	public Project leProjet;
 	public ControllerMenuProjetCell menuProjetCellController;
@@ -148,7 +151,9 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	private ListCell<Group> setCellDragAndDropHandler() {
 		ListCell<Group> cell = new ControllerTheGroup(this);
-
+		 cell.setOnDragDetected(event -> {
+			 setDragDetectHandler(cell);
+         });
 
         cell.setOnDragOver(event -> {
        	 setDragOverHandler(event);
@@ -167,21 +172,104 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 
-	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
+	private void setDragDetectHandler(ListCell<Group> cell) {
+		String index="";
 
-		if(targetIsAllowed(event.getTarget().toString())){
-			dropIsSuccessful=true;
-			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerTheProject.getDragSource().get().getItem());
-			refreshGroupList();
+		  if (!cell.isEmpty()) {
+		      Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+		      ClipboardContent cc = new ClipboardContent();
+		      index = getIndexOfDragItem(cell);
+		      cc.putString(index);
+		      db.setContent(cc);
+		      dragFromGroup = true;
+		      dragGroupIndex = Integer.valueOf(index);
+		  }
+
+
+	}
+
+	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
+		if(targetIsAllowed(event.getTarget().toString())&& !dragFromGroup){
+				changeTheGroupOfTheCarte(cell);
+		}else{
+			if(dragFromGroup){
+				changeGroupOrder(event,cell);
+			}
 		}
 	}
 
+	private void changeGroupOrder(DragEvent event, ListCell<Group> cell) {
+	ControllerTheProject.setDropIsSuccessful(true);
+	dragSourceGroup.set(cell);
+    Dragboard db = event.getDragboard();
+     if (db.hasString() && dragSourceGroup.get() != null) {
+    	 doDragAndDrop(event,cell);
+    	 refreshGroupList();
+     } else {
+         event.setDropCompleted(false);
+     }
+
+	}
+
+	private void doDragAndDrop(DragEvent event, ListCell<Group> cell) {
+		int indexSourceGroup=dragGroupIndex;
+		int indexTargetGroup =findDragSourceIndex(listViewProjet);
+
+		System.out.println("index source group "+ indexSourceGroup);
+		System.out.println("index target group "+ indexTargetGroup);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ObservableList<Group> groupObservableList =  FXCollections.observableArrayList();
+		groupObservableList.addAll(listViewProjet.getItems());
+		/*groupObservableList.remove(indexToRemove);
+
+		if(indexToAdd>listViewProjet.getItems().size()){
+			groupObservableList.add(dragSourceGroup.get().getItem());
+		}else{
+			groupObservableList.add(indexToAdd, dragSourceGroup.get().getItem());
+		}*/
+
+		listViewProjet.setItems(groupObservableList);
+		 event.setDropCompleted(true);
+		 setDragSourceToNull();
+
+	}
+
+	private int findDragSourceIndex(ListView<Group> listView) {
+		int index=0;
+		for(int i=0;i<listView.getItems().size();i++){
+			if(listView.getItems().get(i).getId()==dragSourceGroup.get().getItem().getId()){
+				index =i;
+			}
+		}
+
+		return index;
+	}
+
+	private void changeTheGroupOfTheCarte(ListCell<Group> cell) {
+		try {
+			dropIsSuccessful=true;
+			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerTheProject.getDragSource().get().getItem());
+			ControllerTheProject.getDragSource().get().getItem().setGroupId(leProjet.getGroups().get(cell.getIndex()).getId());
+			apiConnector.changeCarteGroupId(ControllerTheProject.getDragSource().get().getItem());
+			refreshGroupList();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private void setOnDragDoneHandler(ListCell<Group> cell) {
-		if(dropIsSuccessful){
+		if(dropIsSuccessful && !dragFromGroup ){
 			listViewProjet.getItems().get(cell.getIndex()).removeCarte(ControllerTheProject.getDragSource().get().getItem());
 			refreshGroupList();
 			dropIsSuccessful=false;
 		}
+		dragFromGroup =false;
 	}
 
 	private void setDragOverHandler(DragEvent event) {
@@ -207,6 +295,17 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 		 refreshGroupList();
 	 }
+
+	 private String getIndexOfDragItem(ListCell<Group> cell) {
+			String index="";
+
+			for(int i = 0;i<listViewProjet.getItems().size();i++){
+	      	   if(cell.getItem() == listViewProjet.getItems().get(i)){
+	      		  index = String.valueOf(i);
+	      	   }
+	         }
+			return index;
+		}
 
 	public static void setDragSource(ObjectProperty<ListCell<Carte>> cellDragSource){
 		dragSourceCarte = cellDragSource;
