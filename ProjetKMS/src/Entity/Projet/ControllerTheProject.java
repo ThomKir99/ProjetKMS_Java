@@ -65,16 +65,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		txt_projectName.setText(leProjet.getName());
 		getGroupsFromProject();
 		refreshGroupList();
-		
+		setProjectListByRecent(leProjet);
 	}
-	
+
 	public Project getProject(){
 		Project projet;
 		projet = leProjet;
 		return projet;
 	}
-	
-	
+
+
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
@@ -127,14 +127,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		
+
 		setListener();
 		refreshGroupList();
-
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
+
+
+
 	}
 
 	public void ajouterGroup(Group group){
@@ -240,8 +242,8 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		return setCellDragAndDropHandler();
 		});
 	}
-	
-	
+
+
 
 	public int getItemIndex(Group group) {
 		return groupObservableList.indexOf(group);
@@ -267,7 +269,9 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		return isAllowed;
 	}
 
-
+	private void setProjectListByRecent(Project currentProject) throws IOException{
+		apiConnector.setDateOpenProject(currentProject);
+	}
 
 
 

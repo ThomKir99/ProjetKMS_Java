@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS tbl_projet (
 id_projet int PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nom_projet VARCHAR(200),
 id_utilisateur int ,
+date_projet_ouvert datetime ,
 CONSTRAINT FK_id_utilisateur FOREIGN KEY (id_utilisateur)
 REFERENCES tbl_utilisateur(id_utilisateur)
 ON DELETE CASCADE
@@ -47,11 +48,11 @@ INSERT INTO tbl_utilisateur VALUES (2,"Dave","123456");
 INSERT INTO tbl_utilisateur VALUES (3,"Thomas","123456");
 
 /*Projet*/
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine2", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine3", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Dave", 2);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Thomas", 3);
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Antoine", 1, now());
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Antoine2", 1, now());
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Antoine3", 1 ,now());
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Dave", 2 ,now());
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Thomas", 3 ,now());
 
 /*Group*/
 INSERT INTO tbl_groupe VALUES (1,"Group 1", 4);
@@ -64,4 +65,4 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 
 
-
+select * from tbl_projet;

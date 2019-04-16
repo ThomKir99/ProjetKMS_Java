@@ -15,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -66,6 +68,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
      setListener();
+     Image imageDecline = new Image(getClass().getResourceAsStream("/Image/poubelle1.png"));
+     btn_Delete.setGraphic(new ImageView(imageDecline));
      setGraphic(gridPane_projectCell);
 	}
 
@@ -108,6 +112,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			public void handle(ActionEvent event) {
 				try {
 					openProject(event);
+
 				} catch (IOException e) {
 					showLoadingError();
 				}
@@ -138,6 +143,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         Parent tableViewParent = (Parent)fxmlLoader.load();
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
+
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -174,5 +180,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     	alert.setContentText("For an unknown reason, your project have fail to open");
 
 	}
+
+
 
 }
