@@ -65,16 +65,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		txt_projectName.setText(leProjet.getName());
 		getGroupsFromProject();
 		refreshGroupList();
-		
+
 	}
-	
+
 	public Project getProject(){
 		Project projet;
 		projet = leProjet;
 		return projet;
 	}
-	
-	
+
+
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
@@ -98,8 +98,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 			@Override
 			public void handle(ActionEvent event) {
-				leProjet.setProjectColor(colorPicker.getValue());
-
+				try {
+					leProjet.setProjectColor(colorPicker.getValue());
+					leProjet.setHexColor(colorPicker.getValue());
+					apiConnector.changeProjectColor(leProjet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -127,7 +132,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		
+
 		setListener();
 		refreshGroupList();
 
@@ -240,8 +245,8 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		return setCellDragAndDropHandler();
 		});
 	}
-	
-	
+
+
 
 	public int getItemIndex(Group group) {
 		return groupObservableList.indexOf(group);

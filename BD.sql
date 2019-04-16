@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS tbl_projet (
 id_projet int PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nom_projet VARCHAR(200),
 id_utilisateur int ,
+color_project VARCHAR(200),
 CONSTRAINT FK_id_utilisateur FOREIGN KEY (id_utilisateur)
 REFERENCES tbl_utilisateur(id_utilisateur)
 ON DELETE CASCADE
@@ -47,11 +48,11 @@ INSERT INTO tbl_utilisateur VALUES (2,"Dave","123456");
 INSERT INTO tbl_utilisateur VALUES (3,"Thomas","123456");
 
 /*Projet*/
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine2", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine3", 1);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Dave", 2);
-INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Thomas", 3);
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine", 1,"#FFFFFF");
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine2", 1,"#FFFFFF");
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine3", 1,"#FFFFFF");
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Dave", 2,"#FFFFFF");
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Thomas", 3,"#FFFFFF");
 
 /*Group*/
 INSERT INTO tbl_groupe VALUES (1,"Group 1", 4);

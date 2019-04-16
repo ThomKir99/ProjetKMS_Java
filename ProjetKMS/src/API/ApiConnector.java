@@ -22,6 +22,7 @@ import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import User.Utilisateur;
+import javafx.scene.paint.Color;
 
 
 public class ApiConnector {
@@ -68,10 +69,10 @@ public class ApiConnector {
 
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         userName = removeQuote(userName);
-
-        projectList.add(new Project(projectID,userName));
+        colorProject  =removeQuote(colorProject);
+        projectList.add(new Project(projectID,userName,colorProject));
       }
     }
     else{
@@ -182,14 +183,17 @@ public class ApiConnector {
 
     	int projectID = -1;
     	String projectName = "Something went wrong";
+    	String projectColor = "#FFFFFF";
       for (JsonElement obj : rootarray){
         projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());;
         projectName = obj.getAsJsonObject().get("projectName").toString();
+        projectColor= obj.getAsJsonObject().get("color_project").toString();
 
         projectName = removeQuote(projectName);
+        projectColor = removeQuote(projectColor);
 
       }
-      dbProject = new Project(projectID,projectName);
+      dbProject = new Project(projectID,projectName,projectColor);
     }
 
     if (!currentProject.isEqualTo(dbProject)){
@@ -274,9 +278,10 @@ public class ApiConnector {
 
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String projectName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         projectName = removeQuote(projectName);
-        leProjet = new Project(projectID,projectName);
+        colorProject = removeQuote(colorProject);
+        leProjet = new Project(projectID,projectName,colorProject);
 
       }
   		return leProjet;
@@ -487,7 +492,7 @@ public class ApiConnector {
     request.connect();
 
     if (request.getContent() != null){
-      Project leProjet =  new Project();
+    	Project leProjet =  new Project();
     	JsonParser jp = new JsonParser();
     	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
     	JsonArray rootarray = root.getAsJsonArray();
@@ -495,9 +500,9 @@ public class ApiConnector {
       for (JsonElement obj : rootarray){
         int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String projectName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         projectName = removeQuote(projectName);
-        leProjet = new Project(projectId,projectName);
+        leProjet = new Project(projectId,projectName,colorProject);
 
       }
   		return leProjet;
@@ -528,6 +533,22 @@ public class ApiConnector {
 		Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
 	    String sURL = this.baseURL +"changeCarteGroupId";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+}
+  public void changeProjectColor(Project project) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(project);
+	    String sURL = this.baseURL +"changerColorProject";
 	    URL url = new URL(sURL);
 	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
 	    request.setRequestProperty("Content-Type", "application/json");

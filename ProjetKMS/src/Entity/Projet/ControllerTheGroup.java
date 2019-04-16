@@ -60,6 +60,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
+
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 		this.apiConnector = new ApiConnector();

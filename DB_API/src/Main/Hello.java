@@ -76,7 +76,7 @@ public class Hello {
 
 				obj.addProperty("projectID", result.getInt(1));
 				obj.addProperty("projectName", result.getString(2));
-
+				obj.addProperty("color_project", result.getString(4));
 				jsonArr.add(obj);
 			}
   	}
@@ -193,7 +193,7 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("projectID", result.getInt(1));
 	  		obj.addProperty("projectName", result.getString(2));
-
+	  		obj.addProperty("color_project", result.getString(4));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -294,8 +294,8 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String newProject(@PathParam("userId") String userId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES (\"Insert a name\","+ userId + ")" );
-
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES (\"Insert a name\","+ userId
+  			+ ",\'#FFFFFF\')" );
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet = LAST_INSERT_ID()");
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
@@ -305,8 +305,10 @@ public class Hello {
 	  	while (result.next()){
 
 	  		JsonObject obj = new JsonObject();
+
 	  		obj.addProperty("projectID", result.getInt(1));
 	  		obj.addProperty("projectName", result.getString(2));
+	  		obj.addProperty("color_project", result.getString(4));
 
 	  		jsonArr.add(obj);
 	  	}
@@ -342,7 +344,7 @@ public class Hello {
 	  	}
   	}
   	else{
-  		mySqlCon.closeConnection();
+
   		return gson.toJson(new JsonArray());
   	}
   	mySqlCon.closeConnection();
@@ -397,6 +399,15 @@ public class Hello {
   public void changeCarteGroupId(CarteModel carte) throws Exception {
   	mySqlCon.openLocalConnection();
   		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
+  	mySqlCon.closeConnection();
+  }
+
+  @Path("/changerColorProject")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void changerColorProject(ProjectModel project) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("update tbl_projet set color_project =\'"+ project.getHexColor()+"\' where id_projet =\'"+project.getID()+"\'");
   	mySqlCon.closeConnection();
   }
 
