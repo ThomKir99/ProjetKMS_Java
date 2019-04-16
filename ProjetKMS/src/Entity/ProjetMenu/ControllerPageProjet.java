@@ -32,18 +32,19 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	@FXML
 	public ListView<Project> listViewProjet;
+
 	@FXML
 	public Button btn_3D;
 
-	public Pane paneBackground;
-	public ObservableList<Project> projetObservableList;
+	@FXML
 	public Button btn_projet;
-	public ScrollPane scrollPanePage;
+
+	public ObservableList<Project> projetObservableList;
 	public Utilisateur userContext;
 	public ApiConnector apiConnector;
 
 	public  ControllerPageProjet() throws IOException {
-		apiConnector= new ApiConnector();
+		apiConnector = new ApiConnector();
 		userContext = Main.userContext;
 		fillProject();
 	}
@@ -59,16 +60,19 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		setListener();
 	}
 
-
-
-
 	private void setListener() {
 		btn_3D.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				createOld3DView(event);
+			}
+		});
 
+		btn_projet.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				CreateProject();
 			}
 		});
 

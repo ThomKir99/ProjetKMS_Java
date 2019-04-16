@@ -7,7 +7,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/Java/Java3D/1.5.2/bin"/>
 		</attributes>
 		<classpathentry kind="lib" path="src/Lib/gson-2.8.5.jar"/>	</classpathentry>
-	<classpathentry kind="lib" path="src/Lib/gson-2.8.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FXYZ"/>
 	<classpathentry kind="lib" path="src/Lib/fxyz3d-0.1.1.jar"/>
 	<classpathentry kind="lib" path="src/Lib/jcsg-0.4.0.jar"/>

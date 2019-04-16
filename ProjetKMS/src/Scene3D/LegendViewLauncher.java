@@ -2,20 +2,12 @@ package Scene3D;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.w3c.dom.css.CSSPrimitiveValue;
-import org.w3c.dom.css.Rect;
-
 import Entity.Projet.Project;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class LegendViewLauncher {
@@ -28,8 +20,6 @@ public class LegendViewLauncher {
 		}else{
 			stage.requestFocus();
 		}
-
-
 	}
 
 	private void createLegend(ArrayList<Project> allProjects) {
@@ -54,18 +44,19 @@ public class LegendViewLauncher {
 	}
 
 	private void setStageProperty() {
-		stage.setOnHiding(new EventHandler<WindowEvent>() {
 
+		stage.setOnHiding(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
 				stage = null;
-
 			}
 		});
+
 		stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-            	stage.setMaximized(false);
-        });
+	    if (newValue){
+	    	stage.setMaximized(false);
+	    }
+    });
 
 	}
 

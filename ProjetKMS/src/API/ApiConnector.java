@@ -38,16 +38,22 @@ public class ApiConnector {
     URLConnection request = url.openConnection();
     request.connect();
 
-    JsonParser jp = new JsonParser();
-    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
 
-    JsonArray  rootarray = root.getAsJsonArray();
-    JsonObject rootobj = rootarray.get(0).getAsJsonObject();
-    int userID = Integer.valueOf(rootobj.get("ID").toString());
-    String userName = rootobj.get("Name").toString();
-    userName = userName.replace("\"", "");
+      JsonParser jp = new JsonParser();
+      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
 
-    return new Utilisateur(userID,userName);
+        JsonArray  rootarray = root.getAsJsonArray();
+      if (rootarray.size() > 0){
+        JsonObject rootobj = rootarray.get(0).getAsJsonObject();
+
+        int userID = Integer.valueOf(rootobj.get("ID").toString());
+        String userName = rootobj.get("Name").toString();
+        userName = userName.replace("\"", "");
+        return new Utilisateur(userID,userName);
+      }
+
+    return null;
+
 	}
 
 
@@ -504,5 +510,6 @@ public class ApiConnector {
     	return null;
     }
   }
+
 
 }

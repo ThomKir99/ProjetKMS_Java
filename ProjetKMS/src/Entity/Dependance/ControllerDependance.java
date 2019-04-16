@@ -63,17 +63,14 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
 		if(leProjet != null){
-		projetObservableList.addAll(user.getProjets());
+			projetObservableList.addAll(user.getProjets());
 		}
-
-
-
 	}
 
 	public void setProject(Project unProjet){
 		this.leProjet = unProjet;
 	}
-	
+
 
 	public Project getProject(){
 		Project projet;
@@ -82,21 +79,18 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	}
 
 
-
 	public void backToProjet(ActionEvent event)throws IOException{
 
 	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
 	Parent tableViewParent = (Parent)fxmlLoader.load();
 	ControllerTheProject controllerProjectList = fxmlLoader.getController();
-     controllerProjectList.setProject(leProjet);
+  controllerProjectList.setProject(leProjet);
 	Scene tableViewScene = new Scene(tableViewParent);
 	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
 	window.setScene(tableViewScene);
 	window.show();
 	}
-
-
 
 	public ListCell<Project> setFactory(){
 		ListCell<Project> cell = new ControllerProjetCellLink(this);
