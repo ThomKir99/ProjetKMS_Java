@@ -189,8 +189,6 @@ public void errorMessage() throws IOException{
 
 		  try{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
-		System.out.println(this.currentProjet.getName());
-		System.out.println(currentProjet.getId());
         ControllerDependance controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
         Scene tableViewScene = new Scene(tableViewParent);
@@ -199,7 +197,6 @@ public void errorMessage() throws IOException{
         window.setScene(tableViewScene);
         window.show();
 		  }catch(Exception e){
-			  System.out.println("HELLO");
 			  e.printStackTrace();
 		  }
 

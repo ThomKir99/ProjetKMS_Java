@@ -94,7 +94,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String getGroups(@PathParam("projectId") String projectId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_groupe WHERE id_projet = \'" + projectId + "\'");
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_groupe WHERE id_projet = \'" + projectId + "\' order by order_in_project");
 
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
@@ -105,7 +105,7 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("groupId", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
-
+	  		obj.addProperty("order_in_project", result.getInt(4));
 	  		jsonArr.add(obj);
 
 	  	}
@@ -221,7 +221,7 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("groupID", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
-
+	  		obj.addProperty("order_in_project", result.getInt(4));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -326,7 +326,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String newGroup(@PathParam("projectId") String projectId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_groupe(nom_groupe,id_projet) VALUES (\"Insert a name\","+ projectId + ")" );
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_groupe(nom_groupe,id_projet,order_in_project) VALUES (\"Insert a name\","+ projectId + ",999)" );
 
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_groupe WHERE id_groupe = LAST_INSERT_ID()");
   	Gson gson = new Gson();
@@ -339,7 +339,7 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("groupID", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
-
+	  		obj.addProperty("order_in_project", result.getInt(4));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -401,6 +401,19 @@ public class Hello {
   		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
   	mySqlCon.closeConnection();
   }
+
+  @Path("/saveGroupeOrder")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void saveGroupOrder(ArrayList<GroupModel> groupes) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	for(GroupModel groupe : groupes ){
+  		mySqlCon.executeNonQuery("update tbl_groupe set order_in_project =\'"+ groupe.getOrderInProject() +"\' where id_groupe =\'"+groupe.getID()+"\'");
+  	}
+  	mySqlCon.closeConnection();
+  }
+
+
 
   @Path("/changerColorProject")
   @POST

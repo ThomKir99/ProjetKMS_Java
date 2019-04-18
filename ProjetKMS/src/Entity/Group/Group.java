@@ -20,17 +20,20 @@ public class Group extends Entity{
 		super();
 		this.cartes = new ArrayList<Carte>();
 		setX3DPosition(0);
+		order_in_projet=0;
 	}
 
 	public Group(String name){
 		super();
 		this.cartes = new ArrayList<Carte>();
 		this.setName(name);
+		order_in_projet=0;
 	}
 
-	public Group(int id, String name){
+	public Group(int id, String name,int orderInProject){
 		super(id,name);
 		this.cartes = null;
+		this.order_in_projet = orderInProject;
 	}
 
 	public List<Carte> getCartes() {return cartes;}

@@ -212,30 +212,65 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private void doDragAndDrop(DragEvent event, ListCell<Group> cell) {
-		int indexSourceGroup=dragGroupIndex;
-		int indexTargetGroup =findDragSourceIndex(listViewProjet);
 
-		System.out.println("index source group "+ indexSourceGroup);
-		System.out.println("index target group "+ indexTargetGroup);
+			int indexTargetGroup =findDragSourceIndex(listViewProjet);
+			if(indexTargetGroup<dragGroupIndex){
+				doDragAndDropFromRight(indexTargetGroup);
+			}else{
+				doDragAndDropFromLeft(indexTargetGroup);
+			}
+
+
+			leProjet.setGroups(listViewProjet.getItems());
+			saveOrder();
+
+			 event.setDropCompleted(true);
+			 setDragSourceToNull();
+
+	}
+
+	private void doDragAndDropFromRight(int indexTargetGroup) {
+		ObservableList<Group> groupObservableList =  FXCollections.observableArrayList();
+		for(int index =0 ; index < listViewProjet.getItems().size();index++){
+			if(index == indexTargetGroup){
+				groupObservableList.add(listViewProjet.getItems().get(dragGroupIndex));
+
+			}
+			if(index!= dragGroupIndex){
+				groupObservableList.add(listViewProjet.getItems().get(index));
+			}
+		}
+		listViewProjet.setItems(groupObservableList);
+
+	}
+
+	private void doDragAndDropFromLeft(int indexTargetGroup) {
+		ObservableList<Group> groupObservableList =  FXCollections.observableArrayList();
+		for(int index =0 ; index < listViewProjet.getItems().size();index++){
+
+			if(index!= dragGroupIndex){
+				groupObservableList.add(listViewProjet.getItems().get(index));
+			}
+			if(index == indexTargetGroup){
+				groupObservableList.add(listViewProjet.getItems().get(dragGroupIndex));
+
+			}
+		}
+		listViewProjet.setItems(groupObservableList);
+
+	}
+
+	private void saveOrder() {
+
 		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
+			for(int order =0 ; order<leProjet.getGroups().size();order++){
+				leProjet.getGroups().get(order).setOrder_in_projet(order+1);
+			}
+			apiConnector.saveGroupeOrder(leProjet);
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ObservableList<Group> groupObservableList =  FXCollections.observableArrayList();
-		groupObservableList.addAll(listViewProjet.getItems());
-		/*groupObservableList.remove(indexToRemove);
-
-		if(indexToAdd>listViewProjet.getItems().size()){
-			groupObservableList.add(dragSourceGroup.get().getItem());
-		}else{
-			groupObservableList.add(indexToAdd, dragSourceGroup.get().getItem());
-		}*/
-
-		listViewProjet.setItems(groupObservableList);
-		 event.setDropCompleted(true);
-		 setDragSourceToNull();
 
 	}
 

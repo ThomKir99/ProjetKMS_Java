@@ -98,9 +98,9 @@ public class ApiConnector {
       for (JsonElement obj : rootarray){
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupId").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        groupList.add(new Group(groupID,groupName));
+        groupList.add(new Group(groupID,groupName,groupOrder));
 
       }
   		return groupList;
@@ -249,9 +249,9 @@ public class ApiConnector {
 
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder =  Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupID,groupName);
+        leGroup = new Group(groupID,groupName,groupOrder);
 
       }
   		return leGroup;
@@ -306,14 +306,15 @@ public class ApiConnector {
 
     	int groupID = -1;
     	String groupName = "Something went wrong";
+    	int groupOrder = -1;
       for (JsonElement obj : rootarray){
-        groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());;
+        groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
 
       }
-      dbGroup = new Group(groupID,groupName);
+      dbGroup = new Group(groupID,groupName,groupOrder);
     }
 
     if (!currentGroup.isEqualTo(dbGroup)){
@@ -473,9 +474,9 @@ public class ApiConnector {
 
         int groupId = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupId,groupName);
+        leGroup = new Group(groupId,groupName,groupOrder);
 
       }
   		return leGroup;
@@ -528,6 +529,23 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
   }
+
+  public void saveGroupeOrder(Project currentProject) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentProject.getGroups());
+	    String sURL = this.baseURL +"saveGroupeOrder";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+}
 
   public void changeCarteGroupId(Carte carte) throws IOException{
 		Gson gson = new Gson();
