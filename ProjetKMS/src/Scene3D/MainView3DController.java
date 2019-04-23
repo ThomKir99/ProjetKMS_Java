@@ -31,6 +31,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -75,7 +77,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 	public void showCube(){
 		root3D = new Group();
 		Pane pane3D = new Pane(root3D);
-		root3D.getChildren().addAll(generateCard());
+		ArrayList<CuboidMesh> allCube = generateCard();
+		root3D.getChildren().addAll(allCube);
+		root3D.getChildren().addAll(addArrow(allCube));
 		setCamera();
 		setCameraPosition();
 		setLight();
@@ -86,6 +90,11 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	}
 
+	private ArrayList<MeshView> addArrow(ArrayList<CuboidMesh> allCube) {
+
+		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
+		 return depandanceShapeCreator.createTriangle(allCube);
+	}
 	private ArrayList<CuboidMesh> generateCard() {
 		double actualZGap = 0;
 		double actualXGap =0;
