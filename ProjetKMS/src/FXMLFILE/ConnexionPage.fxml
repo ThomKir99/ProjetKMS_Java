@@ -17,7 +17,7 @@
       <AnchorPane layoutX="38.0" layoutY="82.0" prefHeight="362.0" prefWidth="324.0">
          <children>
             <TextField fx:id="txt_username" layoutX="78.0" layoutY="77.0" prefHeight="32.0" prefWidth="167.0" AnchorPane.leftAnchor="78.0" AnchorPane.rightAnchor="78.0" />
-            <Text layoutX="79.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail" textAlignment="CENTER" wrappingWidth="166.99999684095383">
+            <Text layoutX="79.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" textAlignment="CENTER" wrappingWidth="166.99999684095383">
                <font>
                   <Font name="System Bold Italic" size="18.0" />
                </font>
@@ -35,7 +35,7 @@
             </Button>
             <Hyperlink fx:id="hlink_createAccount" layoutX="155.0" layoutY="298.0" prefHeight="24.0" prefWidth="107.0" text="Create an account" />
             <Text layoutX="71.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New user?" wrappingWidth="63.13671875" />
-            <Text fx:id="lbl_usernameError" fill="RED" layoutX="89.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter an E-Mail" textAlignment="CENTER" visible="false" wrappingWidth="147.13671416044235">
+            <Text fx:id="lbl_usernameError" fill="RED" layoutX="89.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter an EMail" textAlignment="CENTER" visible="false" wrappingWidth="147.13671416044235">
                <font>
                   <Font size="11.0" />
                </font>

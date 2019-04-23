@@ -29,7 +29,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	@FXML
 	private Button btn_openProject;
 
-
 	@FXML
 	private GridPane gridPane_projectCell;
 

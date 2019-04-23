@@ -3,6 +3,7 @@ package Entity.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import API.ApiConnector;
 import Entity.Projet.ControllerTheProject;
@@ -97,12 +98,13 @@ public class ControllerConnexion implements Initializable{
 		String password = txt_password.getText();
 		Utilisateur user = null;
 
-		if (!checkForEmpty(username,password)){
+		if (!checkForEmpty(username,password) && checkForEmail(username)){
 			try {
 				user = apiConnector.getUser(username, password);
 
 				if (user == null)
 					errorUser();
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -114,12 +116,43 @@ public class ControllerConnexion implements Initializable{
 		lbl_userNotExist.setVisible(true);
 	}
 
+	public boolean checkForEmail(String email){
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+        "[a-zA-Z0-9_+&*-]+)*@" +
+        "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+        "A-Z]{2,7}$";
+
+    Pattern pat = Pattern.compile(emailRegex);
+    boolean isEmail = false;
+
+    if (!pat.matcher(email).matches()){
+    	isEmail =false;
+    	errorEmail();
+    }
+    else{
+    	isEmail = true;
+    	lbl_usernameError.setVisible(false);
+    }
+
+    if (email == null)
+    	isEmail = false;
+
+    return isEmail;
+	}
+
+	public void errorEmail(){
+		lbl_usernameError.setText("Email is not valid");
+		lbl_usernameError.setVisible(true);
+		lbl_usernameError.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 3 3 3 3;");
+	}
+
 	public boolean checkForEmpty(String username,String password){
 		boolean empty = false;
 
 		lbl_userNotExist.setVisible(false);
 		if (username.isEmpty()){
 			empty = true;
+			lbl_usernameError.setText("Enter an Email");
 			lbl_usernameError.setVisible(true);
 			txt_username.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;-fx-border-radius: 3 3 3 3;");
 		}
