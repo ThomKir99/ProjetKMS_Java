@@ -50,7 +50,7 @@ public class Hello {
   	}
   	else{
   		mySqlCon.closeConnection();
-  		return gson.toJson(new JsonArray());
+  		return null;
   	}
 
   	mySqlCon.closeConnection();

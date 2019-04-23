@@ -42,6 +42,9 @@ public class ControllerConnexion implements Initializable{
 	@FXML
 	public Text lbl_passwordError;
 
+	@FXML
+	public Text lbl_userNotExist;
+
 	public ControllerConnexion() {
 		apiConnector = new ApiConnector();
 	}
@@ -60,7 +63,7 @@ public class ControllerConnexion implements Initializable{
 				Utilisateur user = getUser();
 				if (user != null){
 					setUser(user);
-					//openMenuProject(event);
+					openMenuProject(event);
 				}
 
 			}
@@ -92,22 +95,29 @@ public class ControllerConnexion implements Initializable{
 	private Utilisateur getUser(){
 		String username = txt_username.getText();
 		String password = txt_password.getText();
-		Utilisateur user = new Utilisateur();
+		Utilisateur user = null;
 
 		if (!checkForEmpty(username,password)){
 			try {
 				user = apiConnector.getUser(username, password);
+
+				if (user == null)
+					errorUser();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-
 		return user;
+	}
+
+	public void errorUser(){
+		lbl_userNotExist.setVisible(true);
 	}
 
 	public boolean checkForEmpty(String username,String password){
 		boolean empty = false;
 
+		lbl_userNotExist.setVisible(false);
 		if (username.isEmpty()){
 			empty = true;
 			lbl_usernameError.setVisible(true);

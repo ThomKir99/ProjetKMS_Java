@@ -11,12 +11,13 @@
       <Pane prefHeight="676.0" prefWidth="497.0">
          <children>
             <ListView fx:id="listViewProjet" layoutX="11.0" layoutY="69.0" prefHeight="607.0" prefWidth="481.0" />
-            <Button fx:id="btn_projet" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="ajouter projet" />
-            <Button fx:id="btn_3D" layoutX="418.0" layoutY="29.0" mnemonicParsing="false" text="3D">
+            <Button fx:id="btn_projet" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Add project" />
+            <Button fx:id="btn_3D" layoutX="133.0" layoutY="17.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="54.0" text="3D">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <Button fx:id="btn_disconnect" layoutX="414.0" layoutY="18.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="69.0" style="-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 3 3 3 3;" text="Logout" />
          </children>
       </Pane>
    </content>

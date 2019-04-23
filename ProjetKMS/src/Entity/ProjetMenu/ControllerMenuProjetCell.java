@@ -56,7 +56,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         } else {
             if (mLLoader == null) {
             	loadTheMenuProjetView(projet);
-            	System.out.println(projet.getId());
             }
             initializeViewInfo(projet);
         }
