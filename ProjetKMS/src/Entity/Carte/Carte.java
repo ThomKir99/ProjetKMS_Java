@@ -12,6 +12,9 @@ public class Carte extends Entity{
     private final double carteHeight = 15;
     private final double carteWeight = 20;
     private final double cartedepth = 0.1;
+    private float positionX;
+    private float positionY;
+    private float positionZ;
     private int groupId;
 
 	public String getDescription() {return this.description;}
@@ -37,16 +40,24 @@ public class Carte extends Entity{
 
   }
 
-  public Carte(int id, String name){
+  public Carte(int id, String name,float positionX,float positionY,float positionZ){
   	super(id,name);
+  	this.positionX =positionX;
+  	this.positionY =positionY;
+  	this.positionZ = positionZ;
   }
 
-  public Carte(int id, String name, String description,int order, boolean complete,int carteGroupId){
+
+  public Carte(int id, String name, String description,int order, boolean complete,
+		  int carteGroupId,float positionX,float positionY,float positionZ){
   	super(id,name);
   	this.description = description;
   	this.ordre_de_priorite = order;
   	this.complete = complete;
   	this.groupId = carteGroupId;
+  	this.positionX = positionX;
+  	this.positionY =positionY;
+  	this.positionZ = positionZ;
   }
 
   public String getAllCarteByString(){
@@ -78,6 +89,24 @@ public double getCarteHeight() {
 
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
+	}
+	public float getPositionX() {
+		return positionX;
+	}
+	public float getPositionY() {
+		return positionY;
+	}
+	public float getPositionZ() {
+		return positionZ;
+	}
+	public void setPositionX(float positionX) {
+		this.positionX = positionX;
+	}
+	public void setPositionY(float positionY) {
+		this.positionY = positionY;
+	}
+	public void setPositionZ(float positionZ) {
+		this.positionZ = positionZ;
 	}
 
 }

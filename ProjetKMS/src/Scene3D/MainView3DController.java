@@ -5,13 +5,14 @@ package Scene3D;
 
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
-
-
+import API.ApiConnector;
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
+import Entity.Carte.Carte3D;
 import User.Utilisateur;
 
 import javafx.event.ActionEvent;
@@ -77,9 +78,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 	public void showCube(){
 		root3D = new Group();
 		Pane pane3D = new Pane(root3D);
-		ArrayList<CuboidMesh> allCube = generateCard();
-		root3D.getChildren().addAll(allCube);
-		root3D.getChildren().addAll(addArrow(allCube));
+		ArrayList<Carte3D> allCarte3D = generateCard();
+		root3D.getChildren().addAll(add3DCarte(allCarte3D));
+		root3D.getChildren().addAll(addArrow(allCarte3D));
 		setCamera();
 		setCameraPosition();
 		setLight();
@@ -90,28 +91,40 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	}
 
-	private ArrayList<MeshView> addArrow(ArrayList<CuboidMesh> allCube) {
+	private ArrayList<CuboidMesh> add3DCarte(ArrayList<Carte3D> allCarte3D) {
+		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
+		for(Carte3D carte3D: allCarte3D){
+			allCube.add(carte3D.getCarte3D());
+		}
+		return allCube;
+	}
+
+
+	private ArrayList<MeshView> addArrow(ArrayList<Carte3D> allCube) {
 
 		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
 		 return depandanceShapeCreator.createTriangle(allCube);
 	}
-	private ArrayList<CuboidMesh> generateCard() {
+
+
+
+	private ArrayList<Carte3D> generateCard() {
 		double actualZGap = 0;
 		double actualXGap =0;
-		double actualYGab=0;
+		double actualYGap=0;
 		int numberOfLayer= 0;
-		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
+		ArrayList<Carte3D> allCarte3D = new ArrayList<Carte3D>();
 
 		   for(Project aProject :currentUser.getProjets()){
-			   aProject.setY3DPosition((defaultYPosition +actualYGab));
+			   aProject.setY3DPosition((defaultYPosition +actualYGap));
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
 					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
 					   if(aGroup.getCartes()!=null){
 						   for(Carte aCarte:aGroup.getCartes()){
 							   CuboidMesh contentShape = createACarte(aCarte,aProject);
-							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
-							   allCube.add(contentShape);
+							   setShapePosition(contentShape,actualXGap,actualYGap,actualZGap);
 
+							   allCarte3D.add(new Carte3D(aCarte, contentShape));
 							   actualZGap+=carteZGap;
 							   numberOfLayer++;
 						   }
@@ -124,9 +137,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 			   }
 			   actualXGap=0;
 			   actualZGap=0;
-			   actualYGab+=carteYGap;
+			   actualYGap+=carteYGap;
 		   }
-	    return allCube;
+	    return allCarte3D;
 	}
 
 	private void setCamera() {

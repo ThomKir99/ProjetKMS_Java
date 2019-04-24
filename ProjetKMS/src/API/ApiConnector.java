@@ -19,6 +19,7 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.*;
 
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import User.Utilisateur;
@@ -127,13 +128,16 @@ public class ApiConnector {
         int carteOrder = Integer.valueOf(obj.getAsJsonObject().get("carteOrder").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
         String carteDesc = obj.getAsJsonObject().get("carteDesc").toString();
-        boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteOrder").toString());
+        boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteComplete").toString());
         int carteGroupId= Integer.valueOf(obj.getAsJsonObject().get("id_groupe").toString());
-
+        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
+        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
+        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
         carteName = removeQuote(carteName);
         carteDesc = removeQuote(carteDesc);
 
-        carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,carteComplete,carteGroupId));
+        carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,
+        		carteComplete,carteGroupId,positionX,positionY,positionZ));
       }
   		return carteList;
     }
@@ -220,9 +224,11 @@ public class ApiConnector {
 
         int carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
-
+        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
+        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
+        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
         carteName = removeQuote(carteName);
-        laCarte = new Carte(carteID,carteName);
+        laCarte = new Carte(carteID,carteName,positionX,positionY,positionZ);
 
       }
   		return laCarte;
@@ -338,14 +344,19 @@ public class ApiConnector {
 
     	int carteID = -1;
     	String carteName = "Something went wrong";
+    	float positionX=0;
+    	float positionY=0;
+    	float positionZ=0;
       for (JsonElement obj : rootarray){
-      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());;
+      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
       	carteName = obj.getAsJsonObject().get("carteName").toString();
-
+      	positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
+      	positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
+      	positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
       	carteName = removeQuote(carteName);
 
       }
-      dbCarte = new Carte(carteID,carteName);
+      dbCarte = new Carte(carteID,carteName,positionX,positionY,positionZ);
     }
 
     if (!currentCarte.isEqualTo(dbCarte)){
@@ -445,9 +456,12 @@ public class ApiConnector {
 
         int carteId = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
+        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
+        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
+        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
 
         carteName = removeQuote(carteName);
-        leCarte = new Carte(carteId,carteName);
+        leCarte = new Carte(carteId,carteName,positionX,positionY,positionZ);
 
       }
   		return leCarte;
@@ -579,6 +593,29 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
 }
+
+  public ArrayList<Dependance> getDepandance() throws IOException{
+	    String sURL = this.baseURL +"getDepandance";
+	    URL url = new URL(sURL);
+	    URLConnection request = url.openConnection();
+	    request.connect();
+
+	    JsonParser jp = new JsonParser();
+	    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    JsonArray  rootarray = root.getAsJsonArray();
+	    ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
+
+	    if (rootarray.size() > 0){
+	      for (JsonElement obj : rootarray){
+	        int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+
+	        dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
+	      }
+	    }
+
+			return dependanceList;
+		}
 
 
 }

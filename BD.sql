@@ -36,9 +36,18 @@ description VARCHAR(500) NOT NULL,
 ordre_de_priorite int NOT NULL,
 complete bool,
 id_groupe int ,
+positionX float,
+positionY float,
+positionZ float,
 CONSTRAINT FK_id_groupe FOREIGN KEY (id_groupe)
 REFERENCES tbl_groupe(id_groupe)
 ON DELETE CASCADE
+);
+
+create table if not exists tbl_depandance(
+id_carte_depandante int not null,
+id_carte_de_depandance int not null,
+terminer bool
 );
 
 /*-----------------------------ADD DATA------------------------------------*/
@@ -62,8 +71,9 @@ INSERT INTO tbl_groupe VALUES (3,"Group 3", 1,1);
 INSERT INTO tbl_groupe VALUES (4,"Group 4", 1,2);
 
 /*Carte*/
-INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte1","Une desc",1,false,2);
-INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
+INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe,positionX,positionY,positionZ) VALUES ("Carte1","Une desc",1,false,2,0,0,0);
+INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe,positionX,positionY,positionZ) VALUES ("Carte2","Une desc",1,false,3,0,0,0);
 
-
+/*Depandance*/
+INSERT INTO tbl_depandance VALUES(1,2,false);
 
