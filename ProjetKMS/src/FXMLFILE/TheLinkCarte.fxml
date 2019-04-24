@@ -16,11 +16,11 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField fx:id="txt_description" prefHeight="32.0" prefWidth="136.0" promptText="text" GridPane.rowIndex="1" />
+      <TextField fx:id="txt_description" editable="false" prefHeight="39.0" prefWidth="221.0" promptText="text" GridPane.rowIndex="1" />
       <Pane prefHeight="36.0" prefWidth="221.0">
          <children>
-            <Button fx:id="btn_createLink" layoutX="182.0" layoutY="-5.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="40.0" text="Link" />
-            <TextField fx:id="txt_nomCarte" prefHeight="32.0" prefWidth="192.0" promptText="text" />
+            <Button fx:id="btn_createLink" layoutX="182.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="39.0" text="Link" />
+            <TextField fx:id="txt_nomCarte" editable="false" prefHeight="32.0" prefWidth="182.0" promptText="text" />
          </children>
       </Pane>
    </children>

@@ -551,4 +551,25 @@ public class ApiConnector {
 	    request.getInputStream();
 	  }
 
+
+//  public void createDependance(int idCarteDependant,int idCarte) throws IOException{
+//	  	Gson gson = new Gson();
+//	  	String idDependant = gson.toJson(idCarteDependant);
+//	  	String idCarteDep = gson.toJson(idCarte);
+//	    String sURL = this.baseURL +"createDependance";
+//
+//	    URL url = new URL(sURL);
+//	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+//	    request.setRequestProperty("Content-Type", "application/json");
+//	    request.setRequestMethod("POST");
+//	    request.setDoOutput(true);
+//	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+//	    wr.write(idDependant);
+//	    wr.write(idCarteDep);
+//	    wr.flush();
+//	    wr.close();
+//	    request.connect();
+//	    request.getInputStream();
+//	  }
+
 }

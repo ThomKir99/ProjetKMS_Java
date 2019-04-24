@@ -5,6 +5,7 @@ import java.io.IOException;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Projet.ControllerTheGroup;
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +36,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	private TextField txt_nomCarte;
 	private TheGroupLink groupController;
 	private ControllerTheDependance projectController;
+	private ControllerTheProject TheProjet;
 	@FXML
 	private GridPane gridPane1;
 	@FXML
@@ -43,14 +45,14 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	public ControllerLinkGroupCell(TheGroupLink groupCell,ControllerTheDependance projectCell){
 		groupController = groupCell;
 		projectController = projectCell;
-		 System.out.println("carte");
+		 System.out.println("carte5");
 	}
 
 
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
-        System.out.println("carte");
+        System.out.println("carte6");
         this.carte = carte;
         if(empty || carte == null) {
             setText(null);
@@ -97,7 +99,9 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					createLink(event);
+					
+					createLink();
+					openProjectPage(event);
 				} catch (IOException e) {
 					showLoadingError();
 				}
@@ -108,14 +112,14 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	}
 
 
-	public void createLink(ActionEvent event)throws IOException{
+	public void openProjectPage(ActionEvent event)throws IOException{
 		addLinkdb();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
 
 
-       // ControllerDependance ControllerDependance = fxmlLoader.getController();
-       //	ControllerDependance.setProject(currentProjet);
+        ControllerTheProject ControllerTheProject = fxmlLoader.getController();
+        ControllerTheProject.setProject(currentProjet);
 
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -133,6 +137,12 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
     	alert.setTitle("Error");
     	alert.setHeaderText("Fail to open your project");
     	alert.setContentText("For an unknown reason, your project have fail to open");
+	}
+	
+	
+	public void createLink()
+	{
+		
 	}
 
 }

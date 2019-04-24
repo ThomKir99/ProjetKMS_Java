@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS tbl_groupe (
 id_groupe int PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nom_groupe VARCHAR(200),
 id_projet int ,
+order_in_project int,
 CONSTRAINT FK_id_projet FOREIGN KEY  (id_projet)
 REFERENCES tbl_projet(id_projet)
 ON DELETE CASCADE
@@ -40,6 +41,12 @@ REFERENCES tbl_groupe(id_groupe)
 ON DELETE CASCADE
 );
 
+create table if not exists tbl_depandance(
+id_carte_depandante int not null,
+id_carte_de_depandance int not null,
+terminer bool
+);
+
 /*-----------------------------ADD DATA------------------------------------*/
 
 /*Utilisateur*/
@@ -55,14 +62,16 @@ INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Pr
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,date_projet_ouvert) VALUES ("Projet Thomas", 3 ,now()+4);
 
 /*Group*/
-INSERT INTO tbl_groupe VALUES (1,"Group 1", 4);
-INSERT INTO tbl_groupe VALUES (2,"Group 2", 4);
-INSERT INTO tbl_groupe VALUES (3,"Group 3", 1);
-INSERT INTO tbl_groupe VALUES (4,"Group 4", 1);
+INSERT INTO tbl_groupe VALUES (1,"Group 1", 4,1);
+INSERT INTO tbl_groupe VALUES (2,"Group 2", 4,2);
+INSERT INTO tbl_groupe VALUES (3,"Group 3", 1,1);
+INSERT INTO tbl_groupe VALUES (4,"Group 4", 1,2);
 
 /*Carte*/
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte1","Une desc",1,false,2);
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 
+/*Depandance*/
+INSERT INTO tbl_depandance VALUES(1,2,false);
 
-select * from tbl_projet;
+

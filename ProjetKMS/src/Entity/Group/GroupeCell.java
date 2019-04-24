@@ -195,7 +195,6 @@ public void errorMessage() throws IOException{
         controllerProjectList.setProject(currentProjet);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(tableViewScene);
         window.show();
 		  }catch(Exception e){

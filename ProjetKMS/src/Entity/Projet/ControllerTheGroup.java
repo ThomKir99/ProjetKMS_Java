@@ -195,6 +195,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		getAllCarte();
 		listViewGroup.setItems(carteObservableList);
 		listViewGroup.setCellFactory(groupeListView -> {
+
 		return setCellDragAndDropHandler();
 		});
 	}
@@ -221,7 +222,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
 		ListCell<Carte> cell = new GroupeCell(controllerProjectList,this);
-
+		 System.out.println("cartee");
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });
