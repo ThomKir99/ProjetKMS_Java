@@ -175,13 +175,11 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	private void createStage(Scene scene) {
     Stage stage = new Stage();
-	addListener(stage);
-	stage.setTitle("My New Stage Title");
-	stage.setScene(scene);
-	setOnClosingListener(stage);
-	stage.show();
-
-
+		addListener(stage);
+		stage.setTitle("My New Stage Title");
+		stage.setScene(scene);
+		setOnClosingListener(stage);
+		stage.show();
 	}
 
 	private void setOnClosingListener(Stage stage) {

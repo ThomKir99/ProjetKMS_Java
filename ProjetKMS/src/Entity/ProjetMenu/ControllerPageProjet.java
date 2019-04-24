@@ -29,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
@@ -148,6 +149,27 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		}
 
 		refreshProjectList();
+	}
+
+	public void hideWindow(){
+		btn_3D.getScene().getWindow().hide();
+	}
+
+	public void reopenWindow(){
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/FXMLFILE/ControllerPageProjet.fxml"));
+			Scene scene = new Scene(root);
+			createStage(scene);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void createStage(Scene scene) {
+    Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	public void DeleteProjet(Project projet) throws IOException{
