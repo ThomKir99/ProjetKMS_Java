@@ -130,14 +130,11 @@ public class ApiConnector {
         String carteDesc = obj.getAsJsonObject().get("carteDesc").toString();
         boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteComplete").toString());
         int carteGroupId= Integer.valueOf(obj.getAsJsonObject().get("id_groupe").toString());
-        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
-        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
-        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
         carteName = removeQuote(carteName);
         carteDesc = removeQuote(carteDesc);
 
         carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,
-        		carteComplete,carteGroupId,positionX,positionY,positionZ));
+        		carteComplete,carteGroupId));
       }
   		return carteList;
     }
@@ -224,11 +221,8 @@ public class ApiConnector {
 
         int carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
-        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
-        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
-        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
         carteName = removeQuote(carteName);
-        laCarte = new Carte(carteID,carteName,positionX,positionY,positionZ);
+        laCarte = new Carte(carteID,carteName);
 
       }
   		return laCarte;
@@ -344,19 +338,14 @@ public class ApiConnector {
 
     	int carteID = -1;
     	String carteName = "Something went wrong";
-    	float positionX=0;
-    	float positionY=0;
-    	float positionZ=0;
       for (JsonElement obj : rootarray){
       	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
       	carteName = obj.getAsJsonObject().get("carteName").toString();
-      	positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
-      	positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
-      	positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
+
       	carteName = removeQuote(carteName);
 
       }
-      dbCarte = new Carte(carteID,carteName,positionX,positionY,positionZ);
+      dbCarte = new Carte(carteID,carteName);
     }
 
     if (!currentCarte.isEqualTo(dbCarte)){
@@ -456,12 +445,10 @@ public class ApiConnector {
 
         int carteId = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
-        float positionX = Float.valueOf(obj.getAsJsonObject().get("positionX").toString());
-        float positionY = Float.valueOf(obj.getAsJsonObject().get("positionY").toString());
-        float positionZ = Float.valueOf(obj.getAsJsonObject().get("positionZ").toString());
+
 
         carteName = removeQuote(carteName);
-        leCarte = new Carte(carteId,carteName,positionX,positionY,positionZ);
+        leCarte = new Carte(carteId,carteName);
 
       }
   		return leCarte;

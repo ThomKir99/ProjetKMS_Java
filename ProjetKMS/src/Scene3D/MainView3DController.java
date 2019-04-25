@@ -7,6 +7,11 @@ package Scene3D;
 import java.io.IOException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.vecmath.Point3d;
+
+import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
 import API.ApiConnector;
@@ -20,7 +25,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -81,6 +86,7 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 		ArrayList<Carte3D> allCarte3D = generateCard();
 		root3D.getChildren().addAll(add3DCarte(allCarte3D));
 		root3D.getChildren().addAll(addArrow(allCarte3D));
+		root3D.getChildren().addAll(createArrowLink(allCarte3D));
 		setCamera();
 		setCameraPosition();
 		setLight();
@@ -91,6 +97,10 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	}
 
+	private ArrayList<PolyLine3D> createArrowLink(ArrayList<Carte3D> allCarte3D) {
+		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
+		 return depandanceShapeCreator.createTheLink(allCarte3D);
+	}
 	private ArrayList<CuboidMesh> add3DCarte(ArrayList<Carte3D> allCarte3D) {
 		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
 		for(Carte3D carte3D: allCarte3D){

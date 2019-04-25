@@ -40,24 +40,24 @@ public class Carte extends Entity{
 
   }
 
-  public Carte(int id, String name,float positionX,float positionY,float positionZ){
+  public Carte(int id, String name){
   	super(id,name);
-  	this.positionX =positionX;
-  	this.positionY =positionY;
-  	this.positionZ = positionZ;
+  	this.positionX =0;
+  	this.positionY =0;
+  	this.positionZ = 0;
   }
 
 
   public Carte(int id, String name, String description,int order, boolean complete,
-		  int carteGroupId,float positionX,float positionY,float positionZ){
+		  int carteGroupId){
   	super(id,name);
   	this.description = description;
   	this.ordre_de_priorite = order;
   	this.complete = complete;
   	this.groupId = carteGroupId;
-  	this.positionX = positionX;
-  	this.positionY =positionY;
-  	this.positionZ = positionZ;
+  	this.positionX = 0;
+  	this.positionY =0;
+  	this.positionZ = 0;
   }
 
   public String getAllCarteByString(){

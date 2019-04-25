@@ -138,9 +138,6 @@ public class Hello {
 	  		obj.addProperty("carteOrder", result.getInt(4));
 	  		obj.addProperty("carteComplete", result.getBoolean(5));
 	  		obj.addProperty("id_groupe", result.getInt(6));
-	  		obj.addProperty("positionX", result.getFloat(7));
-	  		obj.addProperty("positionY", result.getFloat(8));
-	  		obj.addProperty("positionZ", result.getFloat(9));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -251,9 +248,6 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("carteID", result.getInt(1));
 	  		obj.addProperty("carteName", result.getString(2));
-	  		obj.addProperty("positionX", result.getFloat(7));
-	  		obj.addProperty("positionY", result.getFloat(8));
-	  		obj.addProperty("positionZ", result.getFloat(9));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -360,7 +354,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String newCarte(@PathParam("groupId") String groupId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_carte(nom,description,id_groupe,ordre_de_priorite,complete,positionX,positionY,positionZ) VALUES (\"Insert a name\", \"No desc\","+ groupId + ",0,0,0,0,0)" );
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_carte(nom,description,id_groupe,ordre_de_priorite,complete) VALUES (\"Insert a name\", \"No desc\","+ groupId + ",0,0)" );
 
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_carte WHERE id_carte = LAST_INSERT_ID()");
   	Gson gson = new Gson();
@@ -373,9 +367,6 @@ public class Hello {
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("carteID", result.getInt(1));
 	  		obj.addProperty("carteName", result.getString(2));
-	  		obj.addProperty("positionX", result.getFloat(7));
-	  		obj.addProperty("positionY", result.getFloat(8));
-	  		obj.addProperty("positionZ", result.getFloat(9));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -440,14 +431,14 @@ public class Hello {
 
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
-  	JsonObject obj = new JsonObject();
+
   	if (result.isBeforeFirst()){
 			while (result.next()){
+				JsonObject obj = new JsonObject();
 				obj.addProperty("id_carte_depandante", result.getInt(1));
 				obj.addProperty("id_carte_de_depandance", result.getInt(2));
 				jsonArr.add(obj);
-				System.out.println(result.getInt(1));
-				Thread.sleep(1000);
+
 			}
 
   	}
