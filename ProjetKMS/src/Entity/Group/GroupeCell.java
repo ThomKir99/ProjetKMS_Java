@@ -143,6 +143,8 @@ public class GroupeCell extends ListCell<Carte> {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
+					//int carteId;
+				//	carteId = getCarteId();
 					addLink(event);
 				} catch (IOException e) {
 					showLoadingError();
@@ -210,6 +212,13 @@ public void errorMessage() throws IOException{
     	alert.setTitle("Error");
     	alert.setHeaderText("Fail to open your project");
     	alert.setContentText("For an unknown reason, your project have fail to open");
+	}
+
+	public int getCarteId(){
+		int carteId;
+		carteId = carte.getId();
+		System.out.println("group cell la 1 carte id est : "+ carte.getId());
+		return carteId;
 	}
 
 }

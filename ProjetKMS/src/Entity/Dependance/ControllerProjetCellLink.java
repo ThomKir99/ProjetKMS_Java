@@ -33,6 +33,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
     private FXMLLoader mLLoader;
     private Project currentProjet;
     private ControllerDependance controllerDependance;
+    private Project currentProjetDependance;
 
     public ControllerProjetCellLink(ControllerDependance controllerPageDependance){
 		this.controllerDependance = controllerPageDependance;
@@ -58,6 +59,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
 	public void setCurrentProject(){
 		currentProjet = controllerDependance.getProject();
+
 	}
 
 	private void initializeViewInfo(Project projet) {
@@ -65,7 +67,8 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 		setCurrentProject();
         setListener();
         setGraphic(pane1);
-
+        currentProjetDependance = projet;
+        System.out.println(projet.getId());
 
 	}
 
@@ -101,7 +104,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		ControllerTheDependance controllerProjectList = fxmlLoader.getController();
-		controllerProjectList.setProject(currentProjet);
+		controllerProjectList.setProject(currentProjetDependance);
 		Scene tableViewScene = new Scene(tableViewParent);
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 		System.out.println("TestAlex1");

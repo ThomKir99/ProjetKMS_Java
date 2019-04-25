@@ -89,10 +89,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 					e.printStackTrace();
 				}
      }
-
-
 		});
-
 
       btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

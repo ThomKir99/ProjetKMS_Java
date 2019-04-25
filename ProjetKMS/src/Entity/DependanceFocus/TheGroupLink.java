@@ -69,9 +69,7 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	public void refreshCarteList(){
 		getAllCarte();
 		listViewLinkGroup.setItems(carteObservableList);
-		 System.out.println("carte1.71");
 		listViewLinkGroup.setCellFactory(Listcarte-> {
-			 System.out.println("carte1.8");
 			return setFactory();
 		});
 	}
@@ -82,9 +80,7 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 		if(listViewLinkGroup!=null){
 			refreshCarteList();
-			 System.out.println("carte1.7");
 			listViewLinkGroup.setCellFactory(ListDescartes->{
-				 System.out.println("carte1.8");
 				return setFactory();
 			});
 		}

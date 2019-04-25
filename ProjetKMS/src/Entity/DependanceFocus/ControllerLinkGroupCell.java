@@ -2,8 +2,10 @@ package Entity.DependanceFocus;
 
 import java.io.IOException;
 
+import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerTheDependance;
+import Entity.Group.GroupeCell;
 import Entity.Projet.ControllerTheGroup;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -41,18 +43,19 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	private GridPane gridPane1;
 	@FXML
 	private Button btn_createLink;
+	private ApiConnector apiConnector;
+	private GroupeCell groupCell;
 
 	public ControllerLinkGroupCell(TheGroupLink groupCell,ControllerTheDependance projectCell){
 		groupController = groupCell;
 		projectController = projectCell;
-		 System.out.println("carte5");
+		 apiConnector = new ApiConnector();
 	}
 
 
 	@Override
     protected void updateItem(Carte carte, boolean empty) {
         super.updateItem(carte, empty);
-        System.out.println("carte6");
         this.carte = carte;
         if(empty || carte == null) {
             setText(null);
@@ -99,8 +102,9 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					
-					createLink();
+					int carte2;
+					carte2 = getCarteId();
+					createLink(carte2);
 					openProjectPage(event);
 				} catch (IOException e) {
 					showLoadingError();
@@ -138,11 +142,27 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
     	alert.setHeaderText("Fail to open your project");
     	alert.setContentText("For an unknown reason, your project have fail to open");
 	}
-	
-	
-	public void createLink()
+
+
+	public int getCarteId(){
+		int id ;
+		id = carte.getId();
+		System.out.println(" carteLink Le id est = " +id);
+		return id;
+	}
+
+	public void createLink(int carteAyantDependance)
 	{
-		
+		try {
+			int carteDependante;
+			System.out.println("id miam" + groupCell.getCarteId());
+			carteDependante = groupCell.getCarteId();
+			apiConnector.createDependance(carteDependante,carteAyantDependance);
+			} catch (IOException e) {
+				e.printStackTrace();
+				}
+
+
 	}
 
 }
