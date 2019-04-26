@@ -14,22 +14,26 @@ import javafx.fxml.Initializable;
 public class Group extends Entity{
 	private List<Carte> cartes;
 	private double x3DPosition;
+	private int order_in_projet;
 
 	public Group(){
 		super();
 		this.cartes = new ArrayList<Carte>();
 		setX3DPosition(0);
+		order_in_projet=0;
 	}
 
 	public Group(String name){
 		super();
 		this.cartes = new ArrayList<Carte>();
 		this.setName(name);
+		order_in_projet=0;
 	}
 
-	public Group(int id, String name){
+	public Group(int id, String name,int orderInProject){
 		super(id,name);
 		this.cartes = null;
+		this.order_in_projet = orderInProject;
 	}
 
 	public List<Carte> getCartes() {return cartes;}
@@ -72,6 +76,14 @@ public class Group extends Entity{
 
 	public void setX3DPosition(double xPosition) {
 		x3DPosition = xPosition;
+	}
+
+	public int getOrder_in_projet() {
+		return order_in_projet;
+	}
+
+	public void setOrder_in_projet(int order_in_projet) {
+		this.order_in_projet = order_in_projet;
 	}
 
 }

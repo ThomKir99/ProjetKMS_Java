@@ -3,6 +3,8 @@ package Entity.Dependance;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Entity.Carte.Carte;
 import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.*;
 import Entity.Projet.Project;
@@ -28,16 +30,13 @@ import javafx.stage.Stage;
 public class ControllerTheDependance extends AnchorPane implements Initializable{
 	@FXML
 	public TextField txt_nomProjet;
-
 	private ObservableList<Group> groupObservableListLink;
 	public Project leProjet;
-
+	public Carte carteParent;
 	@FXML
 	public Button btn_backToMenu;
-	//public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
 	@FXML
 	public ListView<Group> listViewLinkGroupe;
-
 	public ControllerTheDependance(){
 
 		leProjet = new Project();
@@ -49,11 +48,24 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 		return projet;
 	}
 
+
+
 	public void setProject(Project unProjet){
 
 		this.leProjet = unProjet;
 		txt_nomProjet.setText(leProjet.getName());
 		refreshGroupList();
+	}
+
+	public void setACarteParent(Carte uneCarte){
+		this.carteParent = uneCarte;
+	}
+
+	public Carte getCarteParent(){
+		Carte carte;
+		carte= carteParent;
+		System.out.println("TheDependance carte id= " +carte.getId());
+		return carte;
 	}
 
 

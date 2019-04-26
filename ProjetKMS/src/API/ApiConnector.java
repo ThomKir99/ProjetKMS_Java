@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +20,11 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.*;
 
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import User.Utilisateur;
+import javafx.scene.paint.Color;
 
 
 public class ApiConnector {
@@ -68,10 +71,10 @@ public class ApiConnector {
 
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         userName = removeQuote(userName);
-
-        projectList.add(new Project(projectID,userName));
+        colorProject  =removeQuote(colorProject);
+        projectList.add(new Project(projectID,userName,colorProject));
       }
     }
     else{
@@ -97,9 +100,9 @@ public class ApiConnector {
       for (JsonElement obj : rootarray){
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupId").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        groupList.add(new Group(groupID,groupName));
+        groupList.add(new Group(groupID,groupName,groupOrder));
 
       }
   		return groupList;
@@ -126,12 +129,13 @@ public class ApiConnector {
         int carteOrder = Integer.valueOf(obj.getAsJsonObject().get("carteOrder").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
         String carteDesc = obj.getAsJsonObject().get("carteDesc").toString();
-        boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteOrder").toString());
-
+        boolean carteComplete = Boolean.parseBoolean(obj.getAsJsonObject().get("carteComplete").toString());
+        int carteGroupId= Integer.valueOf(obj.getAsJsonObject().get("id_groupe").toString());
         carteName = removeQuote(carteName);
         carteDesc = removeQuote(carteDesc);
 
-        carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,carteComplete));
+        carteList.add(new Carte(carteID,carteName,carteDesc,carteOrder,
+        		carteComplete,carteGroupId));
       }
   		return carteList;
     }
@@ -181,14 +185,17 @@ public class ApiConnector {
 
     	int projectID = -1;
     	String projectName = "Something went wrong";
+    	String projectColor = "#FFFFFF";
       for (JsonElement obj : rootarray){
         projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());;
         projectName = obj.getAsJsonObject().get("projectName").toString();
+        projectColor= obj.getAsJsonObject().get("color_project").toString();
 
         projectName = removeQuote(projectName);
+        projectColor = removeQuote(projectColor);
 
       }
-      dbProject = new Project(projectID,projectName);
+      dbProject = new Project(projectID,projectName,projectColor);
     }
 
     if (!currentProject.isEqualTo(dbProject)){
@@ -215,7 +222,6 @@ public class ApiConnector {
 
         int carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
-
         carteName = removeQuote(carteName);
         laCarte = new Carte(carteID,carteName);
 
@@ -244,9 +250,9 @@ public class ApiConnector {
 
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder =  Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupID,groupName);
+        leGroup = new Group(groupID,groupName,groupOrder);
 
       }
   		return leGroup;
@@ -273,9 +279,10 @@ public class ApiConnector {
 
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String projectName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         projectName = removeQuote(projectName);
-        leProjet = new Project(projectID,projectName);
+        colorProject = removeQuote(colorProject);
+        leProjet = new Project(projectID,projectName,colorProject);
 
       }
   		return leProjet;
@@ -300,14 +307,15 @@ public class ApiConnector {
 
     	int groupID = -1;
     	String groupName = "Something went wrong";
+    	int groupOrder = -1;
       for (JsonElement obj : rootarray){
-        groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());;
+        groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
 
       }
-      dbGroup = new Group(groupID,groupName);
+      dbGroup = new Group(groupID,groupName,groupOrder);
     }
 
     if (!currentGroup.isEqualTo(dbGroup)){
@@ -332,7 +340,7 @@ public class ApiConnector {
     	int carteID = -1;
     	String carteName = "Something went wrong";
       for (JsonElement obj : rootarray){
-      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());;
+      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
       	carteName = obj.getAsJsonObject().get("carteName").toString();
 
       	carteName = removeQuote(carteName);
@@ -347,6 +355,7 @@ public class ApiConnector {
     }
 
   }
+
 
   private void updateMenuProject(Project currentProject) throws IOException{
   	Gson gson = new Gson();
@@ -438,6 +447,7 @@ public class ApiConnector {
         int carteId = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
         String carteName = obj.getAsJsonObject().get("carteName").toString();
 
+
         carteName = removeQuote(carteName);
         leCarte = new Carte(carteId,carteName);
 
@@ -466,9 +476,9 @@ public class ApiConnector {
 
         int groupId = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
-
+        int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupId,groupName);
+        leGroup = new Group(groupId,groupName,groupOrder);
 
       }
   		return leGroup;
@@ -485,7 +495,7 @@ public class ApiConnector {
     request.connect();
 
     if (request.getContent() != null){
-      Project leProjet =  new Project();
+    	Project leProjet =  new Project();
     	JsonParser jp = new JsonParser();
     	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
     	JsonArray rootarray = root.getAsJsonArray();
@@ -493,9 +503,9 @@ public class ApiConnector {
       for (JsonElement obj : rootarray){
         int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String projectName = obj.getAsJsonObject().get("projectName").toString();
-
+        String colorProject = obj.getAsJsonObject().get("color_project").toString();
         projectName = removeQuote(projectName);
-        leProjet = new Project(projectId,projectName);
+        leProjet = new Project(projectId,projectName,colorProject);
 
       }
   		return leProjet;
@@ -504,5 +514,161 @@ public class ApiConnector {
     	return null;
     }
   }
+
+  public void saveCarteOrder(Group currentGroup) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentGroup.getCartes());
+	    String sURL = this.baseURL +"saveCarteOrder";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+  }
+
+  public void saveGroupeOrder(Project currentProject) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentProject.getGroups());
+	    String sURL = this.baseURL +"saveGroupeOrder";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+}
+
+  public void changeCarteGroupId(Carte carte) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(carte);
+	    String sURL = this.baseURL +"changeCarteGroupId";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+}
+  public void changeProjectColor(Project project) throws IOException{
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(project);
+	    String sURL = this.baseURL +"changerColorProject";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+  }
+  private Project getProjectOpenedTime(int userId) throws IOException{
+	    String sURL = this.baseURL + "OpenedProject/" + userId ;
+	    URL url = new URL(sURL);
+	    URLConnection request = url.openConnection();
+	    request.connect();
+
+	    if (request.getContent() != null){
+	        Project leProjet =  new Project();
+	      	JsonParser jp = new JsonParser();
+	      	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	      	JsonArray rootarray = root.getAsJsonArray();
+
+	     	 for (JsonElement obj : rootarray){
+	             int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
+	             String projectName = obj.getAsJsonObject().get("projectName").toString();
+	             Date projectDateOpened = Date.valueOf(obj.getAsJsonObject().get("date_projet_ouvert").toString());
+	             leProjet = new Project(projectId,projectName,projectDateOpened);
+	     	 }
+	     	return leProjet;
+	    }
+	    else{
+	    	return null;
+	    }
+  }
+
+
+  public void setDateOpenProject(Project currentProject) throws IOException{
+	  	Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentProject);
+	    String sURL = this.baseURL +"updateProjectDate";
+
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("PUT");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	  }
+
+
+  public void createDependance(int idCarteParent,int idCarte) throws IOException{
+	  	Gson gson = new Gson();
+	  	String idParent = gson.toJson(String.valueOf(idCarteParent));
+	  	String idCarteDep = gson.toJson(String.valueOf(idCarte));
+	    String sURL = this.baseURL +"createDependance";
+
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(idParent);
+	    wr.write(idCarteDep);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	  }
+
+
+  public ArrayList<Dependance> getDepandance() throws IOException{
+	    String sURL = this.baseURL +"getDepandance";
+	    URL url = new URL(sURL);
+	    URLConnection request = url.openConnection();
+	    request.connect();
+
+	    JsonParser jp = new JsonParser();
+	    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    JsonArray  rootarray = root.getAsJsonArray();
+	    ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
+
+	    if (rootarray.size() > 0){
+	      for (JsonElement obj : rootarray){
+	        int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+
+	        dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
+	      }
+	    }
+
+			return dependanceList;
+		}
+
 
 }

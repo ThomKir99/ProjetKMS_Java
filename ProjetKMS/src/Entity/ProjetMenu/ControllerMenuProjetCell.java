@@ -15,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -56,7 +58,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         } else {
             if (mLLoader == null) {
             	loadTheMenuProjetView(projet);
-            	System.out.println(projet.getId());
             }
             initializeViewInfo(projet);
         }
@@ -66,6 +67,8 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
      setListener();
+     Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
+     btn_Delete.setGraphic(new ImageView(imagePoubelle));
      setGraphic(gridPane_projectCell);
 	}
 
@@ -85,10 +88,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 					e.printStackTrace();
 				}
      }
-
-
 		});
-
 
       btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -108,6 +108,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			public void handle(ActionEvent event) {
 				try {
 					openProject(event);
+
 				} catch (IOException e) {
 					showLoadingError();
 				}
@@ -174,5 +175,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     	alert.setContentText("For an unknown reason, your project have fail to open");
 
 	}
+
+
 
 }

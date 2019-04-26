@@ -31,6 +31,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -60,6 +62,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private FXMLLoader mLLoader;
 	private ObjectProperty<ListCell<Carte>> dragSource = new SimpleObjectProperty<>();
 	private boolean dropInSameList=false;
+
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 		this.apiConnector = new ApiConnector();
@@ -103,6 +106,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void getCarteFromGroup() throws IOException{
 		if (apiConnector.carteList(this.group.getId()) != null){
 			this.group.setCartes(apiConnector.carteList(this.group.getId()));
+
 		}
 	}
 
@@ -195,6 +199,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		getAllCarte();
 		listViewGroup.setItems(carteObservableList);
 		listViewGroup.setCellFactory(groupeListView -> {
+
 		return setCellDragAndDropHandler();
 		});
 	}
@@ -202,6 +207,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
+		//	Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/plus.png"));
+		//	btn_addCarte.setGraphic(new ImageView(imagePoubelle));
 			refreshCarteList();
 			setListener();
 
@@ -221,7 +228,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
 		ListCell<Carte> cell = new GroupeCell(controllerProjectList,this);
-
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });
@@ -261,11 +267,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
 		if(dragSourceCameFromSameList(listViewGroup)){
   		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
+  		   	saveCarteOrder();
   	   }else{
 
   		   addCarteToOtherList(event);
   	   }
 	}
+
+
 
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
@@ -367,13 +376,38 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	private void addCarteToOtherList( DragEvent event) {
 
-		ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
-		carteObservableList.addAll(listViewGroup.getItems());
-		ListCell<Carte> dragSourceCell = dragSource.get();
-		carteObservableList.add(dragSourceCell.getItem());
-		listViewGroup.setItems(carteObservableList);
-        event.setDropCompleted(true);
-        setDragSourceToNull();
+
+		try {
+			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
+			carteObservableList.addAll(listViewGroup.getItems());
+			ListCell<Carte> dragSourceCell = dragSource.get();
+			carteObservableList.add(dragSourceCell.getItem());
+			dragSourceCell.getItem().setGroupId(group.getId());
+			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			listViewGroup.setItems(carteObservableList);
+	        event.setDropCompleted(true);
+	        setDragSourceToNull();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+
+	private void saveCarteOrder() {
+		try {
+			for(int order =0; order<group.getCartes().size();order++){
+				listViewGroup.getItems().get(order).setOrder(order+1);
+
+			}
+			group.setCartes(listViewGroup.getItems());
+
+			apiConnector.saveCarteOrder(group);
+			refreshCarteList();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 
@@ -402,5 +436,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		int index =	controllerProjectList.getItemIndex(group);
 		return index;
 	}
+
+
+
 
 }

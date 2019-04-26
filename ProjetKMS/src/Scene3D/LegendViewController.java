@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.jws.soap.SOAPBinding.Style;
-import javax.media.j3d.FontExtrusion;
-
 import Entity.Projet.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

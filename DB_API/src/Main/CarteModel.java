@@ -3,6 +3,8 @@ package Main;
 public class CarteModel {
 	public int id;
 	public String name;
+	public int ordre_de_priorite;
+	private int groupId;
 
 	public void setID(int groupID) {
 		this.id = groupID;
@@ -18,5 +20,20 @@ public class CarteModel {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getOrdre_de_priorite() {
+		return ordre_de_priorite;
+	}
+	public void setOrdre_de_priorite(int ordre_de_priorite) {
+		this.ordre_de_priorite = ordre_de_priorite;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 }

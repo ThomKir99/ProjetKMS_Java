@@ -5,13 +5,19 @@ package Scene3D;
 
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.vecmath.Point3d;
+
+import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
-
-
+import API.ApiConnector;
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
+import Entity.Carte.Carte3D;
 import User.Utilisateur;
 
 import javafx.event.ActionEvent;
@@ -19,7 +25,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -31,6 +37,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -75,7 +83,10 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 	public void showCube(){
 		root3D = new Group();
 		Pane pane3D = new Pane(root3D);
-		root3D.getChildren().addAll(generateCard());
+		ArrayList<Carte3D> allCarte3D = generateCard();
+		root3D.getChildren().addAll(add3DCarte(allCarte3D));
+		root3D.getChildren().addAll(addArrow(allCarte3D));
+		root3D.getChildren().addAll(createArrowLink(allCarte3D));
 		setCamera();
 		setCameraPosition();
 		setLight();
@@ -86,23 +97,44 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	}
 
-	private ArrayList<CuboidMesh> generateCard() {
+	private ArrayList<PolyLine3D> createArrowLink(ArrayList<Carte3D> allCarte3D) {
+		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
+		 return depandanceShapeCreator.createTheLink(allCarte3D);
+	}
+	private ArrayList<CuboidMesh> add3DCarte(ArrayList<Carte3D> allCarte3D) {
+		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
+		for(Carte3D carte3D: allCarte3D){
+			allCube.add(carte3D.getCarte3D());
+		}
+		return allCube;
+	}
+
+
+	private ArrayList<MeshView> addArrow(ArrayList<Carte3D> allCube) {
+
+		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
+		 return depandanceShapeCreator.createTriangle(allCube);
+	}
+
+
+
+	private ArrayList<Carte3D> generateCard() {
 		double actualZGap = 0;
 		double actualXGap =0;
-		double actualYGab=0;
+		double actualYGap=0;
 		int numberOfLayer= 0;
-		ArrayList<CuboidMesh> allCube = new ArrayList<CuboidMesh>();
+		ArrayList<Carte3D> allCarte3D = new ArrayList<Carte3D>();
 
 		   for(Project aProject :currentUser.getProjets()){
-			   aProject.setY3DPosition((defaultYPosition +actualYGab));
+			   aProject.setY3DPosition((defaultYPosition +actualYGap));
 				   for(Entity.Group.Group aGroup:aProject.getGroups()){
 					   aGroup.setX3DPosition(defaultXPosition+ actualXGap);
 					   if(aGroup.getCartes()!=null){
 						   for(Carte aCarte:aGroup.getCartes()){
 							   CuboidMesh contentShape = createACarte(aCarte,aProject);
-							   setShapePosition(contentShape,actualXGap,actualYGab,actualZGap);
-							   allCube.add(contentShape);
+							   setShapePosition(contentShape,actualXGap,actualYGap,actualZGap);
 
+							   allCarte3D.add(new Carte3D(aCarte, contentShape));
 							   actualZGap+=carteZGap;
 							   numberOfLayer++;
 						   }
@@ -115,9 +147,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 			   }
 			   actualXGap=0;
 			   actualZGap=0;
-			   actualYGab+=carteYGap;
+			   actualYGap+=carteYGap;
 		   }
-	    return allCube;
+	    return allCarte3D;
 	}
 
 	private void setCamera() {

@@ -96,11 +96,13 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		}
 	}
 
-	public void CreateProject(){
+	public void CreateProject() throws InterruptedException{
 		Project unProjet = new Project();
 		try {
-			unProjet = apiConnector.createProject(userContext.getId());
+		  unProjet = apiConnector.createProject(userContext.getId());
 		  userContext.addProjet(unProjet);
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -119,6 +121,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		mainView3DController.showCube();
 		((Node)(event.getSource())).getScene().getWindow().hide();
 	}
+
 }
 
 
