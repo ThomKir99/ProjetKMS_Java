@@ -287,12 +287,12 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
-  @Path("/addPermission")
+  @Path("/insertPermission")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public void addPermission(PermissionModel permission) throws Exception {
+  public void insertPermission(PermissionModel permission) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES("+ permission.idProject +"," + permission.idUser + ",\'" + permission.permission + "\');");
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES("+ permission.getId_projet() +"," + permission.getId_user() + ",\'" + permission.getPermission() + "\');");
   	mySqlCon.closeConnection();
   }
 
@@ -301,10 +301,9 @@ public class Hello {
   @Consumes(MediaType.APPLICATION_JSON)
   public void deletePermission(PermissionModel permission) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("DELETE FROM tbl_permission WHERE id_projet = \'" + permission.idProject + "\' AND id_utilisateur = \'" + permission.idUser + "\'");
+  	mySqlCon.executeNonQuery("DELETE FROM tbl_permission WHERE id_projet = \'" + permission.getId_projet() + "\' AND id_utilisateur = \'" + permission.getId_user() + "\'");
   	mySqlCon.closeConnection();
   }
-
 
   @Path("/updateProject")
   @POST
@@ -436,12 +435,9 @@ public class Hello {
   	JsonArray jsonArr = new JsonArray();
 
   	if (result.isBeforeFirst()){
-
 	  	while (result.next()){
-
 	  		JsonObject obj = new JsonObject();
 	  		obj.addProperty("permission", result.getString(1));
-
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -452,11 +448,6 @@ public class Hello {
   	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
-
-
-
-
-
 
   @Path("/updateProjectDate")
   @PUT

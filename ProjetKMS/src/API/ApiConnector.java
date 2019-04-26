@@ -679,30 +679,26 @@ public class ApiConnector {
     	return null;
     }
   }
-   public void createDependance(int idCarteParent,int idCarte) throws IOException{
-	  	Gson gson = new Gson();
-	  	String idParent = gson.toJson(String.valueOf(idCarteParent));
-	  	String idCarteDep = gson.toJson(String.valueOf(idCarte));
-	    String sURL = this.baseURL +"createDependance";
 
-	    URL url = new URL(sURL);
-	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
-	    request.setRequestProperty("Content-Type", "application/json");
-	    request.setRequestMethod("POST");
-	    request.setDoOutput(true);
-	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-	    wr.write(idParent);
-	    wr.write(idCarteDep);
-	    wr.flush();
-	    wr.close();
-	    request.connect();
-	    request.getInputStream();
-	  }
+	public void createDependance(int idCarteParent,int idCarte) throws IOException{
+		Gson gson = new Gson();
+		String idParent = gson.toJson(String.valueOf(idCarteParent));
+		String idCarteDep = gson.toJson(String.valueOf(idCarte));
+		String sURL = this.baseURL +"createDependance";
 
-  public void modifyPermission(Permission permission) throws IOException{
-  	deletePermission(permission);
-  	insertPermission(permission);
-  }
+		URL url = new URL(sURL);
+		HttpURLConnection request = (HttpURLConnection) url.openConnection();
+		request.setRequestProperty("Content-Type", "application/json");
+		request.setRequestMethod("POST");
+		request.setDoOutput(true);
+		OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+		wr.write(idParent);
+		wr.write(idCarteDep);
+		wr.flush();
+		wr.close();
+		request.connect();
+		request.getInputStream();
+	}
 
   public void deletePermission(Permission permission) throws IOException{
   	Gson gson = new Gson();
@@ -721,7 +717,21 @@ public class ApiConnector {
     request.getInputStream();
   }
 
-  private void insertPermission(Permission permission){
+  public void insertPermission(Permission permission) throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(permission);
+    String sURL = this.baseURL +"insertPermission";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
   }
 
   public ArrayList<Dependance> getDepandance() throws IOException{

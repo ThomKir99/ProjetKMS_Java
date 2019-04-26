@@ -113,19 +113,35 @@ public class ControllerContributors implements Initializable{
 		permColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<UserPermission,String>>() {
 			@Override
 			public void handle(CellEditEvent<UserPermission, String> event) {
-				//System.out.println(event.getNewValue());
-				modifyPermision(event.getNewValue());
 				UserPermission userPermission = (UserPermission) event.getTableView().getItems().get(event.getTablePosition().getRow());
-				System.out.println(userPermission.getEmail());
+				Permission apiPermission = new Permission();
+				apiPermission.setId_projet(projectID);
+				apiPermission.setId_user(userPermission.getUserID());
+				apiPermission.setPermission(event.getNewValue());
+				deletePermission(apiPermission);
+
+				if (!event.getNewValue().equals("NONE")){
+					insertPermision(apiPermission);
+				}
+
 			}
-
-
 		});
-
 	}
 
-	public void modifyPermision(String newValue){
+	public void deletePermission(Permission Permission){
+		try {
+			apiConnector.deletePermission(Permission);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	public void insertPermision(Permission Permission){
+		try {
+			apiConnector.insertPermission(Permission);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setBackground(){

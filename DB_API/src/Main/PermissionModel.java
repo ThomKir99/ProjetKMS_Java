@@ -1,28 +1,34 @@
 package Main;
 
 public class PermissionModel {
-	int idProject;
-	int idUser;
+	int id_projet;
+	int id_user;
 	String permission;
 
-	public void setIdProject(int idProject) {
-		this.idProject = idProject;
+	public PermissionModel(){
+		id_projet = 0;
+		id_user = 0;
+		permission = "";
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public void setId_projet(int id_projet) {
+		this.id_projet = id_projet;
+	}
+
+	public void setId_user(int id_user) {
+		this.id_user = id_user;
 	}
 
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
 
-	public int getIdProject() {
-		return idProject;
+	public int getId_projet() {
+		return id_projet;
 	}
 
-	public int getIdUser() {
-		return idUser;
+	public int getId_user() {
+		return id_user;
 	}
 
 	public String getPermission() {
