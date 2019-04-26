@@ -1,25 +1,17 @@
 package Scene3D;
 
-
-
-
-
 import java.io.IOException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.vecmath.Point3d;
-
 import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
-
 import API.ApiConnector;
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import Entity.Carte.Carte3D;
 import User.Utilisateur;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -30,10 +22,8 @@ import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -218,13 +208,11 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 
 	private void createStage(Scene scene) {
     Stage stage = new Stage();
-	addListener(stage);
-	stage.setTitle("My New Stage Title");
-	stage.setScene(scene);
-	setOnClosingListener(stage);
-	stage.show();
-
-
+		addListener(stage);
+		stage.setTitle("My New Stage Title");
+		stage.setScene(scene);
+		setOnClosingListener(stage);
+		stage.show();
 	}
 
 	private void setOnClosingListener(Stage stage) {

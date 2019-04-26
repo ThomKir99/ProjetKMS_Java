@@ -12,17 +12,20 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.*;
+import com.sun.javafx.webkit.ThemeClientImpl;
 
 import Entity.Carte.Carte;
 import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Projet.Project;
+import Entity.User.Permission;
 import User.Utilisateur;
 import javafx.scene.paint.Color;
 
@@ -36,21 +39,50 @@ public class ApiConnector {
 
 	public Utilisateur getUser(String nom,String password) throws IOException{
     String sURL = this.baseURL +"getUser/" + nom + "/" + password;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
 
+    JsonParser jp = new JsonParser();
+    InputStream stream = request.getInputStream();
+    JsonElement root = jp.parse(new InputStreamReader(stream));
+    if (!root.isJsonNull()){
+      JsonArray  rootarray = root.getAsJsonArray();
+      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
+      int userID = Integer.valueOf(rootobj.get("ID").toString());
+      String userName = rootobj.get("Name").toString();
+      userName = userName.replace("\"", "");
+      Utilisateur user = new Utilisateur(userID,userName);
+
+      return user;
+    }
+    return null;
+	}
+
+	public ArrayList<Utilisateur> getAllUser() throws IOException{
+    String sURL = this.baseURL + "getAllUser";
     URL url = new URL(sURL);
     URLConnection request = url.openConnection();
     request.connect();
 
     JsonParser jp = new JsonParser();
     JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-
     JsonArray  rootarray = root.getAsJsonArray();
-    JsonObject rootobj = rootarray.get(0).getAsJsonObject();
-    int userID = Integer.valueOf(rootobj.get("ID").toString());
-    String userName = rootobj.get("Name").toString();
-    userName = userName.replace("\"", "");
+    ArrayList<Utilisateur> userList =  new ArrayList<Utilisateur>();
 
-    return new Utilisateur(userID,userName);
+    if (rootarray.size() > 0){
+      for (JsonElement obj : rootarray){
+        int userID = Integer.valueOf(obj.getAsJsonObject().get("ID").toString());
+        String userName = obj.getAsJsonObject().get("Name").toString();
+
+        userName = removeQuote(userName);
+        userList.add(new Utilisateur(userID,userName));
+      }
+    }
+    else{
+    	userList = null;
+    }
+		return userList;
 	}
 
 
@@ -606,7 +638,6 @@ public class ApiConnector {
 	    }
   }
 
-
   public void setDateOpenProject(Project currentProject) throws IOException{
 	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(currentProject);
@@ -625,6 +656,29 @@ public class ApiConnector {
 	    request.getInputStream();
 	  }
 
+  public String getPermission(int projectID,int userID) throws IOException{
+    String sURL = this.baseURL + "getPermission/" + projectID + "/" + userID;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+    	String permission = "";
+
+      for (JsonElement obj : rootarray){
+        permission = obj.getAsJsonObject().get("permission").toString();
+        permission = removeQuote(permission);
+      }
+  		return permission;
+    }
+    else{
+    	return null;
+    }
+  }
 
 //  public void createDependance(Dependance dependance) throws IOException{
 //	Gson gson = new Gson();
@@ -646,29 +700,61 @@ public class ApiConnector {
 //    request.getInputStream();
 //	  }
 
+  public void deletePermission(Permission permission) throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(permission);
+    String sURL = this.baseURL +"deletePermission";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+  }
+
+  public void insertPermission(Permission permission) throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(permission);
+    String sURL = this.baseURL +"insertPermission";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+  }
 
   public ArrayList<Dependance> getDepandance() throws IOException{
-	    String sURL = this.baseURL +"getDepandance";
-	    URL url = new URL(sURL);
-	    URLConnection request = url.openConnection();
-	    request.connect();
+      String sURL = this.baseURL +"getDepandance";
+      URL url = new URL(sURL);
+      URLConnection request = url.openConnection();
+      request.connect();
 
-	    JsonParser jp = new JsonParser();
-	    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-	    JsonArray  rootarray = root.getAsJsonArray();
-	    ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
+      JsonParser jp = new JsonParser();
+      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+      JsonArray  rootarray = root.getAsJsonArray();
+      ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
 
-	    if (rootarray.size() > 0){
-	      for (JsonElement obj : rootarray){
-	        int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
-	        int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+      if (rootarray.size() > 0){
+        for (JsonElement obj : rootarray){
+          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
 
-	        dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
-	      }
-	    }
+          dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
+        }
+      }
 
-			return dependanceList;
-		}
-
+          return dependanceList;
+      }
 
 }
