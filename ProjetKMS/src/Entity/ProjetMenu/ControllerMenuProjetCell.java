@@ -27,7 +27,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private TextField txt_projectName;
 
 	@FXML
-	private Button btn_Delete;
+	private MenuItem btn_delete;
 
 	@FXML
 	private Button btn_openProject;
@@ -94,7 +94,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		});
 
 
-    btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
+    btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				try {

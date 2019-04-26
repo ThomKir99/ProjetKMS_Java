@@ -42,12 +42,14 @@ public class GroupeCell extends ListCell<Carte> {
 	private Button btn_delete;
 	@FXML
 	private Button btn_Link;
+
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
 	private Carte carte;
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
+
 	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
 		groupController = projectCell;
 		projectController = currentProject;

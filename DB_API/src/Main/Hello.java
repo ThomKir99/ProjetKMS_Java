@@ -87,6 +87,8 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+
+
   @Path("/getProjects/{userId}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -288,6 +290,25 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/addPermission")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void addPermission(PermissionModel permission) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES("+ permission.idProject +"," + permission.idUser + ",\'" + permission.permission + "\');");
+  	mySqlCon.closeConnection();
+  }
+
+  @Path("/deletePermission")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void deletePermission(PermissionModel permission) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("DELETE FROM tbl_permission WHERE id_projet = \'" + permission.idProject + "\' AND id_utilisateur = \'" + permission.idUser + "\'");
+  	mySqlCon.closeConnection();
+  }
+
+
   @Path("/updateProject")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -405,6 +426,36 @@ public class Hello {
   	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
+
+  @Path("/getPermission/{projectID}/{userID}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getAllPermission(@PathParam("projectID") String projectID,@PathParam("userID") String userID) throws Exception {
+  	mySqlCon.openLocalConnection();
+
+  	ResultSet result = mySqlCon.getQueryResult("SELECT permission FROM tbl_permission WHERE id_projet = \'" + projectID + "\' AND id_utilisateur = \'" + userID + "\'");
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+
+	  	while (result.next()){
+
+	  		JsonObject obj = new JsonObject();
+	  		obj.addProperty("permission", result.getString(1));
+
+	  		jsonArr.add(obj);
+	  	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return gson.toJson(new JsonArray());
+  	}
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+
 
 
 

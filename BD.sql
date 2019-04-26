@@ -51,9 +51,9 @@ CONSTRAINT FK_id_utilisateur1 FOREIGN KEY (id_utilisateur) REFERENCES tbl_utilis
 /*-----------------------------ADD DATA------------------------------------*/
 
 /*Utilisateur*/
-INSERT INTO tbl_utilisateur VALUES (1,"Antoine","123456");
-INSERT INTO tbl_utilisateur VALUES (2,"Dave","123456");
-INSERT INTO tbl_utilisateur VALUES (3,"Thomas","123456");
+INSERT INTO tbl_utilisateur VALUES (1,"aaa@aa.com","123456");
+INSERT INTO tbl_utilisateur VALUES (2,"bbb@bb.com","123456");
+INSERT INTO tbl_utilisateur VALUES (3,"ccc@cc.com","123456");
 
 /*Projet*/
 INSERT INTO tbl_projet(nom_projet,id_utilisateur) VALUES ("Projet Antoine", 1);
@@ -73,6 +73,8 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 
 /*Permission*/
-INSERT INTO tbl_permission VALUES(1,1,2,"READ");
-INSERT INTO tbl_permission VALUES(1,1,3,"WRITE");
+INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,2,"READ");
+INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRITE");
+
+
 

@@ -17,10 +17,12 @@ import java.util.stream.Collectors;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.*;
+import com.sun.javafx.webkit.ThemeClientImpl;
 
 import Entity.Carte.Carte;
 import Entity.Group.Group;
 import Entity.Projet.Project;
+import Entity.User.Permission;
 import User.Utilisateur;
 
 
@@ -532,6 +534,56 @@ public class ApiConnector {
     else{
     	return null;
     }
+  }
+
+  public String getPermission(int projectID,int userID) throws IOException{
+    String sURL = this.baseURL + "getPermission/" + projectID + "/" + userID;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+    	String permission = "";
+
+      for (JsonElement obj : rootarray){
+        permission = obj.getAsJsonObject().get("permission").toString();
+        permission = removeQuote(permission);
+      }
+  		return permission;
+    }
+    else{
+    	return null;
+    }
+  }
+
+  public void modifyPermission(Permission permission) throws IOException{
+  	deletePermission(permission);
+  	insertPermission(permission);
+  }
+
+  public void deletePermission(Permission permission) throws IOException{
+  	Gson gson = new Gson();
+  	String projectJson = gson.toJson(permission);
+    String sURL = this.baseURL +"deletePermission";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+  }
+
+  private void insertPermission(Permission permission){
+
   }
 
 
