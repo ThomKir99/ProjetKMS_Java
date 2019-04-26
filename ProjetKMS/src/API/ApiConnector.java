@@ -53,6 +53,32 @@ public class ApiConnector {
     return null;
 	}
 
+	public ArrayList<Utilisateur> getAllUser() throws IOException{
+    String sURL = this.baseURL + "getAllUser";
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    JsonParser jp = new JsonParser();
+    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    JsonArray  rootarray = root.getAsJsonArray();
+    ArrayList<Utilisateur> userList =  new ArrayList<Utilisateur>();
+
+    if (rootarray.size() > 0){
+      for (JsonElement obj : rootarray){
+        int userID = Integer.valueOf(obj.getAsJsonObject().get("ID").toString());
+        String userName = obj.getAsJsonObject().get("Name").toString();
+
+        userName = removeQuote(userName);
+        userList.add(new Utilisateur(userID,userName));
+      }
+    }
+    else{
+    	userList = null;
+    }
+		return userList;
+	}
+
 
 
 	public ArrayList<Project> projectList(int userID) throws IOException{

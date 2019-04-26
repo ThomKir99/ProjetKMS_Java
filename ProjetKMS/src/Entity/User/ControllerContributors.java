@@ -2,8 +2,11 @@ package Entity.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
+import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,16 +39,18 @@ public class ControllerContributors implements Initializable{
   TableColumn<UserPermission, String> emailColumn;
   @FXML
   TableColumn<UserPermission, String> permColumn;
-
 	@FXML
 	Button btn_backToProject;
 
+	private ObservableList<UserPermission> userListPerm;
+	private ArrayList<Utilisateur> userList;
 	private ObservableList<String> permissionString;
-
-	int projectID;
+	private int projectID;
+	private ApiConnector apiConnector;
 
 	public ControllerContributors(){
-
+		apiConnector = new ApiConnector();
+		initializeList();
 	}
 
 	@Override
@@ -53,34 +58,49 @@ public class ControllerContributors implements Initializable{
 		setBackground();
 		setListener();
 		initializeColumn();
+		fillTableView();
+	}
+
+	public void fillTableView(){
+		try {
+			userList =  apiConnector.getAllUser();
+			for (Utilisateur user : userList){
+				int userID = user.getId();
+				String name = user.getNom();
+				String perm = "NONE";
+
+				UserPermission userPermission = new UserPermission(name,perm,userID);
+				tableViewContributors.getItems().add(userPermission);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setProjectId(int id){
 		projectID = id;
 	}
 
-	public void initializeColumn(){
+	public void initializeList(){
+		userListPerm = FXCollections.observableArrayList();
+		userList = new ArrayList<Utilisateur>();
 		permissionString = FXCollections.observableArrayList();
+		permissionString.addAll("NONE","READ","WRITE");
+	}
+
+	public void initializeColumn(){
 		emailColumn.setCellValueFactory(new PropertyValueFactory<UserPermission, String>("Email"));
 
-		permissionString.addAll("NONE","READ","WRITE");
-
+		permColumn.setEditable(true);
 		permColumn.setCellValueFactory(new PropertyValueFactory<>("Permission"));
 		permColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),permissionString));
 		permColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<UserPermission,String>>() {
-
 			@Override
 			public void handle(CellEditEvent<UserPermission, String> event) {
 
-				System.out.println("YO");
 			}
-
 		});
-
-		tableViewContributors.getItems().add(new UserPermission("awdawd@awd.com", "READ"));
-		tableViewContributors.setEditable(true);
 	}
-
 
 	public void setBackground(){
 		Image image = new Image(getClass().getResourceAsStream("/image/backArrow.png"));

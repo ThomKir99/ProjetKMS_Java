@@ -39,6 +39,15 @@ REFERENCES tbl_groupe(id_groupe)
 ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS tbl_permission(
+id_permission int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+id_projet int NOT NULL,
+id_utilisateur int NOT NULL,
+permission VARCHAR(500),
+CONSTRAINT FK_id_projet1 FOREIGN KEY (id_projet) REFERENCES tbl_projet(id_projet),
+CONSTRAINT FK_id_utilisateur1 FOREIGN KEY (id_utilisateur) REFERENCES tbl_utilisateur(id_utilisateur)
+);
+
 /*-----------------------------ADD DATA------------------------------------*/
 
 /*Utilisateur*/
@@ -63,5 +72,7 @@ INSERT INTO tbl_groupe VALUES (4,"Group 4", 1);
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte1","Une desc",1,false,2);
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 
-
+/*Permission*/
+INSERT INTO tbl_permission VALUES(1,1,2,"READ");
+INSERT INTO tbl_permission VALUES(1,1,3,"WRITE");
 

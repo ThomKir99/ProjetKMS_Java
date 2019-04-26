@@ -57,6 +57,36 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/getAllUser")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getAllUser() throws Exception {
+
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT id_utilisateur,nom FROM tbl_utilisateur");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+    		JsonObject obj = new JsonObject();
+
+    		obj.addProperty("ID", result.getInt(1));
+    		obj.addProperty("Name", result.getString(2));
+
+    		jsonArr.add(obj);
+    	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return null;
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
   @Path("/getProjects/{userId}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
