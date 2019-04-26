@@ -12,6 +12,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -654,7 +655,7 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
 	  }
-	  
+
   public String getPermission(int projectID,int userID) throws IOException{
     String sURL = this.baseURL + "getPermission/" + projectID + "/" + userID;
     URL url = new URL(sURL);
@@ -721,21 +722,29 @@ public class ApiConnector {
   }
 
   private void insertPermission(Permission permission){
-
   }
-	    ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
 
-	    if (rootarray.size() > 0){
-	      for (JsonElement obj : rootarray){
-	        int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
-	        int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+  public ArrayList<Dependance> getDepandance() throws IOException{
+      String sURL = this.baseURL +"getDepandance";
+      URL url = new URL(sURL);
+      URLConnection request = url.openConnection();
+      request.connect();
 
-	        dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
-	      }
-	    }
+      JsonParser jp = new JsonParser();
+      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+      JsonArray  rootarray = root.getAsJsonArray();
+      ArrayList<Dependance> dependanceList =  new ArrayList<Dependance>();
 
-			return dependanceList;
-		}
+      if (rootarray.size() > 0){
+        for (JsonElement obj : rootarray){
+          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
 
+          dependanceList.add(new Dependance(idCarteDependante, idCarteDeDependance));
+        }
+      }
+
+          return dependanceList;
+      }
 
 }

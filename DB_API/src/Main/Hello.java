@@ -340,7 +340,7 @@ public class Hello {
   public String newProject(@PathParam("userId") String userId) throws Exception {
   	mySqlCon.openLocalConnection();
   	mySqlCon.executeNonQuery("INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES (\"Insert a name\","+ userId
-  			+ ",\'#FFFFFF\'"+ " , NOW()))" );
+  			+ ",\'#FFFFFF\'"+ " , NOW())" );
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet = LAST_INSERT_ID()");
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();

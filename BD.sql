@@ -85,7 +85,4 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,2,"READ");
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRITE");
 
-/*Depandance*/
-INSERT INTO tbl_depandance VALUES(1,2,false);
-
-SELECT id_carte_depandante FROM tbl_dependance;
+/*Depandance*

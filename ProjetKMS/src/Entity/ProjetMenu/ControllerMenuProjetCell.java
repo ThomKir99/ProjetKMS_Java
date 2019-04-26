@@ -73,7 +73,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		 txt_projectName.setText(projet.getName());
      setListener();
      Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
-     btn_Delete.setGraphic(new ImageView(imagePoubelle));
+     btn_delete.setGraphic(new ImageView(imagePoubelle));
      setGraphic(gridPane_projectCell);
 	}
 

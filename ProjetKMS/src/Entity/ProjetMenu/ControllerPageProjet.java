@@ -139,7 +139,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		}
 	}
 
-	public void CreateProject() throws InterruptedException{
+	public void CreateProject(){
 		Project unProjet = new Project();
 		try {
 		  unProjet = apiConnector.createProject(userContext.getId());
