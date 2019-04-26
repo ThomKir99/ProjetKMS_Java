@@ -626,25 +626,25 @@ public class ApiConnector {
 	  }
 
 
-  public void createDependance(int idCarteParent,int idCarte) throws IOException{
-	  	Gson gson = new Gson();
-	  	String idParent = gson.toJson(String.valueOf(idCarteParent));
-	  	String idCarteDep = gson.toJson(String.valueOf(idCarte));
-	    String sURL = this.baseURL +"createDependance";
-
-	    URL url = new URL(sURL);
-	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
-	    request.setRequestProperty("Content-Type", "application/json");
-	    request.setRequestMethod("POST");
-	    request.setDoOutput(true);
-	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-	    wr.write(idParent);
-	    wr.write(idCarteDep);
-	    wr.flush();
-	    wr.close();
-	    request.connect();
-	    request.getInputStream();
-	  }
+//  public void createDependance(Dependance dependance) throws IOException{
+//	Gson gson = new Gson();
+//  	String dependanceJson = gson.toJson(dependance);
+//    String sURL = this.baseURL +"updateProject";
+//    URL url = new URL(sURL);
+//    System.out.println("APICONNECTOR 1");
+//    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+//    request.setRequestProperty("Content-Type", "application/json");
+//    request.setRequestMethod("POST");
+//    request.setDoOutput(true);
+//    System.out.println("APICONNECTOR 2");
+//    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+//    System.out.println("APICONNECTOR 3");
+//    wr.write(dependanceJson);
+//    wr.flush();
+//    wr.close();
+//    request.connect();
+//    request.getInputStream();
+//	  }
 
 
   public ArrayList<Dependance> getDepandance() throws IOException{

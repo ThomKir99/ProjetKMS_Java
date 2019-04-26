@@ -254,7 +254,7 @@ public class Hello {
   	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
   }
-
+//z
   @Path("/updateProject")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -418,15 +418,16 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 }
 
 
-
-@Path("/createDependance/{idDependant},{idCarteDep}")
-@PUT
-@Consumes(MediaType.APPLICATION_JSON)
-public void createDependance(@PathParam("idDependant") String idDependant,@PathParam("idCarteDep") String idCarteDep) throws Exception {
-	mySqlCon.openLocalConnection();
-	mySqlCon.executeNonQuery("INSERT INTO tbl_dependance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+ idDependant + ","+ idCarteDep + 0 + ") ");
-	mySqlCon.closeConnection();
-}
+//z
+//@Path("/createDependance/{dependance}")
+//@PUT
+//@Consumes(MediaType.APPLICATION_JSON)
+//public void createDependance(@PathParam("dependance")DependanceModel dependance) throws Exception {
+//	System.out.println("HELLO 4");
+//	mySqlCon.openLocalConnection();
+//	mySqlCon.executeNonQuery("INSERT INTO tbl_dependance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+ dependance.getIdCarteDeDependance() + ","+ dependance.getIdCarteDependante() + false + ") ");
+//	mySqlCon.closeConnection();
+//}
 
 
   @Path("/saveCarteOrder")

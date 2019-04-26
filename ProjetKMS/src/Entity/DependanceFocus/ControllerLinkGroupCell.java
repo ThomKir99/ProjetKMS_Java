@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Group.GroupeCell;
 import Entity.Projet.ControllerTheGroup;
@@ -44,7 +45,8 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	@FXML
 	private Button btn_createLink;
 	private ApiConnector apiConnector;
-	private GroupeCell groupCell;
+	private Dependance dependance;
+
 
 	public ControllerLinkGroupCell(TheGroupLink groupCell,ControllerTheDependance projectCell){
 		groupController = groupCell;
@@ -104,7 +106,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 				try {
 					int carte2;
 					carte2 = getCarteId();
-					createLink(carte2);
+					//createLink(carte2);
 					openProjectPage(event);
 				}catch(IOException e){
 				 showLoadingError();
@@ -149,19 +151,19 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 		return id;
 	}
 
-	public void createLink(int carteRelier)
-	{
-		try {
-			int carteParent;
-			System.out.println("carte2 = " + carteRelier );
-			carteParent = projectController.getCarteParent().getId() ;
-
-			apiConnector.createDependance(carteParent,carteRelier);
-			} catch (IOException e) {
-				e.printStackTrace();
-				}
-
-
-	}
+//	public void createLink(int carteRelier)
+//	{
+//		try {
+//			int carteParent;
+//			carteParent = projectController.getCarteParent().getId() ;
+//			dependance.idCarteDeDependance = carteParent;
+//			dependance.idCarteDependante = carteRelier;
+//			apiConnector.createDependance(dependance);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				}
+//
+//
+//	}
 
 }
