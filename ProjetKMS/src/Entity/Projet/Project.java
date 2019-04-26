@@ -28,15 +28,16 @@ public class Project extends Entity{
 		super(id,name);
 		this.groups = new ArrayList<Group>();
 		projectColor = new Color(1, 1, 1, 1);
-
-	}
-	
-	public Project(int id,String name , Date date){
-		super(id,name);
-		this.groups = new ArrayList<Group>();
 		setHexColor(colorProject);
 		setColor(colorProject);
 
+	}
+
+	public Project(int id,String name , Date date){
+		super(id,name);
+		this.groups = new ArrayList<Group>();
+		projectColor = new Color(1, 1, 1, 1);
+		setHexColor("#FFFFFF");
 	}
 
 	public List<Group> getGroups() {return groups;}

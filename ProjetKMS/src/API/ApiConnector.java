@@ -580,7 +580,7 @@ public class ApiConnector {
 	    wr.close();
 	    request.connect();
 	    request.getInputStream();
-
+  }
   private Project getProjectOpenedTime(int userId) throws IOException{
 	    String sURL = this.baseURL + "OpenedProject/" + userId ;
 	    URL url = new URL(sURL);
@@ -645,7 +645,7 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
 	  }
-}
+
 
   public ArrayList<Dependance> getDepandance() throws IOException{
 	    String sURL = this.baseURL +"getDepandance";
