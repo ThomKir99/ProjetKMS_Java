@@ -45,6 +45,7 @@ public class GroupeCell extends ListCell<Carte> {
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
 	private Carte carte;
+	private Carte carteParent;
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
@@ -191,10 +192,12 @@ public void errorMessage() throws IOException{
 
 		  try{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
-		System.out.println(this.currentProjet.getName());
-		System.out.println(currentProjet.getId());
         ControllerDependance controllerProjectList = fxmlLoader.getController();
+        System.out.println("carteParent " + carte.getId());
+        controllerProjectList.setCarteDependant(carte);
         controllerProjectList.setProject(currentProjet);
+
+
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);

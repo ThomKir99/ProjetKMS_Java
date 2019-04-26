@@ -106,12 +106,10 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 					carte2 = getCarteId();
 					createLink(carte2);
 					openProjectPage(event);
-				} catch (IOException e) {
-					showLoadingError();
-				}
-
+				}catch(IOException e){
+				 showLoadingError();
+				 }
 			}
-
 		});
 	}
 
@@ -151,13 +149,14 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 		return id;
 	}
 
-	public void createLink(int carteAyantDependance)
+	public void createLink(int carteRelier)
 	{
 		try {
-			int carteDependante;
-			System.out.println("id miam" + groupCell.getCarteId());
-			carteDependante = groupCell.getCarteId();
-			apiConnector.createDependance(carteDependante,carteAyantDependance);
+			int carteParent;
+			System.out.println("carte2 = " + carteRelier );
+			carteParent = projectController.getCarteParent().getId() ;
+
+			apiConnector.createDependance(carteParent,carteRelier);
 			} catch (IOException e) {
 				e.printStackTrace();
 				}

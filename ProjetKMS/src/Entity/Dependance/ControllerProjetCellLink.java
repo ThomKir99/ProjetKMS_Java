@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +35,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
     private Project currentProjet;
     private ControllerDependance controllerDependance;
     private Project currentProjetDependance;
+    private Carte currentCarte;
 
     public ControllerProjetCellLink(ControllerDependance controllerPageDependance){
 		this.controllerDependance = controllerPageDependance;
@@ -105,9 +107,10 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		ControllerTheDependance controllerProjectList = fxmlLoader.getController();
 		controllerProjectList.setProject(currentProjetDependance);
+		System.out.println("projetcellLink : la carte parent " + controllerDependance.getCarteParent().getId());
+		controllerProjectList.setACarteParent(controllerDependance.getCarteParent());
 		Scene tableViewScene = new Scene(tableViewParent);
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-		System.out.println("TestAlex1");
 		window.setScene(tableViewScene);
 		window.show();
     }

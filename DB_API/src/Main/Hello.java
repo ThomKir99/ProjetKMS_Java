@@ -380,9 +380,7 @@ public class Hello {
   @Consumes(MediaType.APPLICATION_JSON)
   public void setDateOpenProject(ProjectModel project) throws Exception {
   	mySqlCon.openLocalConnection();
-  	System.out.println("salute");
   	mySqlCon.executeNonQuery("UPDATE tbl_projet SET date_projet_ouvert = NOW() WHERE id_projet = \'" + project.getID() + "\'");
-  	System.out.println("saluter");
   	mySqlCon.closeConnection();
   }
 

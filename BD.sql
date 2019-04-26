@@ -74,4 +74,4 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 /*Depandance*/
 INSERT INTO tbl_depandance VALUES(1,2,false);
 
-
+SELECT id_carte_depandante FROM tbl_dependance;

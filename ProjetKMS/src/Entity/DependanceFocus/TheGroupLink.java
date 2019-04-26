@@ -33,7 +33,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	private ControllerTheDependance controllerProjectList;
 	public TheGroupLink(ControllerTheDependance controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
-
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-	
+
 
 		if(listViewLinkGroup!=null){
 			refreshCarteList();
@@ -100,7 +99,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 
 	public ListCell<Carte> setFactory(){
-		 System.out.println("carte4");
 		ListCell<Carte> cell = new ControllerLinkGroupCell(this,controllerProjectList);
 		return cell;
 	}

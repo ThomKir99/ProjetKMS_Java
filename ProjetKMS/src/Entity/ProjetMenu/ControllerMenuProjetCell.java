@@ -140,7 +140,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
         Parent tableViewParent = (Parent)fxmlLoader.load();
         ControllerTheProject controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(currentProjet);
-
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);

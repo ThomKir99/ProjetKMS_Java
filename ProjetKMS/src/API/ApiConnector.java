@@ -552,10 +552,10 @@ public class ApiConnector {
 	  }
 
 
-  public void createDependance(int idCarteDependant,int idCarte) throws IOException{
+  public void createDependance(int idCarteParent,int idCarte) throws IOException{
 	  	Gson gson = new Gson();
-	  	String idDependant = gson.toJson(idCarteDependant);
-	  	String idCarteDep = gson.toJson(idCarte);
+	  	String idParent = gson.toJson(String.valueOf(idCarteParent));
+	  	String idCarteDep = gson.toJson(String.valueOf(idCarte));
 	    String sURL = this.baseURL +"createDependance";
 
 	    URL url = new URL(sURL);
@@ -564,7 +564,7 @@ public class ApiConnector {
 	    request.setRequestMethod("POST");
 	    request.setDoOutput(true);
 	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-	    wr.write(idDependant);
+	    wr.write(idParent);
 	    wr.write(idCarteDep);
 	    wr.flush();
 	    wr.close();
