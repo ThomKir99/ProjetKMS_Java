@@ -1,22 +1,14 @@
 package Scene3D;
 
 
-import java.awt.Font;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import javax.jws.soap.SOAPBinding.Style;
-import javax.media.j3d.FontExtrusion;
-
 import Entity.Projet.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class LegendViewController implements Initializable {
