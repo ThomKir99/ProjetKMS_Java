@@ -9,18 +9,16 @@ public class Utilisateur {
 	private int id;
 	private String nom;
 	private ArrayList<Project> projets;
-	private String name;
 
 	public Utilisateur(){
 		this.id = 0;
 		this.nom = "Anonymous";
 		this.projets = new ArrayList<Project>();
-		this.name = "";
 	}
 
 	public Utilisateur(int id,String name){
 		this.id = id;
-		this.nom = "Anonymous";
+		this.nom = name;
 		this.projets = new ArrayList<Project>();
 	}
 
@@ -29,6 +27,8 @@ public class Utilisateur {
 	public void setProjets(ArrayList<Project> lesProjets){this.projets = lesProjets;}
 
 	public int getId() { return this.id;}
+
+	public String getNom(){return this.nom;}
 
 	public void addProjet(Project projet){
 		this.projets.add(projet);

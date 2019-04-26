@@ -316,11 +316,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
         }
 	}
 
-	public void BackToMenu(){
-
-	}
-
-
 	 public void createNewGroup() throws InterruptedException{
 		 Group unGroup = new Group();
 			try {

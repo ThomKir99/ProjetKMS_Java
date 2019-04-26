@@ -5,6 +5,7 @@ import java.util.Optional;
 import API.ApiConnector;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.User.ControllerContributors;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -18,7 +19,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ControllerMenuProjetCell extends ListCell<Project>{
 
@@ -26,14 +29,16 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private TextField txt_projectName;
 
 	@FXML
-	private Button btn_Delete;
+	private MenuItem btn_delete;
 
 	@FXML
 	private Button btn_openProject;
 
-
 	@FXML
 	private GridPane gridPane_projectCell;
+
+	@FXML
+	private MenuItem btn_addContributor;
 
 	private ControllerPageProjet controllerPageProjet;
 	private Project currentProjet;
@@ -90,7 +95,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
      }
 		});
 
-      btn_Delete.setOnAction(new EventHandler<ActionEvent>() {
+    btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
@@ -115,6 +120,30 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			}
 
 		});
+
+    btn_addContributor.setOnAction(new EventHandler<ActionEvent>() {
+    	@Override
+    	public void handle(ActionEvent event) {
+				try {
+					openContributor();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    	}
+		});
+	}
+
+	private void openContributor() throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/Contributors.fxml"));
+		Parent root = fxmlLoader.load();
+		Stage stage = new Stage();
+    ControllerContributors controllerContributors = fxmlLoader.getController();
+    controllerContributors.setProjectId(currentProjet.getId());
+		stage.setScene(new Scene(root));
+		stage.resizableProperty().setValue(Boolean.FALSE);
+		controllerPageProjet.hideWindow();
+		stage.show();
+
 	}
 
 	public void errorMessage() throws IOException{
@@ -168,6 +197,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 		return (result.get() == buttonTypeOne);
 	}
+
 	private void showLoadingError() {
 		Alert alert = new Alert(AlertType.ERROR);
     	alert.setTitle("Error");

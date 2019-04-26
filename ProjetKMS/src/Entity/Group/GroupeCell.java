@@ -42,6 +42,7 @@ public class GroupeCell extends ListCell<Carte> {
 	private Button btn_delete;
 	@FXML
 	private Button btn_Link;
+
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
 	private Carte carte;
@@ -49,6 +50,7 @@ public class GroupeCell extends ListCell<Carte> {
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
+
 	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
 		groupController = projectCell;
 		projectController = currentProject;
@@ -189,31 +191,30 @@ public void errorMessage() throws IOException{
 	public void addLink(ActionEvent event)throws IOException{
 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
-
-		  try{
-		Parent tableViewParent = (Parent)fxmlLoader.load();
-        ControllerDependance controllerProjectList = fxmlLoader.getController();
+		try{
+	  	Parent tableViewParent = (Parent)fxmlLoader.load();
+	    ControllerDependance controllerProjectList = fxmlLoader.getController();
         System.out.println("carteParent " + carte.getId());
         controllerProjectList.setCarteDependant(carte);
-        controllerProjectList.setProject(currentProjet);
+	    controllerProjectList.setProject(currentProjet);
 
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
-		  }catch(Exception e){
-			  e.printStackTrace();
-		  }
+	    Scene tableViewScene = new Scene(tableViewParent);
+	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+	    window.setScene(tableViewScene);
+	    window.show();
+	  }catch(Exception e){
+		  e.printStackTrace();
+	  }
 
 
     }
 
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);
-    	alert.setTitle("Error");
-    	alert.setHeaderText("Fail to open your project");
-    	alert.setContentText("For an unknown reason, your project have fail to open");
+  	alert.setTitle("Error");
+  	alert.setHeaderText("Fail to open your project");
+  	alert.setContentText("For an unknown reason, your project have fail to open");
 	}
 
 	public int getCarteId(){
