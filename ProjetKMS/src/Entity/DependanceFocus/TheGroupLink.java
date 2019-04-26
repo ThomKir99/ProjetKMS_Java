@@ -33,34 +33,31 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	private ControllerTheDependance controllerProjectList;
 	public TheGroupLink(ControllerTheDependance controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
-		
 	}
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-        super.updateItem(group, empty);
-        this.group = group;
-    
 
+		super.updateItem(group, empty);
+        this.group = group;
         if(empty || group == null) {
             setText(null);
             setGraphic(null);
         } else {
-        	
         		if (mLLoader == null) {
-        			
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkGroupCell.fxml"));
                     mLLoader.setController(this);
                     try {
                         mLLoader.load();
+
                     } catch (IOException e) {
                         e.printStackTrace();
+
                     }
         		}
-        	  
-        		if(textFieldGroupName!=null){
+               	if(textFieldGroupName!=null){
         			textFieldGroupName.setText(String.valueOf(group.getName()));
-        			
+
         		}
         		refreshCarteList();
                 setText(null);
@@ -71,23 +68,23 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	public void refreshCarteList(){
 		getAllCarte();
 		listViewLinkGroup.setItems(carteObservableList);
-		listViewLinkGroup.setCellFactory(Listcarte->{
+		listViewLinkGroup.setCellFactory(Listcarte-> {
 			return setFactory();
 		});
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		listViewLinkGroup = new ListView<Carte>();
-		
+
+
 		if(listViewLinkGroup!=null){
 			refreshCarteList();
-			listViewLinkGroup.setCellFactory(Listcarte->{
+			listViewLinkGroup.setCellFactory(ListDescartes->{
 				return setFactory();
 			});
 		}
-		
-		
+
+
 	}
 
 
@@ -102,7 +99,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 
 	public ListCell<Carte> setFactory(){
-		 System.out.println("carte4");
 		ListCell<Carte> cell = new ControllerLinkGroupCell(this,controllerProjectList);
 		return cell;
 	}

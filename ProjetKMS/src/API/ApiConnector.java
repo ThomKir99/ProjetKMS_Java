@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -579,6 +580,71 @@ public class ApiConnector {
 	    wr.close();
 	    request.connect();
 	    request.getInputStream();
+
+  private Project getProjectOpenedTime(int userId) throws IOException{
+	    String sURL = this.baseURL + "OpenedProject/" + userId ;
+	    URL url = new URL(sURL);
+	    URLConnection request = url.openConnection();
+	    request.connect();
+
+	    if (request.getContent() != null){
+	        Project leProjet =  new Project();
+	      	JsonParser jp = new JsonParser();
+	      	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	      	JsonArray rootarray = root.getAsJsonArray();
+
+	     	 for (JsonElement obj : rootarray){
+	             int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
+	             String projectName = obj.getAsJsonObject().get("projectName").toString();
+	             Date projectDateOpened = Date.valueOf(obj.getAsJsonObject().get("date_projet_ouvert").toString());
+	             leProjet = new Project(projectId,projectName,projectDateOpened);
+	     	 }
+	     	return leProjet;
+	    }
+	    else{
+	    	return null;
+	    }
+  }
+
+
+  public void setDateOpenProject(Project currentProject) throws IOException{
+	  	Gson gson = new Gson();
+	  	String projectJson = gson.toJson(currentProject);
+	    String sURL = this.baseURL +"updateProjectDate";
+
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("PUT");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	  }
+
+
+  public void createDependance(int idCarteParent,int idCarte) throws IOException{
+	  	Gson gson = new Gson();
+	  	String idParent = gson.toJson(String.valueOf(idCarteParent));
+	  	String idCarteDep = gson.toJson(String.valueOf(idCarte));
+	    String sURL = this.baseURL +"createDependance";
+
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(idParent);
+	    wr.write(idCarteDep);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	  }
 }
 
   public ArrayList<Dependance> getDepandance() throws IOException{

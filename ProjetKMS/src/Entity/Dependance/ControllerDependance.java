@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Entity.Carte.Carte;
 import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
@@ -35,7 +36,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public TextField textFieldGroupName;
 	public Project leProjet;
 	public ObservableList<Project> projetObservableList;
-
+	private Carte carteParent;
 	public  ControllerDependance(){
 		leProjet = new Project();
 		user = new Utilisateur();
@@ -73,12 +74,23 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public void setProject(Project unProjet){
 		this.leProjet = unProjet;
 	}
-	
+
+	public void setCarteDependant(Carte uneCarte){
+		this.carteParent = uneCarte;
+		System.out.println("uneCarte " + uneCarte.getId() );
+	}
+
 
 	public Project getProject(){
 		Project projet;
 		projet= leProjet;
 		return projet;
+	}
+
+	public Carte getCarteParent(){
+		Carte carte;
+		carte= carteParent;
+		return carte;
 	}
 
 

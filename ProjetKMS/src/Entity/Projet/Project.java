@@ -1,6 +1,6 @@
 package Entity.Projet;
 
-
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import Entity.Entity;
@@ -15,6 +15,7 @@ public class Project extends Entity{
 	private Color projectColor;
 	private String hexColor;
 	private double y3DPosition;
+	private Date date;
 	public Project(){
 		super();
 		this.groups = new ArrayList<Group>();
@@ -24,6 +25,13 @@ public class Project extends Entity{
 	}
 
 	public Project(int id,String name,String colorProject){
+		super(id,name);
+		this.groups = new ArrayList<Group>();
+		projectColor = new Color(1, 1, 1, 1);
+
+	}
+	
+	public Project(int id,String name , Date date){
 		super(id,name);
 		this.groups = new ArrayList<Group>();
 		setHexColor(colorProject);

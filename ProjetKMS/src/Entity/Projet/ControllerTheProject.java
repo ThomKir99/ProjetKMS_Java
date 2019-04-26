@@ -68,7 +68,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		txt_projectName.setText(leProjet.getName());
 		getGroupsFromProject();
 		refreshGroupList();
-
+		setProjectListByRecent(leProjet);
 	}
 
 	public Project getProject(){
@@ -138,11 +138,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 		setListener();
 		refreshGroupList();
-
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
+
+
+
 	}
 
 	public void ajouterGroup(Group group){
@@ -406,7 +408,9 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		return isAllowed;
 	}
 
-
+	private void setProjectListByRecent(Project currentProject) throws IOException{
+		apiConnector.setDateOpenProject(currentProject);
+	}
 
 
 

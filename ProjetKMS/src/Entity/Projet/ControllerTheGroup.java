@@ -31,6 +31,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -197,6 +199,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		getAllCarte();
 		listViewGroup.setItems(carteObservableList);
 		listViewGroup.setCellFactory(groupeListView -> {
+
 		return setCellDragAndDropHandler();
 		});
 	}
@@ -204,6 +207,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
+		//	Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/plus.png"));
+		//	btn_addCarte.setGraphic(new ImageView(imagePoubelle));
 			refreshCarteList();
 			setListener();
 
@@ -223,7 +228,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private ListCell<Carte> setCellDragAndDropHandler() {
 
 		ListCell<Carte> cell = new GroupeCell(controllerProjectList,this);
-
 		 cell.setOnDragDetected(event -> {
 			 setDragDetectHandler(cell);
          });

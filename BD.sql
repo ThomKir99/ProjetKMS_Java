@@ -14,6 +14,7 @@ id_projet int PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nom_projet VARCHAR(200),
 id_utilisateur int ,
 color_project VARCHAR(200),
+date_projet_ouvert datetime ,
 CONSTRAINT FK_id_utilisateur FOREIGN KEY (id_utilisateur)
 REFERENCES tbl_utilisateur(id_utilisateur)
 ON DELETE CASCADE
@@ -55,11 +56,13 @@ INSERT INTO tbl_utilisateur VALUES (2,"Dave","123456");
 INSERT INTO tbl_utilisateur VALUES (3,"Thomas","123456");
 
 /*Projet*/
-INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine", 1,"#FFFFFF");
-INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine2", 1,"#FFFFFF");
-INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Antoine3", 1,"#FFFFFF");
-INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Dave", 2,"#FFFFFF");
-INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project) VALUES ("Projet Thomas", 3,"#FFFFFF");
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Antoine", 1,"#FFFFFF", now());
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Antoine2", 1,"#FFFFFF", now()+1);
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Antoine3", 1,"#FFFFFF", now()+2);
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Dave", 2,"#FFFFFF", now()+3);
+INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Thomas", 3,"#FFFFFF", now()+4);
+
+
 
 /*Group*/
 INSERT INTO tbl_groupe VALUES (1,"Group 1", 4,1);
@@ -72,5 +75,6 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 
 /*Depandance*/
+INSERT INTO tbl_depandance VALUES(1,2,false);
 
-
+SELECT id_carte_depandante FROM tbl_dependance;
