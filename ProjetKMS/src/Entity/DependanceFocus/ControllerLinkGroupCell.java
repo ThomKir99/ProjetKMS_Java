@@ -104,8 +104,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					int carte2;
-					carte2 = getCarteId();
+					int carte2 = getCarteId();
 					//createLink(carte2);
 					openProjectPage(event);
 				}catch(IOException e){
@@ -151,8 +150,8 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 		return id;
 	}
 
-//	public void createLink(int carteRelier)
-//	{
+	public void createLink(int carteRelier)
+	{
 //		try {
 //			int carteParent;
 //			carteParent = projectController.getCarteParent().getId() ;
@@ -161,9 +160,9 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 //			apiConnector.createDependance(dependance);
 //			} catch (IOException e) {
 //				e.printStackTrace();
-//				}
-//
-//
-//	}
+			//}
+
+
+	}
 
 }

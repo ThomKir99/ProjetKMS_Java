@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+
 public class LegendViewController implements Initializable {
 	ArrayList<Project> projects;
 

@@ -15,7 +15,7 @@ public class ProjectModel {
 	public void setName(String groupName) {
 		this.name = groupName;
 	}
-	
+
 	public int getID() {
 		return id;
 	}
