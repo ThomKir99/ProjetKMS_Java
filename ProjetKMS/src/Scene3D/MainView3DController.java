@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 import API.ApiConnector;
+import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import Entity.Carte.Carte3D;
@@ -320,7 +321,7 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 	}
 
 	protected void createLegends(Event event) {
-		 legendViewLauncher.launchLegend(currentUser.getProjets());
+		 legendViewLauncher.launchLegend(currentUser.getProjets(),this);
 	}
 
 	private void increaseLayer(){
@@ -501,6 +502,19 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 			this.numberOfLayer = numberOfLayer;
 		}
 	}
+	public void openProject(Event event, Project project) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
+		Parent tableViewParent = (Parent)fxmlLoader.load();
+		ControllerTheProject controllerProjectList = fxmlLoader.getController();
+		controllerProjectList.setProject(project);
+		Scene tableViewScene = new Scene(tableViewParent);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		window.setScene(tableViewScene);
+		window.show();
+		legendViewLauncher.closeStage();
+	}
+
+
 }
 
 
