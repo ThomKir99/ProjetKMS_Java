@@ -45,6 +45,7 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
             setGraphic(null);
         } else {
         		if (mLLoader == null) {
+        			System.out.println("groupe salut");
                     mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkGroupCell.fxml"));
                     mLLoader.setController(this);
                     try {
@@ -99,6 +100,7 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 
 	public ListCell<Carte> setFactory(){
+		System.out.println("goure créé liste carte");
 		ListCell<Carte> cell = new ControllerLinkGroupCell(this,controllerProjectList);
 		return cell;
 	}

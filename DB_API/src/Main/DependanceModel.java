@@ -1,19 +1,8 @@
-package Entity.Carte;
+package Main;
 
-public class Dependance {
+public class DependanceModel {
 	public int idCarteDependante;
 	public int idCarteDeDependance;
-
-	public Dependance(int idCarteDependante,int idCarteDeDependance){
-		this.idCarteDeDependance =idCarteDeDependance;
-		this.idCarteDependante = idCarteDependante;
-	}
-
-	public Dependance ()
-	{
-		idCarteDependante = 0;
-		idCarteDeDependance= 0;
-	}
 
 	public int getIdCarteDeDependance() {
 		return idCarteDeDependance;

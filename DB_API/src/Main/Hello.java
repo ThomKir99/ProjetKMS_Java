@@ -491,15 +491,14 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 
 
 
-@Path("/createDependance/{idDependant},{idCarteDep}")
-@PUT
+@Path("/createDependance")
+@POST
 @Consumes(MediaType.APPLICATION_JSON)
-public void createDependance(@PathParam("idDependant") String idDependant,@PathParam("idCarteDep") String idCarteDep) throws Exception {
+public void insertPermission(DependanceModel dependnace) throws Exception {
 	mySqlCon.openLocalConnection();
-	mySqlCon.executeNonQuery("INSERT INTO tbl_dependance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+ idDependant + ","+ idCarteDep + 0 + ") ");
+	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES("+ dependnace.getIdCarteDeDependance() +"," + dependnace.getIdCarteDependante() + "," + false + ");");
 	mySqlCon.closeConnection();
 }
-
 
   @Path("/saveCarteOrder")
   @POST
