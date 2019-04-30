@@ -64,6 +64,7 @@ private Group cameraGroup;
 private Utilisateur currentUser;
 private Group root3D;
 private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
+private Stage stage =null;
 
 	public MainView3DController(Utilisateur userContext)
 	{
@@ -214,6 +215,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 		stage.setScene(scene);
 		setOnClosingListener(stage);
 		stage.show();
+		if(this.stage == null){
+			this.stage = stage;
+		}
 	}
 
 	private void setOnClosingListener(Stage stage) {
@@ -508,10 +512,9 @@ private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
 		ControllerTheProject controllerProjectList = fxmlLoader.getController();
 		controllerProjectList.setProject(project);
 		Scene tableViewScene = new Scene(tableViewParent);
-		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-		window.setScene(tableViewScene);
-		window.show();
-		legendViewLauncher.closeStage();
+		createStage(tableViewScene);
+		this.stage.close();
+		//legendViewLauncher.closeStage();
 	}
 
 
