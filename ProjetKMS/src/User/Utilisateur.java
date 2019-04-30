@@ -31,6 +31,9 @@ public class Utilisateur {
 	public String getNom(){return this.nom;}
 
 	public void addProjet(Project projet){
+		if (this.projets == null){
+			projets = new ArrayList<Project>();
+		}
 		this.projets.add(projet);
 	}
 

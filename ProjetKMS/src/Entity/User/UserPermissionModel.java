@@ -1,18 +1,18 @@
 package Entity.User;
 
-public class UserPermission {
+public class UserPermissionModel {
 
 	private int userID;
 	private String email;
 	private String permission;
 
-	public UserPermission(){
+	public UserPermissionModel(){
 		email = "";
 		permission = "";
 		userID = 0;
 	}
 
-	public UserPermission(String email,String permission,int id){
+	public UserPermissionModel(String email,String permission,int id){
 		this.email = email;
 		this.permission = permission;
 		this.userID = id;

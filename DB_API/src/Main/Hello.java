@@ -55,6 +55,16 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/createUser")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void createUser(UtilisateurModel user) throws Exception {
+  	mySqlCon.openLocalConnection();
+
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_utilisateur(nom,mots_de_passe) VALUES (\'" + user.getName() + "\', \'" + user.getPassword() + "\')");
+  	mySqlCon.closeConnection();
+  }
+
   @Path("/getAllUser")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -85,7 +95,32 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/getUserWithName")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public String getUserWithName(UsernameModel username) throws Exception {
 
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_utilisateur WHERE nom = \'" + username.getUsername() + "\'");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+    		JsonObject obj = new JsonObject();
+    		obj.addProperty("username", result.getString(2));
+    		jsonArr.add(obj);
+    	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return null;
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
 
   @Path("/getProjects/{userId}")
   @GET

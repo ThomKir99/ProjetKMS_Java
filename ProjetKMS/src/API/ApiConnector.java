@@ -26,6 +26,8 @@ import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import Entity.User.Permission;
+import Entity.User.Username;
+import Entity.User.UtilisateurInfo;
 import User.Utilisateur;
 import javafx.scene.paint.Color;
 
@@ -85,6 +87,50 @@ public class ApiConnector {
 		return userList;
 	}
 
+	public void createUser(UtilisateurInfo user) throws IOException{
+  	Gson gson = new Gson();
+  	String userJson = gson.toJson(user);
+    String sURL = this.baseURL +"createUser";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(userJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+	}
+
+	public boolean doesUserExist(String username) throws IOException{
+		boolean userExist = false;
+		Username name = new Username(username);
+  	Gson gson = new Gson();
+  	String userN = gson.toJson(name);
+
+    String sURL = this.baseURL +"getUserWithName";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(userN);
+    wr.flush();
+    wr.close();
+    request.connect();
+    InputStreamReader sr = new InputStreamReader(request.getInputStream());
+    BufferedReader br = new BufferedReader(sr);
+
+    String text = "";
+    while ((text = br.readLine()) != null){
+    	userExist =  true;
+    }
+
+    return userExist;
+	}
 
 
 	public ArrayList<Project> projectList(int userID) throws IOException{

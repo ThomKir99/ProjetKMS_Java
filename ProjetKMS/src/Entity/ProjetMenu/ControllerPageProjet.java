@@ -117,12 +117,15 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	public void fillGroup() throws IOException{
-		for (Project projet: userContext.getProjets()){
-			projet.setGroups(apiConnector.groupList(projet.getId()));
-			for (Group group : projet.getGroups()){
-				group.setCartes(apiConnector.carteList(group.getId()));
+		if (userContext.getProjets() != null){
+			for (Project projet: userContext.getProjets()){
+				projet.setGroups(apiConnector.groupList(projet.getId()));
+				for (Group group : projet.getGroups()){
+					group.setCartes(apiConnector.carteList(group.getId()));
+				}
 			}
 		}
+
 	}
 
 	public void refreshProjectList(){
