@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Carte.Carte;
@@ -56,10 +57,11 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		leProjet = new Project();
 	}
 
-	public void getGroupsFromProject() throws IOException{
+	public List<Group> getGroupsFromProject() throws IOException{
 		if (apiConnector.groupList(leProjet.getId()) != null){
 			leProjet.setGroups(apiConnector.groupList(leProjet.getId()));
 		}
+		return leProjet.getGroups();
 	}
 
 	public void setProject(Project unProjet) throws IOException{

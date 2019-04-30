@@ -123,6 +123,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void setCompletionGroup() {
 		checkbox_completion.setSelected(group.getIsGroupOfCompletion());
 		btn_addCarte.setDisable(group.getIsGroupOfCompletion());
+		saveCarteCompletion();
 	}
 
 	private void getCarteFromGroup() throws IOException{
@@ -205,12 +206,16 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	protected void saveCarteCompletion() {
+		refreshGroup();
 		try {
-			for(Carte aCarte : group.getCartes()){
-				aCarte.setComplete(group.getIsGroupOfCompletion());
+			for(Group aGroup:controllerProjectList.getProject().getGroups()){
+				for(Carte aCarte : aGroup.getCartes()){
+					aCarte.setComplete(aGroup.getIsGroupOfCompletion());
+				}
+				ApiConnector apiConnector = new ApiConnector();
+				apiConnector.saveCarteCompletion(aGroup.getCartes());
 			}
-			ApiConnector apiConnector = new ApiConnector();
-			apiConnector.saveCarteCompletion(group.getCartes());
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -300,7 +305,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
      Dragboard db = event.getDragboard();
-
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
      } else {
@@ -326,17 +330,17 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
+     		saveCarteCompletion();
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
-     		refreshGroup();
+
 
 	}
 
 	private void refreshGroup() {
 		group.getCartes().clear();
 		 group.addAll(listViewGroup.getItems());
-		 saveCarteCompletion();
 	}
 
 	private void setDragOverHandler(DragEvent event) {
@@ -431,7 +435,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			dragSourceCell.getItem().setGroupId(group.getId());
 			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
 			listViewGroup.setItems(carteObservableList);
-			saveCarteCompletion();
 	        event.setDropCompleted(true);
 	        setDragSourceToNull();
 		} catch (IOException e) {
