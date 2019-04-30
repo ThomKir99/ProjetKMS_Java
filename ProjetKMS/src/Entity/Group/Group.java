@@ -1,10 +1,12 @@
 package Entity.Group;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import API.ApiConnector;
 import Entity.Entity;
 import Entity.Carte.Carte;
 import Entity.Projet.Project;
@@ -15,12 +17,14 @@ public class Group extends Entity{
 	private List<Carte> cartes;
 	private double x3DPosition;
 	private int order_in_projet;
+	private boolean isGroupOfCompletion;
 
 	public Group(){
 		super();
 		this.cartes = new ArrayList<Carte>();
 		setX3DPosition(0);
 		order_in_projet=0;
+		setIsGroupOfCompletion(false);
 	}
 
 	public Group(String name){
@@ -28,12 +32,20 @@ public class Group extends Entity{
 		this.cartes = new ArrayList<Carte>();
 		this.setName(name);
 		order_in_projet=0;
+		setIsGroupOfCompletion(false);
 	}
 
 	public Group(int id, String name,int orderInProject){
 		super(id,name);
 		this.cartes = null;
 		this.order_in_projet = orderInProject;
+		setIsGroupOfCompletion(false);
+	}
+	public Group(int id, String name,int orderInProject,boolean isGroupOfCompletion){
+		super(id,name);
+		this.cartes = null;
+		this.order_in_projet = orderInProject;
+		this.setIsGroupOfCompletion(isGroupOfCompletion);
 	}
 
 	public List<Carte> getCartes() {return cartes;}
@@ -84,6 +96,14 @@ public class Group extends Entity{
 
 	public void setOrder_in_projet(int order_in_projet) {
 		this.order_in_projet = order_in_projet;
+	}
+
+	public boolean getIsGroupOfCompletion() {
+		return isGroupOfCompletion;
+	}
+
+	public void setIsGroupOfCompletion(boolean isGroupOfCompletion) {
+		this.isGroupOfCompletion = isGroupOfCompletion;
 	}
 
 }

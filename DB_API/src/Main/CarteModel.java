@@ -5,6 +5,7 @@ public class CarteModel {
 	public String name;
 	public int ordre_de_priorite;
 	private int groupId;
+	private boolean complete;
 
 	public void setID(int groupID) {
 		this.id = groupID;
@@ -36,4 +37,8 @@ public class CarteModel {
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
+
+	public boolean getIfComplete() {return this.complete;}
+
+	public void setComplete(boolean complete){this.complete = complete;}
 }

@@ -17,6 +17,7 @@ public class Carte extends Entity{
     private float positionZ;
     private int groupId;
 
+
 	public String getDescription() {return this.description;}
 
 	public int getOrder() {return this.ordre_de_priorite;}
