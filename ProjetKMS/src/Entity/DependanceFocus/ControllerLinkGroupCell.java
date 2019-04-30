@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Group.GroupeCell;
 import Entity.Projet.ControllerTheGroup;
@@ -153,10 +154,12 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	{
 		try {
 			int carteParent;
+			Dependance dependance;
 			System.out.println("carte2 = " + carteRelier );
 			carteParent = projectController.getCarteParent().getId() ;
-
-			apiConnector.createDependance(carteParent,carteRelier);
+			dependance.setIdCarteDeDependance();
+			dependance.setIdCarteDependante();
+			apiConnector.createDependance(Dependance dependance);
 			} catch (IOException e) {
 				e.printStackTrace();
 				}
