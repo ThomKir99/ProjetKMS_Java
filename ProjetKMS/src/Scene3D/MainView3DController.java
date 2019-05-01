@@ -64,7 +64,7 @@ private int numberOfLayer=0;
 private String lastLayerChange="";
 private enum CameraStates{
 
-	FOWARDS,BACKWARDS,DEFAULT
+	FOWARDS,BACKWARDS,DEFAULT,WAINTING
 }
 CameraStates states;
 Button[] buttons = new Button[5];
@@ -379,16 +379,7 @@ private Stage stage =null;
 
 	private void returnCameraToDefaultPosition() {
 		states = CameraStates.DEFAULT;
-		float actualCameraXPosition = getCameraPositionInX();
-		float actualCameraYPosition =  getCameraPositionInY();
-		float actualCameraZPosition =  getCameraPositionInZ();
-
-		translateTheCameraOnTheXAxis(cameraDefaultXPosition - actualCameraXPosition);
-		translateTheCameraOnTheYAxis(cameraDefaultYPosition - actualCameraYPosition);
-		translateTheCameraOnTheZAxis(cameraDefaultZPosition - actualCameraZPosition );
-
-
-
+		changeLayer();
 
 	}
 	private float getCameraPositionInX() {
@@ -543,6 +534,9 @@ private Stage stage =null;
 						setCameraBackward();
 						break;
 					case DEFAULT:
+						setCameraDefault();
+						break;
+					case WAINTING:
 					default:
 						buttons[1].setDisable(false);
 						buttons[2].setDisable(false);
@@ -553,6 +547,59 @@ private Stage stage =null;
          });
 
 
+	}
+	protected void setCameraDefault() {
+		float actualCameraXPosition = getCameraPositionInX();
+		float actualCameraYPosition =  getCameraPositionInY();
+		float actualCameraZPosition =  getCameraPositionInZ();
+		getBackOnX(actualCameraXPosition);
+		getBackOnY(actualCameraYPosition);
+		getBackOnZ(actualCameraZPosition);
+		if(cameraIsBackToDefault(actualCameraXPosition,actualCameraYPosition,actualCameraZPosition)){
+			buttons[1].setDisable(false);
+			buttons[2].setDisable(false);
+			states = CameraStates.WAINTING;
+		}
+
+		/*translateTheCameraOnTheXAxis(cameraDefaultXPosition - actualCameraXPosition);
+		translateTheCameraOnTheYAxis(cameraDefaultYPosition - actualCameraYPosition);
+		translateTheCameraOnTheZAxis(cameraDefaultZPosition - actualCameraZPosition );*/
+
+	}
+	private boolean cameraIsBackToDefault(float actualCameraXPosition, float actualCameraYPosition, float actualCameraZPosition) {
+boolean hasReturn =false;
+		 if(Math.round(actualCameraXPosition) == cameraDefaultXPosition &&
+				Math.round(actualCameraYPosition) == cameraDefaultYPosition&&
+				Math.round(actualCameraZPosition) == cameraDefaultZPosition){
+			 hasReturn =true;
+		 }
+		return hasReturn;
+	}
+
+
+	private void getBackOnZ(float actualCameraZPosition) {
+		if(Math.round(actualCameraZPosition)>cameraDefaultZPosition){
+			translateTheCameraOnTheZAxis(-1);
+		}else if(Math.round(actualCameraZPosition) < cameraDefaultZPosition){
+			translateTheCameraOnTheZAxis(1);
+		}
+
+	}
+
+	private void getBackOnY(float actualCameraYPosition) {
+		if(Math.round(actualCameraYPosition)>cameraDefaultYPosition){
+			translateTheCameraOnTheYAxis(-1);
+		}else if(Math.round(actualCameraYPosition) < cameraDefaultYPosition){
+			translateTheCameraOnTheYAxis(1f);
+		}
+
+	}
+	private void getBackOnX(float actualCameraXPosition) {
+		if(Math.round(actualCameraXPosition)>cameraDefaultXPosition){
+			translateTheCameraOnTheXAxis(-1);
+		}else if(Math.round(actualCameraXPosition) < cameraDefaultXPosition){
+			translateTheCameraOnTheXAxis(1);
+		}
 	}
 	protected void setCameraBackward() {
 		float objective =  (carteZGap * (layer+1)) -20;
@@ -574,7 +621,7 @@ private Stage stage =null;
    		}else{
    			buttons[1].setDisable(false);
 			buttons[2].setDisable(false);
-			states = CameraStates.DEFAULT;
+			states = CameraStates.WAINTING;
    		}
 
 	}
