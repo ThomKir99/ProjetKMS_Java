@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.vecmath.Point3d;
 import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
@@ -13,6 +16,7 @@ import Entity.Projet.Project;
 import Entity.Carte.Carte;
 import Entity.Carte.Carte3D;
 import User.Utilisateur;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,7 +43,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 
-public class MainView3DController {
+public class MainView3DController extends TimerTask{
 
 	private float defaultWindowSize = 600;
 
@@ -53,17 +57,29 @@ private float defaultZPosition = 50;
 private float cameraDefaultZPosition= -50;
 private float cameraDefaultXPosition= -10000;
 private float cameraDefaultYPosition= 0;
+private float positionToGetZ = 0;
 
 private int layer=0;
 private int numberOfLayer=0;
 private String lastLayerChange="";
+private enum CameraStates{
 
+	FOWARDS,BACKWARDS,DEFAULT
+}
+CameraStates states;
+Button[] buttons = new Button[5];
+Button defaultCameraPosition = new Button("Default Position");
+Button layerFoward = new Button("Layer foward");
+Button layerBackward = new Button("Layer Backward");
+Button backTo2D = new Button("2D");
+Button createLegend = new Button("Legend");
 
 private PerspectiveCamera camera;
 private Group cameraGroup;
 private Utilisateur currentUser;
 private Group root3D;
 private LegendViewLauncher legendViewLauncher =new LegendViewLauncher();
+Timer timer = new Timer(true);
 private Stage stage =null;
 
 	public MainView3DController(Utilisateur userContext)
@@ -193,12 +209,7 @@ private Stage stage =null;
 		return subScene;
 	}
 	private Node[] createMenuButton() {
-		Button[] buttons = new Button[5];
-		  Button defaultCameraPosition = new Button("Default Position");
-		  Button layerFoward = new Button("Layer foward");
-		  Button layerBackward = new Button("Layer Backward");
-		  Button backTo2D = new Button("2D");
-		  Button createLegend = new Button("Legend");
+
 		  buttons[0]= defaultCameraPosition;
 		  buttons[1]= layerFoward;
 		  buttons[2]= layerBackward;
@@ -227,7 +238,7 @@ private Stage stage =null;
 		@Override
 		public void handle(WindowEvent event) {
 		legendViewLauncher.closeStage();
-
+		timer.cancel();
 		}
 	});
 
@@ -257,14 +268,6 @@ private Stage stage =null;
 				returnCameraToDefaultPosition();
 				layer=0;
 				break;
-			case UP:
-				changeLayer();
-				layer++;
-				break;
-			case DOWN:
-				layer--;
-				changeLayer();
-				break;
 			default:
 
 				break;
@@ -277,8 +280,10 @@ private Stage stage =null;
 		buttons[0].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				returnCameraToDefaultPosition();
 				layer=0;
+				lastLayerChange = "";
+				returnCameraToDefaultPosition();
+
 			}
 		});
 		buttons[1].setOnAction(new EventHandler<ActionEvent>() {
@@ -329,11 +334,13 @@ private Stage stage =null;
 	}
 
 	private void increaseLayer(){
+
 	if(lastLayerChange.equals("down")){
 		layer+=2;
 	}
 
 		if(layer<numberOfLayer){
+			states = CameraStates.FOWARDS;
 			changeLayer();
 			layer++;
 			lastLayerChange="up";
@@ -346,6 +353,7 @@ private Stage stage =null;
 			layer-=2;
 		}
 		if(layer>=0){
+		states = CameraStates.BACKWARDS;
 		changeLayer();
 		layer--;
 		lastLayerChange="down";
@@ -354,24 +362,30 @@ private Stage stage =null;
 
 
 	private void changeLayer() {
-			returnCameraToDefaultZ();
-			translateTheCameraOnTheZAxis(5);
-			translateTheCameraOnTheZAxis(carteZGap*layer);
+		System.out.println("number of layer : "+ numberOfLayer);
+		if(layer<=numberOfLayer){
+			System.out.println( layer);
+			try {
+				buttons[1].setDisable(true);
+				buttons[2].setDisable(true);
+				timer.schedule(this, 0,10);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+
 
 	}
-	private void returnCameraToDefaultZ() {
-		float actualCameraZPosition =  getCameraPositionInZ();
-		translateTheCameraOnTheZAxis(cameraDefaultZPosition-actualCameraZPosition );
 
-	}
 	private void returnCameraToDefaultPosition() {
+		states = CameraStates.DEFAULT;
 		float actualCameraXPosition = getCameraPositionInX();
 		float actualCameraYPosition =  getCameraPositionInY();
 		float actualCameraZPosition =  getCameraPositionInZ();
 
 		translateTheCameraOnTheXAxis(cameraDefaultXPosition - actualCameraXPosition);
 		translateTheCameraOnTheYAxis(cameraDefaultYPosition - actualCameraYPosition);
-		translateTheCameraOnTheZAxis(cameraDefaultZPosition-actualCameraZPosition );
+		translateTheCameraOnTheZAxis(cameraDefaultZPosition - actualCameraZPosition );
 
 
 
@@ -514,7 +528,55 @@ private Stage stage =null;
 		Scene tableViewScene = new Scene(tableViewParent);
 		createStage(tableViewScene);
 		this.stage.close();
-		//legendViewLauncher.closeStage();
+	}
+	@Override
+	public void run() {
+		 Platform.runLater(new Runnable() {
+             @Override
+             public void run() {
+            	 if(layer<=numberOfLayer){
+            		 switch (states) {
+					case FOWARDS:
+						setCameraFoward();
+						break;
+					case BACKWARDS:
+						setCameraBackward();
+						break;
+					case DEFAULT:
+					default:
+						buttons[1].setDisable(false);
+						buttons[2].setDisable(false);
+						break;
+					}
+                   }
+            	 }
+         });
+
+
+	}
+	protected void setCameraBackward() {
+		float objective =  (carteZGap * (layer+1)) -20;
+   		positionToGetZ = objective;
+   		if(getCameraPositionInZ()>= positionToGetZ){
+   			translateTheCameraOnTheZAxis(-1f);
+   		}else{
+   			buttons[1].setDisable(false);
+			buttons[2].setDisable(false);
+			states = CameraStates.DEFAULT;
+   		}
+
+	}
+	protected void setCameraFoward() {
+		float objective =  (carteZGap * (layer-1))-20;
+   		positionToGetZ = objective;
+   		if(getCameraPositionInZ()<= positionToGetZ){
+   			translateTheCameraOnTheZAxis(1f);
+   		}else{
+   			buttons[1].setDisable(false);
+			buttons[2].setDisable(false);
+			states = CameraStates.DEFAULT;
+   		}
+
 	}
 
 
