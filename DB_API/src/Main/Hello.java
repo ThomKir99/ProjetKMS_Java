@@ -60,10 +60,43 @@ public class Hello {
   @Consumes(MediaType.APPLICATION_JSON)
   public void createUser(UtilisateurModel user) throws Exception {
   	mySqlCon.openLocalConnection();
-
   	mySqlCon.executeNonQuery("INSERT INTO tbl_utilisateur(nom,mots_de_passe) VALUES (\'" + user.getName() + "\', \'" + user.getPassword() + "\')");
   	mySqlCon.closeConnection();
   }
+
+  @Path("/getProjectWithPermission/{userID}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getProjectWithPermission(@PathParam("userID") String userID) throws Exception {
+
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT id_projet,permission,id_utilisateur FROM tbl_permission WHERE id_utilisateur = \'" + userID + "\'");
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+      	ResultSet result1 = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet = \'" + result.getString(1) + "\' ORDER BY date_projet_ouvert DESC");
+				JsonObject obj = new JsonObject();
+
+		  	if (result1.isBeforeFirst()){
+		    	while (result1.next()){
+	  				obj.addProperty("projectID", result1.getInt(1));
+	  				obj.addProperty("projectName", result1.getString(2));
+	  				obj.addProperty("color_project", result1.getString(4));
+	  				obj.addProperty("permission", result.getString(2));
+		    	}
+		    }
+				jsonArr.add(obj);
+    	}
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+
+
 
   @Path("/getAllUser")
   @GET

@@ -30,7 +30,7 @@
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </Button>
-            <Hyperlink fx:id="hlink_backToConnexion" layoutX="191.0" layoutY="324.0" prefHeight="24.0" prefWidth="111.0" text="Back to connection" />
+            <Hyperlink fx:id="hlink_backToConnexion" layoutX="192.0" layoutY="323.0" prefHeight="24.0" prefWidth="111.0" text="Back to login" />
             <Text layoutX="29.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" wrappingWidth="136.99999526143074" />
             <Text layoutX="55.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm password" textAlignment="CENTER" wrappingWidth="225.99999684095383">
                <font>

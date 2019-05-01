@@ -144,15 +144,20 @@ public class ApiConnector {
     JsonArray  rootarray = root.getAsJsonArray();
     ArrayList<Project> projectList =  new ArrayList<Project>();
 
+    if (getProjectWithPermission(userID) != null)
+    	projectList.addAll(getProjectWithPermission(userID));
+
     if (rootarray.size() > 0){
       for (JsonElement obj : rootarray){
-
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
         String colorProject = obj.getAsJsonObject().get("color_project").toString();
         userName = removeQuote(userName);
-        colorProject  =removeQuote(colorProject);
-        projectList.add(new Project(projectID,userName,colorProject));
+        colorProject = removeQuote(colorProject);
+
+        Project projet = new Project(projectID,userName,colorProject);
+        projet.setPermission("ADMIN");
+        projectList.add(projet);
       }
     }
     else{
@@ -160,6 +165,38 @@ public class ApiConnector {
     }
 
 		return projectList;
+	}
+
+	private ArrayList<Project> getProjectWithPermission(int userID)throws IOException{
+    String sURL = this.baseURL +"getProjectWithPermission/" + userID;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    JsonParser jp = new JsonParser();
+    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    JsonArray  rootarray = root.getAsJsonArray();
+    ArrayList<Project> projectList = new ArrayList<Project>();
+
+    if (rootarray.size() > 0){
+      for (JsonElement obj : rootarray){
+        int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
+        String projectName = obj.getAsJsonObject().get("projectName").toString();
+        String color_project = obj.getAsJsonObject().get("color_project").toString();
+        String permission = obj.getAsJsonObject().get("permission").toString();
+        projectName = removeQuote(projectName);
+        color_project = removeQuote(color_project);
+        permission = removeQuote(permission);
+
+        Project projet = new Project(projectID,projectName,color_project);
+        projet.setPermission(permission);
+        projectList.add(projet);
+      }
+      return projectList;
+    }
+    else{
+  		return null;
+    }
 	}
 
 	public ArrayList<Group> groupList(int projectID) throws IOException{

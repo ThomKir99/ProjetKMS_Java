@@ -11,6 +11,12 @@ public class PermissionModel {
 		permission = "";
 	}
 
+	public PermissionModel(int idprojet,int iduser,String permission){
+		this.id_projet = idprojet;
+		this.id_user = iduser;
+		this.permission = permission;
+	}
+
 	public void setId_projet(int id_projet) {
 		this.id_projet = id_projet;
 	}
