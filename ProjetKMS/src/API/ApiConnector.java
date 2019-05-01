@@ -11,6 +11,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -184,6 +187,7 @@ public class ApiConnector {
         String projectName = obj.getAsJsonObject().get("projectName").toString();
         String color_project = obj.getAsJsonObject().get("color_project").toString();
         String permission = obj.getAsJsonObject().get("permission").toString();
+
         projectName = removeQuote(projectName);
         color_project = removeQuote(color_project);
         permission = removeQuote(permission);
@@ -191,6 +195,7 @@ public class ApiConnector {
         Project projet = new Project(projectID,projectName,color_project);
         projet.setPermission(permission);
         projectList.add(projet);
+
       }
       return projectList;
     }
@@ -696,30 +701,7 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
   }
-  private Project getProjectOpenedTime(int userId) throws IOException{
-	    String sURL = this.baseURL + "OpenedProject/" + userId ;
-	    URL url = new URL(sURL);
-	    URLConnection request = url.openConnection();
-	    request.connect();
 
-	    if (request.getContent() != null){
-	        Project leProjet =  new Project();
-	      	JsonParser jp = new JsonParser();
-	      	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-	      	JsonArray rootarray = root.getAsJsonArray();
-
-	     	 for (JsonElement obj : rootarray){
-	             int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
-	             String projectName = obj.getAsJsonObject().get("projectName").toString();
-	             Date projectDateOpened = Date.valueOf(obj.getAsJsonObject().get("date_projet_ouvert").toString());
-	             leProjet = new Project(projectId,projectName,projectDateOpened);
-	     	 }
-	     	return leProjet;
-	    }
-	    else{
-	    	return null;
-	    }
-  }
 
   public void setDateOpenProject(Project currentProject) throws IOException{
 	  	Gson gson = new Gson();

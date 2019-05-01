@@ -35,6 +35,9 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_openProject;
 
 	@FXML
+	private MenuButton splitMenuProject;
+
+	@FXML
 	private GridPane gridPane_projectCell;
 
 	@FXML
@@ -75,6 +78,17 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
      Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
      btn_delete.setGraphic(new ImageView(imagePoubelle));
      setGraphic(gridPane_projectCell);
+     restrainUserWithPermission();
+	}
+
+	private void restrainUserWithPermission(){
+		if (!currentProjet.getPermission().equals("ADMIN")){
+			splitMenuProject.setDisable(true);
+		}
+
+		if (currentProjet.getPermission().equals("READ")){
+			txt_projectName.setDisable(true);
+		}
 	}
 
 	public void setListener(){

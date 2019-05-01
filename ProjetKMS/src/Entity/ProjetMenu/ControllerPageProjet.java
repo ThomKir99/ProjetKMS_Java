@@ -145,9 +145,8 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		Project unProjet = new Project();
 		try {
 		  unProjet = apiConnector.createProject(userContext.getId());
+		  unProjet.setPermission("ADMIN");
 		  userContext.addProjet(unProjet);
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

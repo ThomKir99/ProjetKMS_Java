@@ -62,6 +62,17 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		}
 	}
 
+	private void restrainUserWithPermission(){
+		if (leProjet.getPermission().equals("READ")){
+			disableEverything();
+		}
+	}
+
+	private void disableEverything(){
+		txt_projectName.setDisable(false);
+		colorPicker.setDisable(false);
+	}
+
 	public void setProject(Project unProjet) throws IOException{
 
 		this.leProjet = unProjet;
@@ -135,15 +146,12 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
 		setListener();
 		refreshGroupList();
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
-
-
 
 	}
 

@@ -7,8 +7,6 @@ import Entity.Entity;
 import Entity.Group.Group;
 import javafx.scene.paint.Color;
 
-
-
 public class Project extends Entity{
 
 	private List<Group> groups;
