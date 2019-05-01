@@ -88,4 +88,4 @@ INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRI
 
 /*Depandance*/
 
-select * from tbl_depandance
+SELECT * from tbl_depandance;

@@ -155,11 +155,13 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 		try {
 			int carteParent;
 			Dependance dependance;
-			System.out.println("carte2 = " + carteRelier );
+			dependance = new Dependance();
+			System.out.println("carteLink carte2 = " + carteRelier );
 			carteParent = projectController.getCarteParent().getId() ;
-			dependance.setIdCarteDeDependance();
-			dependance.setIdCarteDependante();
-			apiConnector.createDependance(Dependance dependance);
+			dependance.setIdCarteDeDependance(carteParent);
+			dependance.setIdCarteDependante(carteRelier);
+			System.out.println("carteLink Dependance parent : " + dependance.getIdCarteDeDependance() + " dependnaceendanft : " + dependance.getIdCarteDependante());
+			apiConnector.createDependance(dependance);
 			} catch (IOException e) {
 				e.printStackTrace();
 				}

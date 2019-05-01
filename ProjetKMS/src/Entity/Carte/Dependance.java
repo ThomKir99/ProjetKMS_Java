@@ -4,6 +4,11 @@ public class Dependance {
 	public int idCarteDependante;
 	public int idCarteDeDependance;
 
+	public Dependance(){
+		idCarteDependante = 0;
+		idCarteDeDependance = 0;
+	}
+
 	public Dependance(int idCarteDependante,int idCarteDeDependance){
 		this.idCarteDeDependance =idCarteDeDependance;
 		this.idCarteDependante = idCarteDependante;

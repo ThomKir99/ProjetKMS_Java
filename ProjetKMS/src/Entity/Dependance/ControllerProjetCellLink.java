@@ -70,7 +70,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
         setListener();
         setGraphic(pane1);
         currentProjetDependance = projet;
-        System.out.println(projet.getId());
+        System.out.println("ProjectCell idprojet : " + projet.getId());
 
 	}
 

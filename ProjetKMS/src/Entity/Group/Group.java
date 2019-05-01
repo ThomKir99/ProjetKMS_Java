@@ -37,13 +37,14 @@ public class Group extends Entity{
 
 	public Group(int id, String name,int orderInProject){
 		super(id,name);
-		this.cartes = null;
+		this.cartes = new ArrayList<Carte>();
 		this.order_in_projet = orderInProject;
 		setIsGroupOfCompletion(false);
 	}
+
 	public Group(int id, String name,int orderInProject,boolean isGroupOfCompletion){
 		super(id,name);
-		this.cartes = null;
+		this.cartes = new ArrayList<Carte>();
 		this.order_in_projet = orderInProject;
 		this.setIsGroupOfCompletion(isGroupOfCompletion);
 	}

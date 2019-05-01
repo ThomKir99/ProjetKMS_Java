@@ -505,11 +505,11 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 
 
 @Path("/createDependance")
-@PUT
+@POST
 @Consumes(MediaType.APPLICATION_JSON)
 public void createDependance(DependnaceModel dependance) throws Exception {
 	mySqlCon.openLocalConnection();
-	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance (id_carte_de_depandance,id_carte_depandante,terminer) VALUES ("+ dependance.getIdCarteDeDependance() + ","+ dependance.getIdCarteDependante() + false + "); ");
+	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+dependance.getIdCarteDependante() +","+ dependance.getIdCarteDeDependance() +","+false + ")");
 	mySqlCon.closeConnection();
 }
 
