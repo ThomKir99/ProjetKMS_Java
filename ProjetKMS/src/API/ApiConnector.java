@@ -794,4 +794,30 @@ public void saveCarteCompletion(List<Carte> list) throws IOException {
     request.getInputStream();
 }
 
+//public ArrayList<Dependance> getDependanceCarte(int idCarte) throws IOException{
+//
+//
+//	   String sURL = this.baseURL +"getDepandanceCarte" + idCarte;
+//	      URL url = new URL(sURL);
+//	      URLConnection request = url.openConnection();
+//	      request.connect();
+//
+//	      JsonParser jp = new JsonParser();
+//	      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+//	      JsonArray  rootarray = root.getAsJsonArray();
+//	      ArrayList<Dependance> list = new ArrayList<Dependance>();
+//
+//	      if (rootarray.size() > 0){
+//	        for (JsonElement obj : rootarray){
+//	          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+//	          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+//
+//	          list.add(new Dependance(idCarteDependante, idCarteDeDependance));
+//	        }
+//	      }
+//
+//
+//	return list;
+//}
+
 }

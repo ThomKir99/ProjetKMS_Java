@@ -295,6 +295,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       });
 
          cell.setOnDragDropped(event -> {
+//        	 setOnlyIfGroupCompletion(group,cell);
         	 setOnDragDroppedHandler(event,cell);
 
          });
@@ -334,6 +335,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		saveCarteCompletion();
+
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
@@ -494,6 +496,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		return index;
 	}
 
+
+//	public void setOnlyIfGroupCompletion(Group group,Carte idCarte){
+//		if(group.getIsGroupOfCompletion() == true){
+//			apiConnector.getDependanceCarte(idCarte);
+//		}
+//	}
 
 
 
