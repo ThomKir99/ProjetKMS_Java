@@ -94,6 +94,7 @@ private Stage stage =null;
 		ArrayList<Carte3D> allCarte3D = generateCard();
 		root3D.getChildren().addAll(add3DCarte(allCarte3D));
 		root3D.getChildren().addAll(addArrow(allCarte3D));
+		root3D.getChildren().addAll(addContour(allCarte3D));
 		root3D.getChildren().addAll(createArrowLink(allCarte3D));
 		setCamera();
 		setCameraPosition();
@@ -105,6 +106,10 @@ private Stage stage =null;
 
 	}
 
+	private ArrayList<PolyLine3D> addContour(ArrayList<Carte3D> allCarte3D) {
+		ContourCreator contourCreator = new ContourCreator(allCarte3D);
+		return contourCreator.createCarteContour();
+	}
 	private ArrayList<PolyLine3D> createArrowLink(ArrayList<Carte3D> allCarte3D) {
 		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
 		 return depandanceShapeCreator.createTheLink(allCarte3D);
@@ -495,7 +500,7 @@ private Stage stage =null;
 
 	private CuboidMesh createACarte(Carte aCarte, Project aProject) {
 			Image net = generateNet( aCarte.getName(), aCarte.getDescription());
-		   CuboidMesh contentShape = new CuboidMesh(aCarte.getCarteWeight(), aCarte.getCarteHeight(), aCarte.getCartedepth());
+		   CuboidMesh contentShape = new CuboidMesh(aCarte.getCarteWidth(), aCarte.getCarteHeight(), aCarte.getCartedepth());
 		   PhongMaterial material = createCarteMaterial(net, aProject.getProjectColor());
 		   contentShape.setMaterial(material);
 		return contentShape;
@@ -560,11 +565,6 @@ private Stage stage =null;
 			buttons[2].setDisable(false);
 			states = CameraStates.WAINTING;
 		}
-
-		/*translateTheCameraOnTheXAxis(cameraDefaultXPosition - actualCameraXPosition);
-		translateTheCameraOnTheYAxis(cameraDefaultYPosition - actualCameraYPosition);
-		translateTheCameraOnTheZAxis(cameraDefaultZPosition - actualCameraZPosition );*/
-
 	}
 	private boolean cameraIsBackToDefault(float actualCameraXPosition, float actualCameraYPosition, float actualCameraZPosition) {
 boolean hasReturn =false;
@@ -609,7 +609,7 @@ boolean hasReturn =false;
    		}else{
    			buttons[1].setDisable(false);
 			buttons[2].setDisable(false);
-			states = CameraStates.DEFAULT;
+			states = CameraStates.WAINTING;
    		}
 
 	}

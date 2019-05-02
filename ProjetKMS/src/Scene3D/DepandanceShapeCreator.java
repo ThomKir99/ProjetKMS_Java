@@ -17,6 +17,8 @@ import Entity.Carte.Carte3D;
 import Entity.Carte.Dependance;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 public class DepandanceShapeCreator {
 
@@ -55,8 +57,7 @@ private ArrayList<PolyLine3D> createLink(int idCarteDeDependance, int idCarteDep
 				points.add(new Point3D((carteDeDependancePosition[0])-11.1f, (carteDeDependancePosition[1])+(height/3), carteDeDependancePosition[2]));
 				points.add(new Point3D((carteDependantePosition[0]+1)-11.1f, (carteDependantePosition[1])-(height/3),carteDependantePosition[2]));
 
-				PolyLine3D polyLine3D = new PolyLine3D(points, 5, new javafx.scene.paint.Color(0, 0, 0, 1));
-
+				PolyLine3D polyLine3D = new PolyLine3D(points, 2, new javafx.scene.paint.Color(0, 0, 0, 1));
 				meshView.add(polyLine3D);
 			}
 
