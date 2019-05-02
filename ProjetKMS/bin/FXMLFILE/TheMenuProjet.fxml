@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <GridPane fx:id="gridPane_projectCell" prefHeight="112.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
@@ -28,6 +30,11 @@
               </items>
             </MenuButton>
             <Button fx:id="btn_openProject" layoutY="24.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="237.0" />
+            <Text fx:id="txt_readOnlyProjectMenu" layoutX="85.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Read only" visible="false" wrappingWidth="67.13671875">
+               <font>
+                  <Font name="System Italic" size="15.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>

@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.input.*;
 import java.awt.Color;
@@ -39,6 +40,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@FXML
 	public ColorPicker colorPicker;
+
+	@FXML
+	public Button btn_newGroup;
+
+	@FXML
+	public Text txt_readOnly;
+
 	public Button btn_pageDependance;
 
 	public static ObjectProperty<ListCell<Carte>> dragSourceCarte = new SimpleObjectProperty<>();
@@ -63,14 +71,20 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private void restrainUserWithPermission(){
-		if (leProjet.getPermission().equals("READ")){
-			disableEverything();
+		if (leProjet != null){
+			if (leProjet.getPermission().equals("READ")){
+				disableEverything();
+			}
 		}
 	}
 
 	private void disableEverything(){
-		txt_projectName.setDisable(false);
-		colorPicker.setDisable(false);
+		txt_readOnly.setVisible(true);
+		txt_projectName.setFocusTraversable(false);
+		txt_projectName.setMouseTransparent(true);
+		colorPicker.setMouseTransparent(true);
+		btn_newGroup.setMouseTransparent(true);
+		listViewProjet.setMouseTransparent(true);
 	}
 
 	public void setProject(Project unProjet) throws IOException{
@@ -80,6 +94,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		getGroupsFromProject();
 		refreshGroupList();
 		setProjectListByRecent(leProjet);
+		restrainUserWithPermission();
 	}
 
 	public Project getProject(){
@@ -87,8 +102,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		projet = leProjet;
 		return projet;
 	}
-
-
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
@@ -121,8 +134,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 				}
 			}
 		});
-
-
 	}
 
 	public void errorMessage() throws IOException{
@@ -148,10 +159,12 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 		setListener();
 		refreshGroupList();
+		txt_projectName.setDisable(false);
 		listViewProjet.setItems(groupObservableList);
 		listViewProjet.setCellFactory(projectListView ->{
 			return setCellDragAndDropHandler();
 		});
+
 
 	}
 
@@ -194,8 +207,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		      dragFromGroup = true;
 		      dragGroupIndex = Integer.valueOf(index);
 		  }
-
-
 	}
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
@@ -278,7 +289,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 			}
 			apiConnector.saveGroupeOrder(leProjet);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -11,6 +11,8 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="764.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.Projet.ControllerTheProject">
    <children>
@@ -45,7 +47,7 @@
               </rowConstraints>
                <children>
                   <TextField fx:id="txt_projectName" prefHeight="27.0" prefWidth="1056.0" style="-fx-text-box-border: transparent;" />
-                  <Button mnemonicParsing="false" onAction="#createNewGroup" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: #55ef0e;" text="New Group" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                  <Button fx:id="btn_newGroup" mnemonicParsing="false" onAction="#createNewGroup" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: #55ef0e;" text="New Group" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                </children>
             </GridPane>
             <ListView fx:id="listViewProjet" layoutX="-1.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="602.0" prefWidth="1134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
@@ -53,5 +55,10 @@
       </AnchorPane>
       <Button fx:id="btn_backToMenu" layoutX="21.0" layoutY="45.0" mnemonicParsing="false" onAction="#BackToMenu" prefHeight="37.0" prefWidth="71.0" text="&lt;-- Back" />
       <ColorPicker fx:id="colorPicker" layoutX="1015.0" layoutY="82.0" />
+      <Text fx:id="txt_readOnly" layoutX="465.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Read only view!" underline="true" wrappingWidth="182.00001883506775">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

@@ -19,6 +19,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -42,6 +43,9 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	@FXML
 	private MenuItem btn_addContributor;
+
+	@FXML
+	private Text txt_readOnlyProjectMenu;
 
 	private ControllerPageProjet controllerPageProjet;
 	private Project currentProjet;
@@ -83,11 +87,14 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
 	private void restrainUserWithPermission(){
 		if (!currentProjet.getPermission().equals("ADMIN")){
-			splitMenuProject.setDisable(true);
+			splitMenuProject.setFocusTraversable(false);
+			splitMenuProject.setMouseTransparent(true);
 		}
 
 		if (currentProjet.getPermission().equals("READ")){
-			txt_projectName.setDisable(true);
+			txt_projectName.setFocusTraversable(false);
+			txt_projectName.setMouseTransparent(true);
+			txt_readOnlyProjectMenu.setVisible(true);
 		}
 	}
 
