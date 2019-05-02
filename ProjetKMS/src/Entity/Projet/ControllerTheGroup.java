@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
 import javafx.beans.property.ObjectProperty;
@@ -77,9 +78,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
     protected void updateItem(Group group, boolean empty) {
       super.updateItem(group, empty);
       this.group = group;
-      System.out.println("CREATE");
-      System.out.println(group);
-
       if(empty || group == null) {
           setText(null);
           setGraphic(null);
@@ -344,13 +342,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	private void refreshGroup() {
-		System.out.println("TEST");;
-		System.out.println(group);
-		System.out.println(listViewGroup);
-		System.out.println("el groupe eest dmeeme "+group.getName() +group.getId()+group.getCartes()+ group.getCartes().size());
-		group.getCartes().clear();
-		System.out.println("le groupe apres suppressiion " +group.getId()+group.getCartes()+ group.getCartes().size());
 
+		group.getCartes().clear();
 		 group.addAll(listViewGroup.getItems());
 	}
 
@@ -497,11 +490,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 
-//	public void setOnlyIfGroupCompletion(Group group,Carte idCarte){
-//		if(group.getIsGroupOfCompletion() == true){
-//			apiConnector.getDependanceCarte(idCarte);
-//		}
-//	}
+	public void setOnlyIfGroupCompletion(Group group,Carte idCarte) throws IOException{
+		if(group.getIsGroupOfCompletion() == true){
+		ArrayList<Dependance> dependance;
+			dependance = apiConnector.getDependanceCarte(idCarte.getId());
+		}
+	}
 
 
 

@@ -197,7 +197,6 @@ public void errorMessage() throws IOException{
 		try{
 	  	Parent tableViewParent = (Parent)fxmlLoader.load();
 	    ControllerDependance controllerProjectList = fxmlLoader.getController();
-        System.out.println("groupCell carteParent " + carte.getId());
         controllerProjectList.setCarteDependant(carte);
 	    controllerProjectList.setProject(currentProjet);
 
@@ -223,7 +222,6 @@ public void errorMessage() throws IOException{
 	public int getCarteId(){
 		int carteId;
 		carteId = carte.getId();
-		System.out.println("groupCell la 1 carte id est : "+ carte.getId());
 		return carteId;
 	}
 

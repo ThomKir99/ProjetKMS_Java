@@ -595,30 +595,30 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   }
 
 
-//  @Path("/getDepandanceCarte/{idCarte}")
-//  @GET
-//  @Produces(MediaType.APPLICATION_JSON)
-//  public String getDepandanceCarte() throws Exception {
-//
-//  	mySqlCon.openLocalConnection();
-//  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =" +  idCarte );
-//
-//  	Gson gson = new Gson();
-//  	JsonArray jsonArr = new JsonArray();
-//
-//  	if (result.isBeforeFirst()){
-//			while (result.next()){
-//				JsonObject obj = new JsonObject();
-//				obj.addProperty("id_carte_depandante", result.getInt(1));
-//				obj.addProperty("id_carte_de_depandance", result.getInt(2));
-//				jsonArr.add(obj);
-//
-//			}
-//
-//  	}
-//
-//  	mySqlCon.closeConnection();
-//  	return gson.toJson(jsonArr);
-//  }
+  @Path("/getDepandanceCarte/{idCarte}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getDepandanceCarte(int idCarte) throws Exception {
+
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =" +  idCarte );
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+			while (result.next()){
+				JsonObject obj = new JsonObject();
+				obj.addProperty("id_carte_depandante", result.getInt(1));
+				obj.addProperty("id_carte_de_depandance", result.getInt(2));
+				jsonArr.add(obj);
+
+			}
+
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
 
 }

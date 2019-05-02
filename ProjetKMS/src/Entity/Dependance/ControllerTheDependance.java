@@ -31,29 +31,36 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	@FXML
 	public TextField txt_nomProjet;
 	private ObservableList<Group> groupObservableListLink;
-	public Project leProjet;
+	public Project leProjetDependance;
 	public Carte carteParent;
+	public Project projetPrincipale;
 	@FXML
 	public Button btn_backToMenu;
 	@FXML
 	public ListView<Group> listViewLinkGroupe;
 	public ControllerTheDependance(){
 
-		leProjet = new Project();
+		leProjetDependance = new Project();
+		projetPrincipale = new Project();
 	}
 
 	public Project getProject(){
 		Project projet;
-		projet= leProjet;
+		projet= projetPrincipale;
 		return projet;
+	}
+
+	public void setProjectPrincipale(Project leProjetPrincipale){
+
+		this.projetPrincipale = leProjetPrincipale;
 	}
 
 
 
-	public void setProject(Project unProjet){
+	public void setProjectDependnace(Project unProjet){
 
-		this.leProjet = unProjet;
-		txt_nomProjet.setText(leProjet.getName());
+		this.leProjetDependance = unProjet;
+		txt_nomProjet.setText(leProjetDependance.getName());
 		refreshGroupList();
 	}
 
@@ -64,7 +71,6 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public Carte getCarteParent(){
 		Carte carte;
 		carte= carteParent;
-		System.out.println("TheDependance carte id= " +carte.getId());
 		return carte;
 	}
 
@@ -72,13 +78,12 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public void getAllGroup(){
 
 		groupObservableListLink = FXCollections.observableArrayList();
-		groupObservableListLink.addAll(leProjet.getGroups());
+		groupObservableListLink.addAll(leProjetDependance.getGroups());
 		}
 
 	public void refreshGroupList(){
 		getAllGroup();
 		listViewLinkGroupe.setItems(groupObservableListLink);
-		//erreur commence ici
 		listViewLinkGroupe.setCellFactory(group->{
 			return setFactory();
 		});
@@ -115,7 +120,8 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
         ControllerDependance controllerProjectList = fxmlLoader.getController();
-        controllerProjectList.setProject(leProjet);
+        controllerProjectList.setProject(projetPrincipale);
+        controllerProjectList.setCarte(carteParent);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

@@ -34,11 +34,11 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	public Utilisateur user;
 	@FXML
 	public TextField textFieldGroupName;
-	public Project leProjet;
+	public Project projetPrincipale;
 	public ObservableList<Project> projetObservableList;
 	private Carte carteParent;
 	public  ControllerDependance(){
-		leProjet = new Project();
+		projetPrincipale = new Project();
 		user = new Utilisateur();
 		user = Main.Main.userContext;
 
@@ -63,24 +63,28 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
-		if(leProjet != null){
+		if(projetPrincipale != null){
 			projetObservableList.addAll(user.getProjets());
 		}
 	}
 
 	public void setProject(Project unProjet){
-		this.leProjet = unProjet;
+		projetPrincipale = unProjet;
 	}
 
 	public void setCarteDependant(Carte uneCarte){
 		this.carteParent = uneCarte;
-		System.out.println("uneCarte " + uneCarte.getId() );
+
+	}
+
+	public void setCarte(Carte uneCarte){
+	uneCarte = null;
 	}
 
 
 	public Project getProject(){
 		Project projet;
-		projet= leProjet;
+		projet= projetPrincipale;
 		return projet;
 	}
 
@@ -96,7 +100,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
 	Parent tableViewParent = (Parent)fxmlLoader.load();
 	ControllerTheProject controllerProjectList = fxmlLoader.getController();
-  controllerProjectList.setProject(leProjet);
+  controllerProjectList.setProject(projetPrincipale);
 	Scene tableViewScene = new Scene(tableViewParent);
 	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
