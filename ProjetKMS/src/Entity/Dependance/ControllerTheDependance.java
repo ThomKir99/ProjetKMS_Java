@@ -71,7 +71,9 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public Carte getCarteParent(){
 		Carte carte;
 		carte= carteParent;
+		System.out.println(carteParent);
 		return carte;
+
 	}
 
 
@@ -110,6 +112,7 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 		setListener();
 		refreshGroupList();
 		listViewLinkGroupe.setItems(groupObservableListLink);
+		System.out.println("carteinitialise ds the dependnace"+carteParent);
 		listViewLinkGroupe.setCellFactory(group->{
 			return setFactory();
 		});
@@ -121,7 +124,9 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
         Parent tableViewParent = (Parent)fxmlLoader.load();
         ControllerDependance controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(projetPrincipale);
-        controllerProjectList.setCarte(carteParent);
+        controllerProjectList.setCarteDependant(carteParent);
+        System.out.println("qqchose"+carteParent);
+        System.out.println("NULL "+ this.carteParent);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

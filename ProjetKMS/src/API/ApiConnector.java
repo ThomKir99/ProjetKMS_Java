@@ -604,8 +604,9 @@ public class ApiConnector {
 	    request.getInputStream();
 }
 
-  public void changeCarteGroupId(Carte carte) throws IOException{
-		Gson gson = new Gson();
+  public boolean changeCarteGroupId(Carte carte) throws IOException{
+	  
+	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
 	    String sURL = this.baseURL +"changeCarteGroupId";
 	    URL url = new URL(sURL);
@@ -614,11 +615,16 @@ public class ApiConnector {
 	    request.setRequestMethod("POST");
 	    request.setDoOutput(true);
 	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+
+     	JsonParser jp = new JsonParser();
+      	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+      	JsonArray rootarray = root.getAsJsonArray();
 	    wr.write(projectJson);
 	    wr.flush();
 	    wr.close();
 	    request.connect();
 	    request.getInputStream();
+	    return ;
 }
   public void changeProjectColor(Project project) throws IOException{
 		Gson gson = new Gson();

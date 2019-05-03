@@ -529,10 +529,30 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   @Path("/changeCarteGroupId")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public void changeCarteGroupId(CarteModel carte) throws Exception {
-  	mySqlCon.openLocalConnection();
-  		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
-  	mySqlCon.closeConnection();
+  public String changeCarteGroupId(CarteModel carte) throws Exception {
+	  Gson gson = new Gson();
+	  //JsonArray jsonArr = new JsonArray();
+	  APIResponse response;
+	  response =  new APIResponse();
+	  mySqlCon.openLocalConnection();
+	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =\'" +  carte.getID()+"\'" );
+
+	  if (result.isBeforeFirst()){
+		  System.out.println(result.getRow());
+		  if(result.getRow()!=0){
+			response.successful = false;
+			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
+		  }else{
+			//ok on déplace
+			mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
+			response.ErrorMessage="It works";
+			response.successful = true;
+		  	}
+
+	  }
+		mySqlCon.closeConnection();
+		String json = gson.toJson(response);
+		return json;
   }
 
   @Path("/saveGroupeOrder")
@@ -598,10 +618,10 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   @Path("/getDepandanceCarte/{idCarte}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public String getDepandanceCarte(int idCarte) throws Exception {
+  public String getDepandanceCarte(@PathParam("idCarte") String idCarte) throws Exception {
 
   	mySqlCon.openLocalConnection();
-  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =" +  idCarte );
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =\'" +  idCarte+"\'" );
 
   	Gson gson = new Gson();
   	JsonArray jsonArr = new JsonArray();
@@ -618,6 +638,7 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   	}
 
   	mySqlCon.closeConnection();
+  	System.out.println(gson.toJson(jsonArr));
   	return gson.toJson(jsonArr);
   }
 

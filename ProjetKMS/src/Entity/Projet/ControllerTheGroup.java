@@ -293,8 +293,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       });
 
          cell.setOnDragDropped(event -> {
-//        	 setOnlyIfGroupCompletion(group,cell);
-        	 setOnDragDroppedHandler(event,cell);
+
+
+        	 try {
+				setOnDragDroppedHandler(event,cell);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
          });
 
@@ -303,9 +309,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 
 
-	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
+	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) throws IOException {
+		ArrayList<Dependance> ListeDependanceCarte;
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
+		// ListeDependanceCarte	=  setOnlyIfGroupCompletion(group,dragSource.get().getItem().getId());
      Dragboard db = event.getDragboard();
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
@@ -438,8 +446,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			carteObservableList.add(dragSourceCell.getItem());
 			dragSourceCell.getItem().setGroupId(group.getId());
 			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+
 			listViewGroup.setItems(carteObservableList);
 	        event.setDropCompleted(true);
+
+
 	        setDragSourceToNull();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -490,12 +501,13 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 
-	public void setOnlyIfGroupCompletion(Group group,Carte idCarte) throws IOException{
-		if(group.getIsGroupOfCompletion() == true){
-		ArrayList<Dependance> dependance;
-			dependance = apiConnector.getDependanceCarte(idCarte.getId());
-		}
-	}
+//	public ArrayList<Dependance> setOnlyIfGroupCompletion(Group group,int Carte) throws IOException{
+//		if(group.getIsGroupOfCompletion() == true){
+//		ArrayList<Dependance> dependance;
+//			dependance = apiConnector.getDependanceCarte(Carte);
+//			return dependance;
+//		}
+//	}
 
 
 

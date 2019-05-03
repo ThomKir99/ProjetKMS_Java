@@ -87,9 +87,6 @@ INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,2,"REA
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRITE");
 
 /*Depandance*/
+INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES(1,2,false);
 
 SELECT * from tbl_depandance;
-
-SELECT * from tbl_groupe;
-
-SELECT * from tbl_carte;
