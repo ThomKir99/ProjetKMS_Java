@@ -31,7 +31,11 @@ public class Utilisateur {
 	public String getNom(){return this.nom;}
 
 	public void addProjet(Project projet){
-		this.projets.add(projet);
+		ArrayList<Project> newProjectList = new ArrayList<Project>();
+		newProjectList.add(projet);
+		newProjectList.addAll(this.projets);
+		this.projets.clear();
+		this.projets.addAll(newProjectList);
 	}
 
 	public void addAll(ArrayList<Project> lesProjets){

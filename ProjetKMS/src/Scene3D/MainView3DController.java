@@ -10,6 +10,8 @@ import java.util.TimerTask;
 import javax.vecmath.Point3d;
 import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
+import org.fxyz3d.shapes.primitives.FrustumMesh;
+
 import API.ApiConnector;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -110,7 +112,7 @@ private Stage stage =null;
 		ContourCreator contourCreator = new ContourCreator(allCarte3D);
 		return contourCreator.createCarteContour();
 	}
-	private ArrayList<PolyLine3D> createArrowLink(ArrayList<Carte3D> allCarte3D) {
+	private ArrayList<FrustumMesh> createArrowLink(ArrayList<Carte3D> allCarte3D) {
 		DepandanceShapeCreator depandanceShapeCreator = new DepandanceShapeCreator();
 		 return depandanceShapeCreator.createTheLink(allCarte3D);
 	}

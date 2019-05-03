@@ -4,21 +4,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 import javax.vecmath.Color3f;
 
 import org.fxyz3d.geometry.Point3D;
+import org.fxyz3d.scene.paint.Palette.ColorPalette;
 import org.fxyz3d.shapes.composites.PolyLine3D;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
+import org.fxyz3d.shapes.primitives.FrustumMesh;
 
+import com.sun.javafx.sg.prism.NGPhongMaterial;
 import com.sun.prism.paint.Color;
 
 import API.ApiConnector;
 import Entity.Carte.Carte3D;
 import Entity.Carte.Dependance;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 
 public class DepandanceShapeCreator {
 
@@ -35,9 +43,9 @@ public ArrayList<MeshView> createTriangle(ArrayList<Carte3D> allCarte3D){
 	return meshViews;
 }
 
-public ArrayList<PolyLine3D> createTheLink(ArrayList<Carte3D> allCarte3D){
+public ArrayList<FrustumMesh> createTheLink(ArrayList<Carte3D> allCarte3D){
 	ArrayList<Dependance> allDependances = getDependance();
-	 ArrayList<PolyLine3D> allLink = new ArrayList<PolyLine3D>();
+	 ArrayList<FrustumMesh> allLink = new ArrayList<FrustumMesh>();
 	for(Dependance aDependance : allDependances){
 		allLink.addAll(createLink(aDependance.getIdCarteDeDependance(),
 				aDependance.getIdCarteDependante(), allCarte3D));
@@ -45,24 +53,39 @@ public ArrayList<PolyLine3D> createTheLink(ArrayList<Carte3D> allCarte3D){
 	return allLink;
 }
 
-private ArrayList<PolyLine3D> createLink(int idCarteDeDependance, int idCarteDependante,
+private ArrayList<FrustumMesh> createLink(int idCarteDeDependance, int idCarteDependante,
 		ArrayList<Carte3D> allCarte3D) {
 
-			ArrayList<PolyLine3D> meshView = new ArrayList<PolyLine3D>();
+			ArrayList<FrustumMesh> meshView = new ArrayList<FrustumMesh>();
 			float height = (float) allCarte3D.get(0).carte3D.getHeight();
 			float[] carteDeDependancePosition = getPosition(idCarteDeDependance, allCarte3D);
 			float[] carteDependantePosition = getPosition(idCarteDependante, allCarte3D);
 			if(carteDeDependancePosition[0] !=0 && carteDependantePosition[0] !=0){
-				ArrayList<Point3D> points = new ArrayList<Point3D>();
-				points.add(new Point3D((carteDeDependancePosition[0])-11.1f, (carteDeDependancePosition[1])+(height/3), carteDeDependancePosition[2]));
-				points.add(new Point3D((carteDependantePosition[0]+1)-11.1f, (carteDependantePosition[1])-(height/3),carteDependantePosition[2]));
-
-				PolyLine3D polyLine3D = new PolyLine3D(points, 2, new javafx.scene.paint.Color(0, 0, 0, 1));
-				meshView.add(polyLine3D);
+				ArrayList<Point3D> points = createPoints(height,carteDeDependancePosition,carteDependantePosition);
+				FrustumMesh line3D = createLink(points);
+				meshView.add(line3D);
 			}
 
 
 	return meshView;
+}
+
+private FrustumMesh createLink(ArrayList<Point3D> points) {
+	FrustumMesh line3D =new FrustumMesh(0.1,0.1,1,0,points.get(0),points.get(1));
+	line3D.setTranslateZ(1);
+	PhongMaterial carteMaterial= new PhongMaterial();
+	carteMaterial.setDiffuseColor(new javafx.scene.paint.Color(0, 0, 0, 1));
+	line3D.setMaterial(carteMaterial);
+	return line3D;
+}
+
+private ArrayList<Point3D> createPoints(float height, float[] carteDeDependancePosition,
+		float[] carteDependantePosition) {
+	ArrayList<Point3D> points=new ArrayList<Point3D>();
+	points.add(new Point3D((carteDeDependancePosition[0])-11.1f, (carteDeDependancePosition[1])+(height/3), carteDeDependancePosition[2]));
+	points.add(new Point3D((carteDependantePosition[0]+1)-12f, (carteDependantePosition[1])-(height/3),carteDependantePosition[2]));
+
+	return points;
 }
 
 private float[] getPosition(int idCarte,ArrayList<Carte3D> allCarte3D){
