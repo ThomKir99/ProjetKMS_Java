@@ -8,11 +8,11 @@ import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Group.Group;
 import Entity.Projet.Project;
+import Entity.User.Utilisateur;
 import Main.FXMLLoder;
 import Main.Main;
 import Scene3D.LegendViewLauncher;
 import Scene3D.MainView3DController;
-import User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +27,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -66,6 +68,39 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshProjectList();
 		setListener();
+		setBackground();
+	}
+
+	private void setBackground(){
+		setAddProjectBackground();
+		set3DButtonBackground();
+		setLogoutButtonBackground();
+	}
+
+	private void setLogoutButtonBackground(){
+		Image image = new Image(getClass().getResourceAsStream("/image/exit.png"));
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(35);
+		imageView.setFitWidth(35);
+		btn_disconnect.setGraphic(imageView);
+	}
+
+	private void set3DButtonBackground(){
+		Image image = new Image(getClass().getResourceAsStream("/image/3dIcon.png"));
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(35);
+		imageView.setFitWidth(35);
+		btn_3D.setGraphic(imageView);
+		btn_3D.setStyle("-fx-border-radius: 3 3 3 3;-fx-border-width: 1;-fx-border-color: blue;");
+	}
+
+	private void setAddProjectBackground(){
+		Image image = new Image(getClass().getResourceAsStream("/image/plus1.png"));
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(30);
+		imageView.setFitWidth(30);
+		btn_projet.setGraphic(imageView);
+		btn_projet.setStyle("-fx-border-radius: 3 3 3 3;-fx-border-width: 1;-fx-border-color: #46f413;");
 	}
 
 	private void setListener() {
@@ -83,7 +118,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 				CreateProject();
 			}
 		});
-
 
 		btn_disconnect.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

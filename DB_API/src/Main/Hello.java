@@ -96,8 +96,6 @@ public class Hello {
   }
 
 
-
-
   @Path("/getAllUser")
   @GET
   @Produces(MediaType.APPLICATION_JSON)

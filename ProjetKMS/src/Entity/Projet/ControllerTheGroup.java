@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -117,8 +119,10 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						apiConnector.deleteGroup(group.getId());
-						controllerProjectList.removeRow(getGroupIndex());
+						if (showConfirmationMessage()){
+							apiConnector.deleteGroup(group.getId());
+							controllerProjectList.removeRow(getGroupIndex());
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -162,6 +166,20 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 
 
+	}
+
+
+	private boolean showConfirmationMessage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Warning");
+    	alert.setHeaderText("Do you really want to delete this group?");
+    	alert.setContentText("This action cannot be undone");
+    	ButtonType buttonTypeOne = new ButtonType("Yes");
+    	ButtonType buttonTypeTwo = new ButtonType("No");
+    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+    	Optional<ButtonType> result = alert.showAndWait();
+
+		return (result.get() == buttonTypeOne);
 	}
 
 	public void errorMessage() throws IOException{

@@ -1,4 +1,4 @@
-package User;
+package Entity.User;
 
 import java.util.ArrayList;
 import API.ApiConnector;

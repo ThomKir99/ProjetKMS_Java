@@ -26,11 +26,16 @@
             <MenuButton fx:id="splitMenuProject" layoutX="205.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0">
               <items>
                 <MenuItem fx:id="btn_addContributor" mnemonicParsing="false" text="Add Contributors" />
-                <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete" />
+                <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete Project" />
               </items>
             </MenuButton>
             <Button fx:id="btn_openProject" layoutY="24.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="237.0" />
             <Text fx:id="txt_readOnlyProjectMenu" layoutX="85.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Read only" visible="false" wrappingWidth="67.13671875">
+               <font>
+                  <Font name="System Italic" size="15.0" />
+               </font>
+            </Text>
+            <Text fx:id="txt_writeOnlyProjectMenu" layoutX="85.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Write only" visible="false" wrappingWidth="67.13671875">
                <font>
                   <Font name="System Italic" size="15.0" />
                </font>

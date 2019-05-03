@@ -53,7 +53,6 @@ id_utilisateur int NOT NULL,
 permission VARCHAR(500),
 CONSTRAINT FK_id_projet1 FOREIGN KEY (id_projet) REFERENCES tbl_projet(id_projet),
 CONSTRAINT FK_id_utilisateur1 FOREIGN KEY (id_utilisateur) REFERENCES tbl_utilisateur(id_utilisateur)
-ON DELETE CASCADE
 );
 
 /*-----------------------------ADD DATA------------------------------------*/

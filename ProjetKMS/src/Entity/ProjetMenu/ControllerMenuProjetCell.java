@@ -47,6 +47,9 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	@FXML
 	private Text txt_readOnlyProjectMenu;
 
+	@FXML
+	private Text txt_writeOnlyProjectMenu;
+
 	private ControllerPageProjet controllerPageProjet;
 	private Project currentProjet;
 	private FXMLLoader mLLoader;
@@ -79,10 +82,30 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
      setListener();
-     Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
-     btn_delete.setGraphic(new ImageView(imagePoubelle));
-     setGraphic(gridPane_projectCell);
+     setBackground();
      restrainUserWithPermission();
+	}
+
+	private void setBackground(){
+		setDeleteButtonBackground();
+		setContributorsButtonBackground();
+	}
+
+	private void setDeleteButtonBackground(){
+    Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
+    btn_delete.setGraphic(new ImageView(imagePoubelle));
+    setGraphic(gridPane_projectCell);
+	}
+
+	private void setContributorsButtonBackground(){
+
+		Image imageAdd = new Image(getClass().getResourceAsStream("/Image/plus1.png"));
+		ImageView imageView = new ImageView(imageAdd);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+    btn_addContributor.setGraphic(imageView);
+
+    setGraphic(gridPane_projectCell);
 	}
 
 	private void restrainUserWithPermission(){
@@ -95,6 +118,10 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			txt_projectName.setFocusTraversable(false);
 			txt_projectName.setMouseTransparent(true);
 			txt_readOnlyProjectMenu.setVisible(true);
+		}
+
+		if (currentProjet.getPermission().equals("WRITE")){
+			txt_writeOnlyProjectMenu.setVisible(true);
 		}
 	}
 

@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import API.ApiConnector;
 import Main.Main;
-import User.Utilisateur;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

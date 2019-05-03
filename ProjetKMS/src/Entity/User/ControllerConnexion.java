@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import API.ApiConnector;
 import Entity.Projet.ControllerTheProject;
 import Entity.ProjetMenu.ControllerPageProjet;
-import User.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import API.ApiConnector;
-import User.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

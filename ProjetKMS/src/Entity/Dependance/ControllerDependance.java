@@ -9,7 +9,7 @@ import Entity.DependanceFocus.TheGroupLink;
 import Entity.Group.Group;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
-import User.Utilisateur;
+import Entity.User.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

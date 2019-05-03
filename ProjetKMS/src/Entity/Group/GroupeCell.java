@@ -2,6 +2,7 @@ package Entity.Group;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import API.ApiConnector;
@@ -24,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -104,14 +106,28 @@ public class GroupeCell extends ListCell<Carte> {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					apiConnector.deleteCarte(carte.getId());
+					if (showConfirmationMessage()){
+						apiConnector.deleteCarte(carte.getId());
+						removeCarte();
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				removeCarte();
-
 			}
 		});
+	}
+
+	private boolean showConfirmationMessage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Warning");
+    	alert.setHeaderText("Do you really want to delete this card");
+    	alert.setContentText("This action cannot be undone");
+    	ButtonType buttonTypeOne = new ButtonType("Yes");
+    	ButtonType buttonTypeTwo = new ButtonType("No");
+    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+    	Optional<ButtonType> result = alert.showAndWait();
+
+		return (result.get() == buttonTypeOne);
 	}
 
 	private void setTextHandler() {

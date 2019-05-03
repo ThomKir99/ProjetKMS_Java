@@ -30,8 +30,8 @@ import Entity.Group.Group;
 import Entity.Projet.Project;
 import Entity.User.Permission;
 import Entity.User.Username;
+import Entity.User.Utilisateur;
 import Entity.User.UtilisateurInfo;
-import User.Utilisateur;
 import javafx.scene.paint.Color;
 
 
@@ -147,8 +147,9 @@ public class ApiConnector {
     JsonArray  rootarray = root.getAsJsonArray();
     ArrayList<Project> projectList =  new ArrayList<Project>();
 
-    if (getProjectWithPermission(userID) != null)
+    if (getProjectWithPermission(userID) != null){
     	projectList.addAll(getProjectWithPermission(userID));
+    }
 
     if (rootarray.size() > 0){
       for (JsonElement obj : rootarray){
@@ -162,9 +163,6 @@ public class ApiConnector {
         projet.setPermission("ADMIN");
         projectList.add(projet);
       }
-    }
-    else{
-    	projectList = null;
     }
 
 		return projectList;
