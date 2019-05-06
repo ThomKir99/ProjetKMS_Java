@@ -604,7 +604,7 @@ public class ApiConnector {
 	    request.getInputStream();
 }
 
-  public void changeCarteGroupId(Carte carte) throws IOException{
+  public boolean changeCarteGroupId(Carte carte) throws IOException{
 
 	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
@@ -624,23 +624,22 @@ public class ApiConnector {
 	      request.connect();
 	      request.getInputStream();
 
-//      	 if (request.getContent() != null){
-//
-// 	    	JsonParser jp = new JsonParser();
-// 	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-//
-// 	    	JsonArray rootarray = root.getAsJsonArray();
-//
-//
-// 	        for (JsonElement obj : rootarray){
-// 	        	Boolean reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
-// 	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
-// 	 	    	System.out.println("laResponse :" + reponse);
-// 	        }
-// 	            laReponse = new APIResponse(reponse,message);
+      	 if (request.getContent() != null){
 
-// 	      return lareponse;
-//      	 }
+ 	    	JsonParser jp = new JsonParser();
+ 	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+
+ 	    	JsonArray rootarray = root.getAsJsonArray();
+
+
+ 	        for (JsonElement obj : rootarray){
+ 	        	Boolean reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
+ 	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
+ 	 	    	System.out.println("laResponse :" + reponse);
+ 	        }
+
+ 	      return reponse;
+      	 }
   }
   public void changeProjectColor(Project project) throws IOException{
 		Gson gson = new Gson();

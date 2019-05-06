@@ -161,6 +161,24 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 
 		});
+		
+		btn_showLink.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+				
+					showLink(event);
+				} catch (IOException e) {
+					showLoadingError();
+				}catch(Exception e){
+					System.err.println(e.getMessage());
+				}
+
+			}
+
+		});
+		
 	}
 
 
@@ -208,9 +226,28 @@ public void errorMessage() throws IOException{
 	  }catch(Exception e){
 		  e.printStackTrace();
 	  }
-
-
     }
+	
+	
+	public void showLink(ActionEvent event)throws IOException{
+
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/PageAffichageDependanceSelonCarte.fxml"));
+		try{
+	  	Parent tableViewParent = (Parent)fxmlLoader.load();
+	    ControllerDependance controllerProjectList = fxmlLoader.getController();
+	   //controllerProjectList.setProject(currentProjet);
+	    controllerProjectList.setCarte(carteParent);
+	    
+
+	    Scene tableViewScene = new Scene(tableViewParent);
+	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+	    window.setScene(tableViewScene);
+	    window.show();
+	  }catch(Exception e){
+		  e.printStackTrace();
+	  }
+    }
+	
 
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);
