@@ -5,7 +5,6 @@ public class CarteModel {
 	public String name;
 	public int ordre_de_priorite;
 	private int groupId;
-	private String groupName;
 	private boolean complete;
 
 	public void setID(int groupID) {
@@ -24,9 +23,6 @@ public class CarteModel {
 		return name;
 	}
 	
-	public String getGroupName() {
-		return groupName;
-	}
 
 	public int getOrdre_de_priorite() {
 		return ordre_de_priorite;

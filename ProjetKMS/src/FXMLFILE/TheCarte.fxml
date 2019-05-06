@@ -15,6 +15,7 @@
             <TextField fx:id="textField1" disable="true" layoutY="1.0" prefHeight="30.0" prefWidth="221.0" text="Test" />
             <Button fx:id="btn_delete" layoutX="197.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: FF0000;" text="-" />
             <Button fx:id="btn_Link" layoutX="161.0" layoutY="4.0" mnemonicParsing="false" onAction="#addLink" prefHeight="25.0" prefWidth="36.0" text="link" />
+            <Button fx:id="btn_showLink" layoutX="142.0" layoutY="4.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="21.0" />
          </children>
       </Pane>
    </children>

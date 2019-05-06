@@ -531,25 +531,38 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   @Consumes(MediaType.APPLICATION_JSON)
   public String changeCarteGroupId(CarteModel carte) throws Exception {
 	  Gson gson = new Gson();
+	  int size = 0;
 	  //JsonArray jsonArr = new JsonArray();
 	  APIResponse response;
 	  response =  new APIResponse();
 	  mySqlCon.openLocalConnection();
-	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =\'" +  carte.getID()+"\'" );
+	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_de_depandance =\'" +  carte.getID()+"\'" );
+	  if(result != null){
+		  result.last();
+		  size = result.getRow();
+	  }
 
-	  if (result.isBeforeFirst()){
-		  System.out.println(result.getRow());
-		  if(result.getRow()!=0){
-			response.successful = false;
-			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
-		  }else{
-			//ok on déplace
+
+	  if(size < 1){
 			mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
 			response.ErrorMessage="It works";
+			System.out.println(response.ErrorMessage);
 			response.successful = true;
-		  	}
-
+	  }else{
+		  response.successful = false;
+			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
+			System.out.println(response.ErrorMessage);
 	  }
+
+//	  if (result.isBeforeFirst()){
+//		  System.out.println(result.getRow());
+//		  if(result.getRow()!=0){
+//			}else{
+//			//ok on déplace
+//
+//		  	}
+//
+//	  }
 		mySqlCon.closeConnection();
 		String json = gson.toJson(response);
 		return json;

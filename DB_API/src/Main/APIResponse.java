@@ -14,7 +14,7 @@ public class APIResponse {
 		return successful;
 	}
 
-	public String getMessage(){
+	public String getErrorMessage(){
 		return ErrorMessage;
 	}
 	public void setSeccessful(Boolean state){
