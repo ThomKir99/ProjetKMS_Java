@@ -66,9 +66,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		refreshProjectList();
-		setListener();
-		setBackground();
+		if (listViewProjet !=null){
+			setListener();
+			setBackground();
+			refreshProjectList();
+		}
 	}
 
 	private void setBackground(){
@@ -159,7 +161,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 				}
 			}
 		}
-
 	}
 
 	public void refreshProjectList(){
@@ -169,6 +170,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	public void getAllProjet(){
+
 		projetObservableList = FXCollections.observableArrayList();
 		if(userContext.getProjets() != null){
 			projetObservableList.addAll(userContext.getProjets());
@@ -184,8 +186,10 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		refreshProjectList();
+		for (Project a : userContext.getProjets()){
+			System.out.println(a.getName());
+		}
 	}
 
 	public void hideWindow(){

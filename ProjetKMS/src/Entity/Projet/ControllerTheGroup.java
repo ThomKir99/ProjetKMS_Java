@@ -78,18 +78,19 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
           setText(null);
           setGraphic(null);
       } else {
+
       		if (mLLoader == null) {
-                  mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
-                  mLLoader.setController(this);
-                  try {
-                      mLLoader.load();
-                  } catch (IOException e) {
-                      e.printStackTrace();
-                  }
+                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
+                mLLoader.setController(this);
+                try {
+                    mLLoader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
       		}
+
       		if(textFieldGroupName!=null){
       			textFieldGroupName.setText(String.valueOf(group.getName()));
-
       		}
 
       		try {
@@ -225,11 +226,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
-		//	Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/plus.png"));
-		//	btn_addCarte.setGraphic(new ImageView(imagePoubelle));
 			refreshCarteList();
 			setListener();
-
 		}
 	}
 

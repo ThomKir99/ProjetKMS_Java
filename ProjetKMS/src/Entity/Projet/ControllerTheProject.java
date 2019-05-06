@@ -227,10 +227,6 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		setListener();
 		refreshGroupList();
 		txt_projectName.setDisable(false);
-		listViewProjet.setItems(groupObservableList);
-		listViewProjet.setCellFactory(projectListView ->{
-			return setCellDragAndDropHandler();
-		});
 	}
 
 	public void addTooltip(){

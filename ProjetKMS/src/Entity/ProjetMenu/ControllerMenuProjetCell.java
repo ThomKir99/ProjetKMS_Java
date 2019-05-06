@@ -55,29 +55,30 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private FXMLLoader mLLoader;
 	private ApiConnector apiConnector;
 
-
 	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
 		this.controllerPageProjet = controllerPageProjet;
 		apiConnector = new ApiConnector();
 	}
 
 	@Override
-    protected void updateItem(Project projet, boolean empty) {
-        super.updateItem(projet, empty);
+  protected void updateItem(Project projet, boolean empty) {
+      super.updateItem(projet, empty);
 
-        if(empty || projet == null) {
+      if(empty || projet == null) {
+          setText(null);
+          setGraphic(null);
 
-            setText(null);
-            setGraphic(null);
+      } else {
 
-        } else {
-            if (mLLoader == null) {
-            	loadTheMenuProjetView(projet);
-            }
-            initializeViewInfo(projet);
-        }
-    }
+          if (mLLoader == null) {
+          	loadTheMenuProjetView(projet);
+          }
 
+          initializeViewInfo(projet);
+
+          setGraphic(gridPane_projectCell);
+      }
+  }
 
 	private void initializeViewInfo(Project projet) {
 		 txt_projectName.setText(projet.getName());
@@ -94,7 +95,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private void setDeleteButtonBackground(){
     Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
     btn_delete.setGraphic(new ImageView(imagePoubelle));
-    setGraphic(gridPane_projectCell);
 	}
 
 	private void setContributorsButtonBackground(){
@@ -104,8 +104,6 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		imageView.setFitHeight(25);
 		imageView.setFitWidth(25);
     btn_addContributor.setGraphic(imageView);
-
-    setGraphic(gridPane_projectCell);
 	}
 
 	private void restrainUserWithPermission(){
