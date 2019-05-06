@@ -10,6 +10,8 @@ import Entity.Dependance.ControllerDependance;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import Entity.Projet.ControllerTheGroup;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +29,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -37,6 +41,8 @@ public class GroupeCell extends ListCell<Carte> {
 	private TextField textField1;
 	@FXML
 	private TextField textFieldName;
+	@FXML
+	private TextArea txtDescription;
 	@FXML
 	private GridPane gridPane1;
 	@FXML
@@ -51,6 +57,7 @@ public class GroupeCell extends ListCell<Carte> {
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
+	private int index=1;
 
 	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
 		groupController = projectCell;
@@ -79,6 +86,8 @@ public class GroupeCell extends ListCell<Carte> {
             }
             textField1.setText(String.valueOf(carte.getId()));
             textFieldName.setText(carte.getName());
+            txtDescription.setMinHeight(40);
+            txtDescription.setMaxHeight(400);
             setHandler();
 
             setText(null);
@@ -143,6 +152,28 @@ public class GroupeCell extends ListCell<Carte> {
 				}
      }
 		});
+		txtDescription.focusedProperty().addListener(e->{
+			if(txtDescription.isFocused()){
+				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
+	        			txtDescription.getText(), 0.0D) );
+
+			}else{
+				txtDescription.setPrefHeight(40);
+			}
+			{
+		}
+		});
+		txtDescription.setOnKeyTyped(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
+	        			txtDescription.getText(), 0.0D));
+			}
+		} );
+
+
+
 
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
 
