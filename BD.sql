@@ -25,6 +25,7 @@ id_groupe int PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nom_groupe VARCHAR(200),
 id_projet int ,
 order_in_project int,
+completion bool,
 CONSTRAINT FK_id_projet FOREIGN KEY  (id_projet)
 REFERENCES tbl_projet(id_projet)
 ON DELETE CASCADE
@@ -71,10 +72,10 @@ INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouver
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Thomas", 3,"#FFFFFF", now()+4);
 
 /*Group*/
-INSERT INTO tbl_groupe VALUES (1,"Group 1", 4,1);
-INSERT INTO tbl_groupe VALUES (2,"Group 2", 4,2);
-INSERT INTO tbl_groupe VALUES (3,"Group 3", 1,1);
-INSERT INTO tbl_groupe VALUES (4,"Group 4", 1,2);
+INSERT INTO tbl_groupe VALUES (1,"Group 1", 4,1,false);
+INSERT INTO tbl_groupe VALUES (2,"Group 2", 4,2,false);
+INSERT INTO tbl_groupe VALUES (3,"Group 3", 1,1,false);
+INSERT INTO tbl_groupe VALUES (4,"Group 4", 1,2,false);
 
 /*Carte*/
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte1","Une desc",1,false,2);

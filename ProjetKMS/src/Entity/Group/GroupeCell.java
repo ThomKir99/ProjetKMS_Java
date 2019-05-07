@@ -11,6 +11,8 @@ import Entity.Dependance.ControllerDependance;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
 import Entity.Projet.ControllerTheGroup;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,8 +28,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -38,6 +43,8 @@ public class GroupeCell extends ListCell<Carte> {
 	private TextField textField1;
 	@FXML
 	private TextField textFieldName;
+	@FXML
+	private TextArea txtDescription;
 	@FXML
 	private GridPane gridPane1;
 	@FXML
@@ -52,6 +59,7 @@ public class GroupeCell extends ListCell<Carte> {
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
+	private int index=1;
 
 	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
 		groupController = projectCell;
@@ -80,6 +88,9 @@ public class GroupeCell extends ListCell<Carte> {
             }
             textField1.setText(String.valueOf(carte.getId()));
             textFieldName.setText(carte.getName());
+            txtDescription.setText(carte.getDescription());
+            txtDescription.setMinHeight(40);
+            txtDescription.setMaxHeight(400);
             setHandler();
 
             setText(null);
@@ -96,6 +107,8 @@ public class GroupeCell extends ListCell<Carte> {
 		setCurrentProject();
 
 	}
+
+
 
 	public void setCurrentProject(){
 		currentProjet = projectController.getProject();
@@ -156,6 +169,58 @@ public class GroupeCell extends ListCell<Carte> {
 				}
      }
 		});
+		txtDescription.focusedProperty().addListener(e->{
+			if(txtDescription.isFocused()){
+				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
+	        			txtDescription.getText(), 0.0D) );
+
+			}else{
+				if(!txtDescription.isHover()){
+					txtDescription.setPrefHeight(40);
+					carte.setDescription(txtDescription.getText());
+					try {
+						apiConnector.updateDescription(carte);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+			{
+		}
+		});
+		txtDescription.setOnMouseExited(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+			if(!txtDescription.isFocused()){
+				txtDescription.setPrefHeight(40);
+				carte.setDescription(txtDescription.getText());
+				try {
+					apiConnector.updateDescription(carte);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			}
+
+		});
+		txtDescription.setOnKeyTyped(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
+	        			txtDescription.getText(), 0.0D));
+				carte.setDescription(txtDescription.getText());
+
+
+			}
+		} );
+
+
+
 
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
 

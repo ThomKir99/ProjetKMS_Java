@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -219,8 +220,9 @@ public class ApiConnector {
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupId").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
         int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
+        boolean isGroupOfCompletion = Boolean.valueOf(obj.getAsJsonObject().get("completion").toString());
         groupName = removeQuote(groupName);
-        groupList.add(new Group(groupID,groupName,groupOrder));
+        groupList.add(new Group(groupID,groupName,groupOrder,isGroupOfCompletion));
 
       }
   		return groupList;
@@ -369,8 +371,9 @@ public class ApiConnector {
         int groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
         int groupOrder =  Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
+        boolean isGroupOfCompletion = Boolean.valueOf(obj.getAsJsonObject().get("completion").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupID,groupName,groupOrder);
+        leGroup = new Group(groupID,groupName,groupOrder,isGroupOfCompletion);
 
       }
   		return leGroup;
@@ -426,14 +429,16 @@ public class ApiConnector {
     	int groupID = -1;
     	String groupName = "Something went wrong";
     	int groupOrder = -1;
+    	boolean isGroupOfCompletion=false;
       for (JsonElement obj : rootarray){
         groupID = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         groupName = obj.getAsJsonObject().get("groupName").toString();
         groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
+        isGroupOfCompletion = Boolean.valueOf(obj.getAsJsonObject().get("completion").toString());
         groupName = removeQuote(groupName);
 
       }
-      dbGroup = new Group(groupID,groupName,groupOrder);
+      dbGroup = new Group(groupID,groupName,groupOrder,isGroupOfCompletion);
     }
 
     if (!currentGroup.isEqualTo(dbGroup)){
@@ -526,6 +531,23 @@ public class ApiConnector {
     request.connect();
     request.getInputStream();
   }
+  public void saveCompletionGroup(Group currentGroup)throws IOException{
+	  Gson gson = new Gson();
+	  	String groupJson = gson.toJson(currentGroup);
+	    String sURL = this.baseURL +"saveCompletionGroup";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(groupJson);
+	    wr.flush();
+	    wr.close();
+
+	    request.connect();
+	    request.getInputStream();
+  }
 
 
   private String removeQuote(String theString){
@@ -595,8 +617,9 @@ public class ApiConnector {
         int groupId = Integer.valueOf(obj.getAsJsonObject().get("groupID").toString());
         String groupName = obj.getAsJsonObject().get("groupName").toString();
         int groupOrder = Integer.valueOf(obj.getAsJsonObject().get("order_in_project").toString());
+        boolean isGroupOfCompletion = Boolean.valueOf(obj.getAsJsonObject().get("completion").toString());
         groupName = removeQuote(groupName);
-        leGroup = new Group(groupId,groupName,groupOrder);
+        leGroup = new Group(groupId,groupName,groupOrder,isGroupOfCompletion);
 
       }
   		return leGroup;
@@ -819,5 +842,70 @@ public class ApiConnector {
 
           return dependanceList;
       }
+
+public void saveCarteCompletion(List<Carte> list) throws IOException {
+	Gson gson = new Gson();
+  	String projectJson = gson.toJson(list);
+    String sURL = this.baseURL +"saveCarteCompletion";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+}
+
+public void saveDescriptionCarte(Carte carte) throws IOException {
+	Carte dbCarte = new Carte();
+    String sURL = this.baseURL +"getSingleCarte/" + carte.getId();
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+    	int carteID = -1;
+    	String carteName = "Something went wrong";
+      for (JsonElement obj : rootarray){
+      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
+      	carteName = obj.getAsJsonObject().get("carteName").toString();
+
+      	carteName = removeQuote(carteName);
+
+      }
+      dbCarte = new Carte(carteID,carteName);
+    }
+
+    if (!carte.isEqualTo(dbCarte)){
+    	//Project As Been Modified
+    	updateDescription(carte);
+    }
+
+}
+
+public void updateDescription(Carte carte) throws IOException {
+	Gson gson = new Gson();
+  	String projectJson = gson.toJson(carte);
+    String sURL = this.baseURL +"updateDescription";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+}
 
 }

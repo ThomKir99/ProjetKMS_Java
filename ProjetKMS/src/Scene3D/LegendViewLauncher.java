@@ -13,8 +13,10 @@ import javafx.stage.WindowEvent;
 public class LegendViewLauncher {
 
 	private Stage stage;
+	private MainView3DController mainView3DController;
 
-	public void launchLegend(ArrayList<Project> allProjects){
+	public void launchLegend(ArrayList<Project> allProjects, MainView3DController mainView3DController){
+		this.mainView3DController = mainView3DController;
 		if(stage==null){
 			createLegend(allProjects);
 		}else{
@@ -26,6 +28,7 @@ public class LegendViewLauncher {
 		FXMLLoader root;
 		LegendViewController legendViewController  =new LegendViewController();
 		legendViewController.setProjects(allProjects);
+		legendViewController.setMainController(mainView3DController);
 		try {
 			root =new FXMLLoader(getClass().getResource("/FXMLFILE/legend.fxml"));
 			root.setController(legendViewController);

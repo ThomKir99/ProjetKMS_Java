@@ -29,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -57,6 +58,10 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private Button btn_addCarte;
 	@FXML
 	private Button btn_delete;
+	@FXML
+	private CheckBox checkbox_completion;
+
+
 	private ControllerTheProject controllerProjectList;
 	public ObservableList<Carte> carteObservableList;
 	private Group group;
@@ -106,6 +111,24 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       }
     }
 
+	@Override
+	public void initialize(URL url, ResourceBundle resources) {
+		if(listViewGroup!=null){
+			//Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/plus.png"));
+			//btn_addCarte.setGraphic(new ImageView(imagePoubelle));
+			refreshCarteList();
+			setListener();
+			setCompletionGroup();
+
+		}
+	}
+
+	private void setCompletionGroup() {
+		checkbox_completion.setSelected(group.getIsGroupOfCompletion());
+		btn_addCarte.setDisable(group.getIsGroupOfCompletion());
+		saveCarteCompletion();
+	}
+
 	private void getCarteFromGroup() throws IOException{
 		if (apiConnector.carteList(this.group.getId()) != null){
 			this.group.setCartes(apiConnector.carteList(this.group.getId()));
@@ -147,6 +170,24 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			});
 		}
 
+		if(checkbox_completion!= null){
+			checkbox_completion.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+					group.setIsGroupOfCompletion(checkbox_completion.isSelected());
+					ApiConnector apiConnector = new ApiConnector();
+						apiConnector.saveCompletionGroup(group);
+						btn_addCarte.setDisable(group.getIsGroupOfCompletion());
+						saveCarteCompletion();
+					} catch (IOException  e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+
 		textFieldGroupName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
       	try {
@@ -169,7 +210,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	}
 
-
+	
 	private boolean showConfirmationMessage() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setTitle("Warning");
@@ -182,6 +223,25 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		return (result.get() == buttonTypeOne);
 	}
+	
+		protected void saveCarteCompletion() {
+		refreshGroup();
+		try {
+			for(Group aGroup:controllerProjectList.getProject().getGroups()){
+				for(Carte aCarte : aGroup.getCartes()){
+					aCarte.setComplete(aGroup.getIsGroupOfCompletion());
+				}
+				ApiConnector apiConnector = new ApiConnector();
+				apiConnector.saveCarteCompletion(aGroup.getCartes());
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 
 	public void errorMessage() throws IOException{
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -223,13 +283,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		});
 	}
 
-	@Override
-	public void initialize(URL url, ResourceBundle resources) {
-		if(listViewGroup!=null){
-			refreshCarteList();
-			setListener();
-		}
-	}
 
 	public void setListener(){
 
@@ -271,23 +324,24 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
      Dragboard db = event.getDragboard();
-
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
-    	 refreshGroup();
      } else {
          event.setDropCompleted(false);
      }
+     refreshGroup();
 	}
 
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
+
 		if(dragSourceCameFromSameList(listViewGroup)){
+
   		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
   		   	saveCarteOrder();
   	   }else{
-
-  		   addCarteToOtherList(event);
+  		  addCarteToOtherList(event);
   	   }
+		refreshGroup();
 	}
 
 
@@ -295,10 +349,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void setOnDragDoneHandler(ListCell<Carte> cell) {
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
-     		 refreshGroup();
+     		saveCarteCompletion();
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
+
 
 	}
 
@@ -391,8 +446,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	private void addCarteToOtherList( DragEvent event) {
-
-
 		try {
 			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 			carteObservableList.addAll(listViewGroup.getItems());
@@ -406,8 +459,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 	private void saveCarteOrder() {

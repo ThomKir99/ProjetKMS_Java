@@ -200,6 +200,7 @@ public class Hello {
 	  		obj.addProperty("groupId", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
 	  		obj.addProperty("order_in_project", result.getInt(4));
+	  		obj.addProperty("completion", result.getBoolean(5));
 	  		jsonArr.add(obj);
 
 	  	}
@@ -315,6 +316,7 @@ public class Hello {
 	  		obj.addProperty("groupID", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
 	  		obj.addProperty("order_in_project", result.getInt(4));
+	  		obj.addProperty("completion", result.getBoolean(5));
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -389,12 +391,29 @@ public class Hello {
   	mySqlCon.closeConnection();
   }
 
+  @Path("/saveCompletionGroup")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void saveCompletionGroup(GroupModel group) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("UPDATE tbl_groupe SET completion = "+ group.getIsGroupOfCompletion() +" WHERE id_groupe = \'" + group.getID() + "\'");
+  	mySqlCon.closeConnection();
+  }
+
   @Path("/updateCarte")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public void updateCarte(CarteModel carte) throws Exception {
   	mySqlCon.openLocalConnection();
   	mySqlCon.executeNonQuery("UPDATE tbl_carte SET nom = \'"+ carte.getName() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
+  	mySqlCon.closeConnection();
+  }
+  @Path("/updateDescription")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void updateDescription(CarteModel carte) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("UPDATE tbl_carte SET description = \'"+ carte.getDescription() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
   	mySqlCon.closeConnection();
   }
 
@@ -436,7 +455,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String newGroup(@PathParam("projectId") String projectId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_groupe(nom_groupe,id_projet,order_in_project) VALUES (\"Insert a name\","+ projectId + ",999)" );
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_groupe(nom_groupe,id_projet,order_in_project,completion) VALUES (\"Insert a name\","+ projectId + ",999, false)" );
 
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_groupe WHERE id_groupe = LAST_INSERT_ID()");
   	Gson gson = new Gson();
@@ -450,6 +469,8 @@ public class Hello {
 	  		obj.addProperty("groupID", result.getInt(1));
 	  		obj.addProperty("groupName", result.getString(2));
 	  		obj.addProperty("order_in_project", result.getInt(4));
+	  		obj.addProperty("completion", result.getBoolean(5));
+
 	  		jsonArr.add(obj);
 	  	}
   	}
@@ -634,6 +655,17 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 
   	mySqlCon.closeConnection();
   	return gson.toJson(jsonArr);
+  }
+
+  @Path("/saveCarteCompletion")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void saveCarteCompletion(ArrayList<CarteModel> cartes) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	for(CarteModel carteModel : cartes ){
+  		mySqlCon.executeNonQuery("update tbl_carte set complete ="+ carteModel.getIfComplete() +" where id_carte =\'"+carteModel.getID()+"\'");
+  	}
+  	mySqlCon.closeConnection();
   }
 
 
