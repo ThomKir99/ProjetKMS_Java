@@ -1,6 +1,7 @@
 package Entity.ProjetMenu;
 
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -149,6 +150,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	private void openWindow(Scene tableViewScene, ActionEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     window.setScene(tableViewScene);
+    window.setResizable(false);
     window.show();
 	}
 
@@ -169,8 +171,9 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
 
-	public void getAllProjet(){
 
+
+	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
 		if(userContext.getProjets() != null){
 			projetObservableList.addAll(userContext.getProjets());
@@ -210,6 +213,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	private void createStage(Scene scene) {
     Stage stage = new Stage();
 		stage.setScene(scene);
+		stage.setResizable(false);
 		stage.show();
 	}
 

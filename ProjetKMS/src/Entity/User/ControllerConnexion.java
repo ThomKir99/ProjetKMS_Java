@@ -110,6 +110,7 @@ public class ControllerConnexion implements Initializable{
 
 	private void openWindow(Scene tableViewScene, ActionEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    window.setResizable(false);
     window.setScene(tableViewScene);
     window.show();
 	}

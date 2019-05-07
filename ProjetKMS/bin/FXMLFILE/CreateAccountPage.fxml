@@ -10,65 +10,50 @@
 
 <AnchorPane prefHeight="458.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.User.ControllerCreateAccount">
    <children>
-      <AnchorPane layoutX="38.0" layoutY="66.0" prefHeight="362.0" prefWidth="324.0" style="-fx-background-color: #e5e5e0; -fx-background-radius: 10;">
+      <AnchorPane layoutX="38.0" layoutY="22.0" prefHeight="415.0" prefWidth="324.0" style="-fx-background-color: #e5e5e0; -fx-background-radius: 10;">
          <children>
-            <TextField fx:id="txt_createUsername" layoutX="69.0" layoutY="58.0" prefHeight="32.0" prefWidth="198.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="69.0" AnchorPane.rightAnchor="57.0" />
-            <Text layoutX="68.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" textAlignment="CENTER" wrappingWidth="197.99999594688416">
-               <font>
-                  <Font name="System Bold Italic" size="17.0" />
-               </font>
-            </Text>
-            <Text layoutX="68.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" textAlignment="CENTER" wrappingWidth="197.99999594688416">
-               <font>
-                  <Font name="System Bold Italic" size="17.0" />
-               </font>
-            </Text>
-            <PasswordField fx:id="txt_createPassword" layoutX="67.0" layoutY="128.0" prefHeight="32.0" prefWidth="198.0" />
-            <PasswordField fx:id="txt_confirmPassword" layoutX="67.0" layoutY="196.0" prefHeight="32.0" prefWidth="198.0" />
-            <Button fx:id="btn_createAccount" layoutX="100.0" layoutY="264.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="137.0" text="Create account">
+            <TextField fx:id="txt_createUsername" layoutX="60.0" layoutY="90.0" prefHeight="32.0" prefWidth="198.0" promptText="Email" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="66.0" />
+            <PasswordField fx:id="txt_createPassword" layoutX="60.0" layoutY="168.0" prefHeight="32.0" prefWidth="198.0" promptText="Password" />
+            <PasswordField fx:id="txt_confirmPassword" layoutX="60.0" layoutY="247.0" prefHeight="32.0" prefWidth="198.0" promptText="Confirm password" />
+            <Button fx:id="btn_createAccount" layoutX="93.0" layoutY="318.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" style="-fx-background-color: #4a8af4; -fx-border-width: 2px; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #347ef9;" text="Create account" textFill="WHITE">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </Button>
-            <Hyperlink fx:id="hlink_backToConnexion" layoutX="192.0" layoutY="323.0" prefHeight="24.0" prefWidth="111.0" text="Back to login" />
-            <Text layoutX="29.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" wrappingWidth="136.99999526143074" />
-            <Text layoutX="55.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm password" textAlignment="CENTER" wrappingWidth="225.99999684095383">
-               <font>
-                  <Font name="System Bold Italic" size="17.0" />
-               </font>
-            </Text>
-            <Text fx:id="lbl_usernameError" fill="RED" layoutX="127.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter an EMail" textAlignment="CENTER" visible="false" wrappingWidth="77.13671416044235">
+            <Hyperlink fx:id="hlink_backToConnexion" layoutX="192.0" layoutY="377.0" prefHeight="24.0" prefWidth="111.0" text="Back to login" />
+            <Text layoutX="29.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" wrappingWidth="136.99999526143074" />
+            <Text fx:id="lbl_usernameError" fill="RED" layoutX="120.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter an EMail" textAlignment="CENTER" visible="false" wrappingWidth="77.13671416044235">
                <font>
                   <Font size="11.0" />
                </font>
             </Text>
-            <Text fx:id="lbl_passwordError" fill="RED" layoutX="100.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrer a password" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
+            <Text fx:id="lbl_passwordError" fill="RED" layoutX="88.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrer a password" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
                <font>
                   <Font size="11.0" />
                </font>
             </Text>
-            <Text fx:id="lbl_userAlreadyExist" fill="RED" layoutX="89.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This user already exist" textAlignment="CENTER" visible="false" wrappingWidth="167.99999475479126" />
-            <Text fx:id="lbl_confirmPasswordError" fill="RED" layoutX="100.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm your password" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
+            <Text fx:id="lbl_userAlreadyExist" fill="RED" layoutX="82.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This user already exist" textAlignment="CENTER" visible="false" wrappingWidth="167.99999475479126" />
+            <Text fx:id="lbl_confirmPasswordError" fill="RED" layoutX="92.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm your password" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
                <font>
                   <Font size="11.0" />
                </font>
             </Text>
-            <Text fx:id="lbl_passwordMatch" fill="RED" layoutX="92.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password doesn't match" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
+            <Text fx:id="lbl_passwordMatch" fill="RED" layoutX="85.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password doesn't match" textAlignment="CENTER" visible="false" wrappingWidth="147.13671803474426">
                <font>
                   <Font size="11.0" />
                </font>
             </Text>
-            <Text fx:id="lbl_invalidEmail" fill="RED" layoutX="108.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is not a valid Email" textAlignment="CENTER" visible="false" wrappingWidth="121.13671416044235">
+            <Text fx:id="lbl_invalidEmail" fill="RED" layoutX="101.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is not a valid Email" textAlignment="CENTER" visible="false" wrappingWidth="121.13671416044235">
                <font>
                   <Font size="11.0" />
+               </font>
+            </Text>
+            <Text layoutX="26.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Account" wrappingWidth="280.0000009536743">
+               <font>
+                  <Font name="System Bold Italic" size="39.0" />
                </font>
             </Text>
          </children>
       </AnchorPane>
-      <Text layoutX="60.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Account" wrappingWidth="280.0000009536743">
-         <font>
-            <Font name="System Bold Italic" size="39.0" />
-         </font>
-      </Text>
    </children>
 </AnchorPane>

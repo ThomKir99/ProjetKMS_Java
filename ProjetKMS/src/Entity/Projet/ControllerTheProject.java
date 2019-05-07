@@ -180,7 +180,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	private void setAnchorBackground(){
-		anchorProjectBackground.setStyle("-fx-background-color:"+ getRGBProjectColor() + ";");
+		anchorProjectBackground.setStyle("-fx-background-color: "+ getRGBProjectColor() + ";");
 	}
 
 	public void setBackButtonBackground(){

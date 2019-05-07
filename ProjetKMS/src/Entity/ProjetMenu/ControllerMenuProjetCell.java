@@ -18,7 +18,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,7 +41,10 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private MenuButton splitMenuProject;
 
 	@FXML
-	private GridPane gridPane_projectCell;
+	private AnchorPane anchorPane;
+
+	@FXML
+	private Pane backgroundPane;
 
 	@FXML
 	private MenuItem btn_addContributor;
@@ -64,7 +69,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
   protected void updateItem(Project projet, boolean empty) {
       super.updateItem(projet, empty);
 
-      if(empty || projet == null) {
+      if(empty || projet == null ) {
           setText(null);
           setGraphic(null);
 
@@ -76,7 +81,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 
           initializeViewInfo(projet);
 
-          setGraphic(gridPane_projectCell);
+          setGraphic(anchorPane);
       }
   }
 
@@ -90,11 +95,25 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private void setBackground(){
 		setDeleteButtonBackground();
 		setContributorsButtonBackground();
+		setProjectColor();
+	}
+
+	private void setProjectColor(){
+		backgroundPane.setStyle("-fx-background-color: linear-gradient(to bottom, #FFFFFF, " + getRGBProjectColor() + ");-fx-background-radius: 10;-fx-border-width: 1px;-fx-border-color: #c4c4c4;-fx-border-radius: 10;");
 	}
 
 	private void setDeleteButtonBackground(){
     Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
     btn_delete.setGraphic(new ImageView(imagePoubelle));
+	}
+
+	private String getRGBProjectColor(){
+		String colorRgb = String.format( "#%02X%02X%02X",
+        (int)( currentProjet.getProjectColor().getRed() * 255 ),
+        (int)( currentProjet.getProjectColor().getGreen() * 255 ),
+        (int)( currentProjet.getProjectColor().getBlue() * 255 ) );
+
+		return colorRgb;
 	}
 
 	private void setContributorsButtonBackground(){
@@ -159,12 +178,10 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			public void handle(ActionEvent event) {
 				try {
 					openProject(event);
-
 				} catch (IOException e) {
 					showLoadingError();
 				}
 			}
-
 		});
 
     btn_addContributor.setOnAction(new EventHandler<ActionEvent>() {

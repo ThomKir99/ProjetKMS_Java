@@ -241,6 +241,7 @@ public class ControllerCreateAccount implements Initializable{
 	private void openWindow(Scene tableViewScene, ActionEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     window.setScene(tableViewScene);
+    window.setResizable(false);
     window.show();
 	}
 
