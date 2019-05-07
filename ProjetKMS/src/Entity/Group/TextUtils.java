@@ -20,10 +20,6 @@ public class TextUtils {
     }
 
     public static double computeTextWidth(Font font, String text, double help0) {
-        // Toolkit.getToolkit().getFontLoader().computeStringWidth(field.getText(),
-        // field.getFont());
-
-
         helper.setText(text);
         helper.setFont(font);
 
@@ -37,6 +33,6 @@ public class TextUtils {
         helper.setLineSpacing(DEFAULT_LINE_SPACING);
         helper.setText(DEFAULT_TEXT);
         double h= d /10;
-        return h+10;
+        return h+17;
     }
 }
