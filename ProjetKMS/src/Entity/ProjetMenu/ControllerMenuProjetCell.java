@@ -68,7 +68,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	@Override
   protected void updateItem(Project projet, boolean empty) {
       super.updateItem(projet, empty);
-
+ 	  this.currentProjet = projet;
       if(empty || projet == null ) {
           setText(null);
           setGraphic(null);
@@ -80,13 +80,12 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
           }
 
           initializeViewInfo(projet);
-
           setGraphic(anchorPane);
       }
   }
 
 	private void initializeViewInfo(Project projet) {
-		 txt_projectName.setText(projet.getName());
+	 txt_projectName.setText(projet.getName());
      setListener();
      setBackground();
      restrainUserWithPermission();

@@ -58,9 +58,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		apiConnector = new ApiConnector();
 		userContext = Main.userContext;
 		fillProject();
+
 	}
 
 	public void fillProject() throws IOException{
+		userContext.getProjets().clear();
 		userContext.setProjets(apiConnector.projectList(userContext.getId()));
 		fillGroup();
 	}
@@ -167,6 +169,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 
 	public void refreshProjectList(){
 		getAllProjet();
+		listViewProjet.getItems().clear();
 		listViewProjet.setItems(projetObservableList);
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
@@ -176,6 +179,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
 		if(userContext.getProjets() != null){
+			projetObservableList.clear();
 			projetObservableList.addAll(userContext.getProjets());
 		}
 	}
@@ -186,13 +190,11 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		  unProjet = apiConnector.createProject(userContext.getId());
 		  unProjet.setPermission("ADMIN");
 		  userContext.addProjet(unProjet);
+		  refreshProjectList();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		refreshProjectList();
-		for (Project a : userContext.getProjets()){
-			System.out.println(a.getName());
-		}
+
 	}
 
 	public void hideWindow(){
