@@ -86,6 +86,7 @@ public class GroupeCell extends ListCell<Carte> {
             }
             textField1.setText(String.valueOf(carte.getId()));
             textFieldName.setText(carte.getName());
+            txtDescription.setText(carte.getDescription());
             txtDescription.setMinHeight(40);
             txtDescription.setMaxHeight(400);
             setHandler();
@@ -158,10 +159,37 @@ public class GroupeCell extends ListCell<Carte> {
 	        			txtDescription.getText(), 0.0D) );
 
 			}else{
-				txtDescription.setPrefHeight(40);
+				if(!txtDescription.isHover()){
+					txtDescription.setPrefHeight(40);
+					carte.setDescription(txtDescription.getText());
+					try {
+						apiConnector.updateDescription(carte);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
 			}
 			{
 		}
+		});
+		txtDescription.setOnMouseExited(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+			if(!txtDescription.isFocused()){
+				txtDescription.setPrefHeight(40);
+				carte.setDescription(txtDescription.getText());
+				try {
+					apiConnector.updateDescription(carte);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			}
+
 		});
 		txtDescription.setOnKeyTyped(new EventHandler<Event>() {
 
@@ -169,6 +197,9 @@ public class GroupeCell extends ListCell<Carte> {
 			public void handle(Event event) {
 				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
 	        			txtDescription.getText(), 0.0D));
+				carte.setDescription(txtDescription.getText());
+
+
 			}
 		} );
 

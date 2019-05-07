@@ -342,6 +342,14 @@ public class Hello {
   	mySqlCon.executeNonQuery("UPDATE tbl_carte SET nom = \'"+ carte.getName() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
   	mySqlCon.closeConnection();
   }
+  @Path("/updateDescription")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void updateDescription(CarteModel carte) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("UPDATE tbl_carte SET description = \'"+ carte.getDescription() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
+  	mySqlCon.closeConnection();
+  }
 
 
   @Path("/newProject/{userId}")
