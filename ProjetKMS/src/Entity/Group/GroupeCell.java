@@ -7,8 +7,10 @@ import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
+import Entity.Dependance.PageAfficheDependanceCarte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.User.ControllerContributors;
 import Entity.Projet.ControllerTheGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,6 +45,8 @@ public class GroupeCell extends ListCell<Carte> {
 	private Button btn_delete;
 	@FXML
 	private Button btn_Link;
+	@FXML
+	private Button btn_showLink;
 
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
@@ -161,14 +165,15 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 
 		});
-		
+
 		btn_showLink.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-				
+					System.out.println("premier");
 					showLink(event);
+					System.out.println("DERNIER");
 				} catch (IOException e) {
 					showLoadingError();
 				}catch(Exception e){
@@ -178,7 +183,7 @@ public class GroupeCell extends ListCell<Carte> {
 			}
 
 		});
-		
+
 	}
 
 
@@ -227,27 +232,28 @@ public void errorMessage() throws IOException{
 		  e.printStackTrace();
 	  }
     }
-	
-	
-	public void showLink(ActionEvent event)throws IOException{
 
+
+	private void showLink(ActionEvent event) throws IOException{
+		System.out.println("DEUX");
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/PageAffichageDependanceSelonCarte.fxml"));
-		try{
-	  	Parent tableViewParent = (Parent)fxmlLoader.load();
-	    ControllerDependance controllerProjectList = fxmlLoader.getController();
-	   //controllerProjectList.setProject(currentProjet);
-	    controllerProjectList.setCarte(carteParent);
-	    
+		System.out.println("TROIS");
+		Parent root = fxmlLoader.load();
+		Stage stage = new Stage();
+		System.out.println("QUATREEE");
+		PageAfficheDependanceCarte PageAfficheDependanceCarte = fxmlLoader.getController();
+		System.out.println("CINQ");
+		System.out.println(currentProjet.getId());
+		PageAfficheDependanceCarte.setProject(currentProjet);
+		//PageAfficheDependanceCarte.setProject(carteParent);
+		System.out.println("CINQ.1");
+		stage.setScene(new Scene(root));
+		stage.resizableProperty().setValue(Boolean.FALSE);
+	//	controllerPageProjet.hideWindow();
+		stage.show();
 
-	    Scene tableViewScene = new Scene(tableViewParent);
-	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-	    window.setScene(tableViewScene);
-	    window.show();
-	  }catch(Exception e){
-		  e.printStackTrace();
-	  }
     }
-	
+
 
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);

@@ -537,6 +537,7 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 	  response =  new APIResponse();
 	  mySqlCon.openLocalConnection();
 	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_de_depandance =\'" +  carte.getID()+"\'" );
+	  
 	  if(result != null){
 		  result.last();
 		  size = result.getRow();
@@ -548,6 +549,7 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 			response.ErrorMessage="It works";
 			System.out.println(response.ErrorMessage);
 			response.successful = true;
+			
 	  }else{
 		  response.successful = false;
 			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";

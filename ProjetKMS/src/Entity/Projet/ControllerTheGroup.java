@@ -59,6 +59,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private Button btn_delete;
 	@FXML
 	private CheckBox checkbox_completion;
+	Boolean reponse;
 
 
 	private ControllerTheProject controllerProjectList;
@@ -439,14 +440,24 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	private void addCarteToOtherList( DragEvent event) {
+
 		try {
 			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 			carteObservableList.addAll(listViewGroup.getItems());
 			ListCell<Carte> dragSourceCell = dragSource.get();
 			carteObservableList.add(dragSourceCell.getItem());
 			dragSourceCell.getItem().setGroupId(group.getId());
-			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			 if(reponse = false){
+				 apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+				 Alert alert = new Alert(AlertType.ERROR);
+				 alert.setTitle("Error");
+				 alert.setHeaderText("Can't move this card");
+				 alert.setContentText("you are not able to move this card because it has unfinished dependance.");
 
+				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
+
+			 }
 			listViewGroup.setItems(carteObservableList);
 	        event.setDropCompleted(true);
 

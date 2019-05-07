@@ -608,6 +608,7 @@ public class ApiConnector {
 
 	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
+	  	Boolean reponse = false;
 	    String sURL = this.baseURL +"changeCarteGroupId";
 	    URL url = new URL(sURL);
 	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
@@ -623,6 +624,7 @@ public class ApiConnector {
 	      wr.close();
 	      request.connect();
 	      request.getInputStream();
+	      
 
       	 if (request.getContent() != null){
 
@@ -633,13 +635,13 @@ public class ApiConnector {
 
 
  	        for (JsonElement obj : rootarray){
- 	        	Boolean reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
+ 	        	 reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
  	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
  	 	    	System.out.println("laResponse :" + reponse);
  	        }
 
- 	      return reponse;
       	 }
+      	 return reponse;
   }
   public void changeProjectColor(Project project) throws IOException{
 		Gson gson = new Gson();
