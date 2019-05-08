@@ -95,3 +95,5 @@ SELECT * from tbl_carte;
 SELECT * from tbl_projet;
 
 SELECT * FROM tbl_depandance WHERE id_carte_depandante = 1;
+
+SELECT tbl_carte.nom , ,tbl_dependance.complete from tbl_dependance INNER JOIN tbl_carte WHERE id_carte_depandante = 1;

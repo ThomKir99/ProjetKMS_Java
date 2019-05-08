@@ -4,7 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="PaneFond" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="PaneFond" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.Dependance.PageAfficheDependanceCarte">
    <children>
       <ListView fx:id="listViewCarteParentDeId" layoutY="232.0" prefHeight="168.0" prefWidth="600.0" />
       <ListView fx:id="listViewCarteDependantdeid" layoutY="45.0" prefHeight="168.0" prefWidth="600.0" />

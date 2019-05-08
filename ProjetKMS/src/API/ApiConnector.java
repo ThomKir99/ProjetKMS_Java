@@ -624,7 +624,7 @@ public class ApiConnector {
 	      wr.close();
 	      request.connect();
 	      request.getInputStream();
-	      
+
 
       	 if (request.getContent() != null){
 
@@ -817,10 +817,10 @@ public void saveCarteCompletion(List<Carte> list) throws IOException {
     request.getInputStream();
 }
 
-public ArrayList<Dependance> getDependanceCarte(int idCarte) throws IOException{
+public ArrayList<Dependance> getDependanceCarteEnfant(int idCarte) throws IOException{
 
 
-	   String sURL = this.baseURL +"getDepandanceCarte" + idCarte;
+	   String sURL = this.baseURL +"getDepandanceCarteEnfant" + idCarte;
 	      URL url = new URL(sURL);
 	      URLConnection request = url.openConnection();
 	      request.connect();
@@ -834,7 +834,7 @@ public ArrayList<Dependance> getDependanceCarte(int idCarte) throws IOException{
 	        for (JsonElement obj : rootarray){
 	          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
 	          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
-
+	       //   boolean state =
 	          list.add(new Dependance(idCarteDependante, idCarteDeDependance));
 	        }
 	      }
@@ -842,5 +842,8 @@ public ArrayList<Dependance> getDependanceCarte(int idCarte) throws IOException{
 
 	return list;
 }
+
+
+
 
 }
