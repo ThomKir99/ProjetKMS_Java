@@ -87,9 +87,8 @@ public void fillTableView(){
 			String ChosenCarteColumn = Dependance.getIdCarteDependante();
 			boolean state = Dependance.getState();
 
-			if (userID != Main.userContext.getId()){
-				UserPermission userPermission = new UserPermission(name,perm,userID);
-				permissionList.add(userPermission);
+				showDependnance showDependnance = new showDependnance(CarteDependnaceColumn,ChosenCarteColumn,state);
+				DependanceListenfant.add(showDependnance);
 		}
 		tableViewDependnance.getItems().addAll(permissionList);
 
@@ -99,8 +98,8 @@ public void fillTableView(){
 }
 
 public void initializeList(){
-	DependanceList = new ArrayList<showDependnance>();
-	parentList = new ArrayList<showDependnance>();
+	//DependanceList = new ArrayList<showDependnance>();
+	DependanceListenfant = new ArrayList<showDependnance>();
 }
 
 //public PageAfficheDependanceCarte(){

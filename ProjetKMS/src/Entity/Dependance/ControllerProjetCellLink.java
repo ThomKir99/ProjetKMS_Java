@@ -1,9 +1,11 @@
 package Entity.Dependance;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.User.UserPermission;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
 import javafx.event.ActionEvent;
@@ -16,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
@@ -27,6 +31,9 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
 	@FXML
 	public TextField txt_projectName;
+
+
+
 
 	@FXML
     public Button btn_openProjetLink;
