@@ -1,14 +1,17 @@
 package Main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.*;
 
-class MySqlCon{
+class MySqlCon {
 
 	Connection con;
-
 	public MySqlCon(){
-
 	}
+
 
 	public void openLocalConnection(){
 	  try
@@ -60,4 +63,6 @@ class MySqlCon{
 
 
 	}
+
+
 }

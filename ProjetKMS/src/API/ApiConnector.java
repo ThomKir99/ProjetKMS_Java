@@ -1,6 +1,9 @@
 package API;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,36 +36,57 @@ import Entity.User.Permission;
 import Entity.User.Username;
 import Entity.User.Utilisateur;
 import Entity.User.UtilisateurInfo;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 
 
 public class ApiConnector {
 	private String baseURL;
+	private String serverIpAddress="";
 
 	public ApiConnector() {
-		this.baseURL = "http://localhost:8080/DB_API/rest/main/";
+
+		  try {
+			File file = new File("config.ini");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			serverIpAddress = br.readLine();
+		} catch ( IOException e) {
+			serverIpAddress ="localhost";
+		}
+		this.baseURL = "http://" + serverIpAddress+":8080/DB_API/rest/main/";
 	}
 
 	public Utilisateur getUser(String nom,String password) throws IOException{
     String sURL = this.baseURL +"getUser/" + nom + "/" + password;
     URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.connect();
+    try {
+    	URLConnection request = url.openConnection();
+    	 request.connect();
 
-    JsonParser jp = new JsonParser();
-    InputStream stream = request.getInputStream();
-    JsonElement root = jp.parse(new InputStreamReader(stream));
-    if (!root.isJsonNull()){
-      JsonArray  rootarray = root.getAsJsonArray();
-      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
-      int userID = Integer.valueOf(rootobj.get("ID").toString());
-      String userName = rootobj.get("Name").toString();
-      userName = userName.replace("\"", "");
-      Utilisateur user = new Utilisateur(userID,userName);
+    	    JsonParser jp = new JsonParser();
+    	    InputStream stream = request.getInputStream();
+    	    JsonElement root = jp.parse(new InputStreamReader(stream));
+    	    if (!root.isJsonNull()){
+    	      JsonArray  rootarray = root.getAsJsonArray();
+    	      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
+    	      int userID = Integer.valueOf(rootobj.get("ID").toString());
+    	      String userName = rootobj.get("Name").toString();
+    	      userName = userName.replace("\"", "");
+    	      Utilisateur user = new Utilisateur(userID,userName);
 
-      return user;
-    }
-    return null;
+    	      return user;
+    	    }
+	} catch (Exception e) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("API Connection Error");
+		alert.setHeaderText("This IP address to the API is not valid");
+		alert.setContentText("Follow the instalation guide to see how set the right one in the config.ini file.");
+
+		alert.showAndWait();
+	}
+
+       return null;
 	}
 
 	public ArrayList<Utilisateur> getAllUser() throws IOException{
