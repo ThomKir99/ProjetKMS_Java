@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,23 +14,25 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="558.0" minHeight="10.0" prefHeight="524.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="553.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="572.0" minHeight="10.0" prefHeight="559.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Pane prefHeight="33.0" prefWidth="237.0">
          <children>
-            <TextField fx:id="textFieldGroupName" prefHeight="27.0" prefWidth="195.0" />
-            <Button fx:id="btn_addCarte" layoutX="195.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="42.0" style="-fx-background-color: #55ef0e;" text="+">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
+            <TextField fx:id="textFieldGroupName" prefHeight="33.0" prefWidth="216.0" />
+            <MenuButton fx:id="menuButtonGroup" layoutX="216.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="33.0">
+              <items>
+                <MenuItem fx:id="btn_addCarte" mnemonicParsing="false" text="Add card" />
+                <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete group" />
+              </items>
+            </MenuButton>
          </children>
       </Pane>
-      <ListView fx:id="listViewGroup" prefHeight="528.0" prefWidth="251.0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-      <Button fx:id="btn_delete" mnemonicParsing="false" text="Delete" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <CheckBox fx:id="checkbox_completion" mnemonicParsing="false" text="Completion" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <ListView fx:id="listViewGroup" layoutX="5.0" layoutY="5.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="239.0" />
+         </children>
+      </Pane>
    </children>
 </GridPane>

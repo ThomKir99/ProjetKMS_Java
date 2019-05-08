@@ -81,7 +81,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	private void setLogoutButtonBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/exit.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/exit.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(35);
 		imageView.setFitWidth(35);
@@ -89,7 +89,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	private void set3DButtonBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/3dIcon.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/3dIcon.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(35);
 		imageView.setFitWidth(35);
@@ -98,7 +98,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	}
 
 	private void setAddProjectBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/plus1.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/plus1.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(30);
 		imageView.setFitWidth(30);
@@ -170,8 +170,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		listViewProjet.setItems(projetObservableList);
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
-
-
 
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();

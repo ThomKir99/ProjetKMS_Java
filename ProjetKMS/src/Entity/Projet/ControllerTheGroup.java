@@ -30,8 +30,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -55,12 +59,16 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@FXML
 	private GridPane gridPaneGroup;
 	@FXML
-	private Button btn_addCarte;
+	private MenuItem btn_addCarte;
 	@FXML
-	private Button btn_delete;
+	private MenuItem btn_delete;
 	@FXML
-	private CheckBox checkbox_completion;
+	private CheckMenuItem checkMenuItemGroup;
+	@FXML
+	private MenuButton menuButtonGroup;
 
+
+	private CheckBox cb = new CheckBox("Completion group");
 
 	private ControllerTheProject controllerProjectList;
 	public ObservableList<Carte> carteObservableList;
@@ -114,17 +122,44 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
-			//Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/plus.png"));
-			//btn_addCarte.setGraphic(new ImageView(imagePoubelle));
-			refreshCarteList();
+			createCheckBoxMenuItem();
+			setImage();
 			setListener();
 			setCompletionGroup();
-
+			refreshCarteList();
 		}
 	}
 
+	private void createCheckBoxMenuItem(){
+		cb.setSelected(true);
+		CustomMenuItem cmi = new CustomMenuItem(cb);
+		cmi.setHideOnClick(false);
+		menuButtonGroup.getItems().add(1, cmi);;
+	}
+
+	private void setImage(){
+		setDeleteButton();
+		setAddButton();
+	}
+
+	private void setDeleteButton(){
+    Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
+		ImageView imageView = new ImageView(imagePoubelle);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+    btn_delete.setGraphic(imageView);
+	}
+
+	private void setAddButton(){
+		Image imageAdd = new Image(getClass().getResourceAsStream("/Image/plus1.png"));
+		ImageView imageView = new ImageView(imageAdd);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+    btn_addCarte.setGraphic(imageView);
+	}
+
 	private void setCompletionGroup() {
-		checkbox_completion.setSelected(group.getIsGroupOfCompletion());
+		cb.setSelected(group.getIsGroupOfCompletion());
 		btn_addCarte.setDisable(group.getIsGroupOfCompletion());
 		saveCarteCompletion();
 	}
@@ -170,12 +205,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			});
 		}
 
-		if(checkbox_completion!= null){
-			checkbox_completion.setOnAction(new EventHandler<ActionEvent>() {
+		if(cb!= null){
+			cb.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-					group.setIsGroupOfCompletion(checkbox_completion.isSelected());
+					group.setIsGroupOfCompletion(cb.isSelected());
 					ApiConnector apiConnector = new ApiConnector();
 						apiConnector.saveCompletionGroup(group);
 						btn_addCarte.setDisable(group.getIsGroupOfCompletion());
@@ -187,6 +222,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				}
 			});
 		}
+
 
 		textFieldGroupName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
@@ -207,10 +243,9 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		});
 
 
-
 	}
 
-	
+
 	private boolean showConfirmationMessage() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setTitle("Warning");
@@ -223,18 +258,21 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		return (result.get() == buttonTypeOne);
 	}
-	
+
 		protected void saveCarteCompletion() {
 		refreshGroup();
 		try {
-			for(Group aGroup:controllerProjectList.getProject().getGroups()){
-				for(Carte aCarte : aGroup.getCartes()){
-					aCarte.setComplete(aGroup.getIsGroupOfCompletion());
+			if (controllerProjectList.getProject().getGroups() != null){
+				for(Group aGroup: controllerProjectList.getProject().getGroups()){
+					if (aGroup.getCartes() != null){
+						for(Carte aCarte : aGroup.getCartes()){
+							aCarte.setComplete(aGroup.getIsGroupOfCompletion());
+						}
+					}
+					ApiConnector apiConnector = new ApiConnector();
+					apiConnector.saveCarteCompletion(aGroup.getCartes());
 				}
-				ApiConnector apiConnector = new ApiConnector();
-				apiConnector.saveCarteCompletion(aGroup.getCartes());
 			}
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -267,7 +305,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	public void removeCarte(Carte carte){
-
 		group.removeCarte(listViewGroup.getItems().indexOf(carte));
 		refreshCarteList();
 	}
@@ -353,13 +390,13 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
-
-
 	}
 
 	private void refreshGroup() {
-		group.getCartes().clear();
-		 group.addAll(listViewGroup.getItems());
+		if (group.getCartes() != null){
+			group.getCartes().clear();
+			group.addAll(listViewGroup.getItems());
+		}
 	}
 
 	private void setDragOverHandler(DragEvent event) {

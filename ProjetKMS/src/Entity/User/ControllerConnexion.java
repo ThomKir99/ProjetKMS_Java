@@ -21,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -81,6 +83,40 @@ public class ControllerConnexion implements Initializable{
 			}
 		});
 
+		txt_password.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+					if (event.getCode().equals(KeyCode.ENTER)){
+						Utilisateur user = getUser();
+						if (user != null){
+							setUser(user);
+							openMenuProject(event);
+						}
+					}
+			}
+		});
+
+		txt_username.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)){
+					txt_password.requestFocus();
+				}
+			}
+		});
+	}
+
+
+	private void openMenuProject(KeyEvent event) {
+		try {
+  		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
+      Parent tableViewParent = (Parent)fxmlLoader.load();
+      Scene tableViewScene = new Scene(tableViewParent);
+      openWindow(tableViewScene,event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -106,6 +142,13 @@ public class ControllerConnexion implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void openWindow(Scene tableViewScene, KeyEvent event){
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    window.setResizable(false);
+    window.setScene(tableViewScene);
+    window.show();
 	}
 
 	private void openWindow(Scene tableViewScene, ActionEvent event){

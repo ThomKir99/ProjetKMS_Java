@@ -593,6 +593,7 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
   @Consumes(MediaType.APPLICATION_JSON)
   public void saveCarteOrder(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
+
   	for(CarteModel carte : cartes ){
   		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
   	}
@@ -662,9 +663,11 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
   @Consumes(MediaType.APPLICATION_JSON)
   public void saveCarteCompletion(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
+
   	for(CarteModel carteModel : cartes ){
-  		mySqlCon.executeNonQuery("update tbl_carte set complete ="+ carteModel.getIfComplete() +" where id_carte =\'"+carteModel.getID()+"\'");
+  		mySqlCon.executeNonQuery("UPDATE tbl_carte SET complete ="+ carteModel.getIfComplete() +" WHERE id_carte =\'"+carteModel.getID()+"\'");
   	}
+
   	mySqlCon.closeConnection();
   }
 

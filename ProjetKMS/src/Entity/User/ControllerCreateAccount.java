@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -81,6 +83,34 @@ public class ControllerCreateAccount implements Initializable{
 			@Override
 			public void handle(ActionEvent event) {
 				initializeUser(event);
+			}
+		});
+
+		txt_createUsername.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)){
+					txt_createPassword.requestFocus();
+				}
+			}
+		});
+
+		txt_createPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)){
+					txt_confirmPassword.requestFocus();
+				}
+			}
+		});
+
+
+		txt_confirmPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)){
+					redirectToConnection(event);
+				}
 			}
 		});
 	}
@@ -238,7 +268,26 @@ public class ControllerCreateAccount implements Initializable{
 		}
 	}
 
+	public void redirectToConnection(KeyEvent event){
+		try {
+  		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/ConnexionPage.fxml"));
+      Parent tableViewParent = (Parent)fxmlLoader.load();
+      Scene tableViewScene = new Scene(tableViewParent);
+      openWindow(tableViewScene,event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	private void openWindow(Scene tableViewScene, ActionEvent event){
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    window.setScene(tableViewScene);
+    window.setResizable(false);
+    window.show();
+	}
+
+	private void openWindow(Scene tableViewScene, KeyEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     window.setScene(tableViewScene);
     window.setResizable(false);

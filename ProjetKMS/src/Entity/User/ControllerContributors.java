@@ -144,7 +144,7 @@ public class ControllerContributors implements Initializable{
 	}
 
 	public void setBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/backArrow.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/backArrow.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(35);
 		imageView.setFitWidth(35);
