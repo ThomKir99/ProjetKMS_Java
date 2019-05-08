@@ -186,7 +186,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	public void setBackButtonBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/backArrow.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/backArrow.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(35);
 		imageView.setFitWidth(35);
@@ -195,7 +195,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	public void setAddGroupBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/plus1.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/plus1.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(20);
 		imageView.setFitWidth(20);
