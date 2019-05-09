@@ -49,15 +49,16 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	@Override
     protected void updateItem(Project projet, boolean empty) {
         super.updateItem(projet, empty);
-
+        System.out.println("dfdf");
         if(empty || projet == null) {
-
+        	System.out.println("eeeeee");
             setText(null);
             setGraphic(null);
 
         } else {
             if (mLLoader == null) {
             	loadTheProjetView(projet);
+            	System.out.println("ok");
             }
             initializeViewInfo(projet);
 

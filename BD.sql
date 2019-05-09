@@ -82,6 +82,7 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("Carte2","Une desc",1,false,3);
 INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALUES ("CarteDependance","Une desc",1,false,1);
 
+
 /*Permission*/
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,2,"READ");
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRITE");

@@ -587,7 +587,6 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 		mySqlCon.closeConnection();
 	}
 
-
   @Path("/saveCarteOrder")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)

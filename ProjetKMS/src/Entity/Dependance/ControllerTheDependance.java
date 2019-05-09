@@ -112,7 +112,6 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 		setListener();
 		refreshGroupList();
 		listViewLinkGroupe.setItems(groupObservableListLink);
-		System.out.println("carteinitialise ds the dependnace"+carteParent);
 		listViewLinkGroupe.setCellFactory(group->{
 			return setFactory();
 		});
