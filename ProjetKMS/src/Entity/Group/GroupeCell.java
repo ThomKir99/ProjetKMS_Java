@@ -28,6 +28,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -70,35 +72,35 @@ public class GroupeCell extends ListCell<Carte> {
 
 
 	@Override
-    protected void updateItem(Carte carte, boolean empty) {
+  protected void updateItem(Carte carte, boolean empty) {
 
-        super.updateItem(carte, empty);
-        this.carte = carte;
-        if(empty || carte == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheCarte.fxml"));
-                mLLoader.setController(this);
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            textFieldName.setText(carte.getName());
-            txtDescription.setText(carte.getDescription());
-            txtDescription.setMinHeight(40);
-            txtDescription.setMaxHeight(400);
-            setHandler();
-            setBackground();
+      super.updateItem(carte, empty);
+      this.carte = carte;
+      if(empty || carte == null) {
+          setText(null);
+          setGraphic(null);
+      } else {
+          if (mLLoader == null) {
+              mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheCarte.fxml"));
+              mLLoader.setController(this);
+              try {
+                  mLLoader.load();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+          }
+          textFieldName.setText(carte.getName());
+          txtDescription.setText(carte.getDescription());
+          txtDescription.setMinHeight(40);
+          txtDescription.setMaxHeight(400);
+          setHandler();
+          setBackground();
 
-            setText(null);
-            setGraphic(gridPane1);
-        }
+          setText(null);
+          setGraphic(gridPane1);
+      }
 
-    }
+  }
 
 
 	private void setBackground(){
@@ -163,6 +165,7 @@ public class GroupeCell extends ListCell<Carte> {
 	}
 
 	private void setTextHandler() {
+
 
 		textFieldName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {

@@ -200,7 +200,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		imageView.setFitHeight(20);
 		imageView.setFitWidth(20);
 		btn_newGroup.setGraphic(imageView);
-		btn_newGroup.setStyle("-fx-border-radius: 3 3 3 3;-fx-border-width: 1;-fx-border-color: black;");
+		btn_newGroup.setStyle("-fx-border-radius: 0 10 0 0");
 	}
 
 	public void errorMessage() throws IOException{

@@ -37,6 +37,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +46,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ControllerTheGroup extends ListCell<Group> implements Initializable{
@@ -162,12 +164,33 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		cb.setSelected(group.getIsGroupOfCompletion());
 		btn_addCarte.setDisable(group.getIsGroupOfCompletion());
 		saveCarteCompletion();
+		completionGroupStyle();
+	}
+
+	private void completionGroupStyle(){
+		if (group.getIsGroupOfCompletion()){
+			setGroupStyle();
+		}
+		else{
+			removeGroupeStyle();
+		}
+	}
+
+	private void setGroupStyle(){
+		textFieldGroupName.setStyle("-fx-border-width: 2 1 1 2; -fx-border-color: #6aff00 #c1c1c1 #c1c1c1 #6aff00;-fx-background-radius: 10 0 0 0;-fx-border-radius: 10 0 0 0;");
+		menuButtonGroup.setStyle("-fx-border-width: 2 2 1 1; -fx-border-color: #6aff00 #6aff00 #c1c1c1 #c1c1c1;-fx-background-radius: 0 10 0 0;-fx-border-radius: 0 10 0 0;");
+		listViewGroup.setStyle("-fx-border-width: 1 2 2 2; -fx-border-color: #c1c1c1 #6aff00 #6aff00 #6aff00;");
+	}
+
+	private void removeGroupeStyle(){
+		textFieldGroupName.setStyle("-fx-border-width: 2 1 1 2;-fx-background-radius: 10 0 0 0;-fx-border-radius: 10 0 0 0;");
+		menuButtonGroup.setStyle("-fx-border-width: 2 2 1 1;-fx-background-radius: 0 10 0 0;-fx-border-radius: 0 10 0 0;");
+		listViewGroup.setStyle("-fx-border-width: 1 2 2 2");
 	}
 
 	private void getCarteFromGroup() throws IOException{
 		if (apiConnector.carteList(this.group.getId()) != null){
 			this.group.setCartes(apiConnector.carteList(this.group.getId()));
-
 		}
 	}
 
@@ -210,11 +233,12 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-					group.setIsGroupOfCompletion(cb.isSelected());
-					ApiConnector apiConnector = new ApiConnector();
+						group.setIsGroupOfCompletion(cb.isSelected());
+						ApiConnector apiConnector = new ApiConnector();
 						apiConnector.saveCompletionGroup(group);
 						btn_addCarte.setDisable(group.getIsGroupOfCompletion());
 						saveCarteCompletion();
+						completionGroupStyle();
 					} catch (IOException  e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
