@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
-import Entity.User.UserPermission;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
 import javafx.event.ActionEvent;
