@@ -5,6 +5,7 @@ public class Dependance {
 	public int idCarteDeDependance;
 	public boolean state;
 
+
 	public Dependance(){
 		idCarteDependante = 0;
 		idCarteDeDependance = 0;
@@ -14,12 +15,6 @@ public class Dependance {
 	public Dependance(int idCarteDependante,int idCarteDeDependance){
 		this.idCarteDeDependance =idCarteDeDependance;
 		this.idCarteDependante = idCarteDependante;
-	}
-
-	public Dependance ()
-	{
-		idCarteDependante = 0;
-		idCarteDeDependance= 0;
 	}
 
 	public int getIdCarteDeDependance() {
