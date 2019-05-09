@@ -210,7 +210,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	}
 
-	
+
 	private boolean showConfirmationMessage() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setTitle("Warning");
@@ -223,7 +223,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		return (result.get() == buttonTypeOne);
 	}
-	
+
 		protected void saveCarteCompletion() {
 		refreshGroup();
 		try {
