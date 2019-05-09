@@ -212,7 +212,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	}
 
-	
+
 	private boolean showConfirmationMessage() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setTitle("Warning");
@@ -225,7 +225,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		return (result.get() == buttonTypeOne);
 	}
-	
+
 		protected void saveCarteCompletion() {
 		refreshGroup();
 		try {
@@ -467,17 +467,20 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			carteObservableList.add(dragSourceCell.getItem());
 			dragSourceCell.getItem().setGroupId(group.getId());
 			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
-			 if(reponse = false){
-				 apiConnector.changeCarteGroupId(dragSourceCell.getItem());
-				 Alert alert = new Alert(AlertType.ERROR);
-				 alert.setTitle("Error");
-				 alert.setHeaderText("Can't move this card");
-				 alert.setContentText("you are not able to move this card because it has unfinished dependance.");
+//			 if(reponse = false){
+//
+//				 Alert alert = new Alert(AlertType.ERROR);
+//				 alert.setTitle("Error");
+//				 alert.setHeaderText("Can't move this card");
+//				 alert.setContentText("you are not able to move this card because it has unfinished dependance.");
+//
+//				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
+//
+//			 }
 
-				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
-
-			 }
-			listViewGroup.setItems(carteObservableList);
+			 refreshGroup();
+			 refreshCarteList();
+			 listViewGroup.setItems(carteObservableList);
 	        event.setDropCompleted(true);
 
 
