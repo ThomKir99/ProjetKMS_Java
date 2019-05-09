@@ -4,6 +4,7 @@ public class CarteModel {
 	public int id;
 	public String name;
 	public int ordre_de_priorite;
+	public String description;
 	private int groupId;
 	private boolean complete;
 
@@ -44,4 +45,8 @@ public class CarteModel {
 	public boolean getIfComplete() {return this.complete;}
 
 	public void setComplete(boolean complete){this.complete = complete;}
+
+	public String getDescription() {return this.description;}
+
+	public void setDescription(String description) {this.description = description;}
 }

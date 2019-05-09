@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import API.ApiConnector;
 import Main.Main;
-import User.Utilisateur;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,16 +35,16 @@ import javafx.util.converter.DefaultStringConverter;
 public class ControllerContributors implements Initializable{
 
 	@FXML
-	TableView<UserPermission> tableViewContributors;
+	TableView<UserPermissionModel> tableViewContributors;
   @FXML
-  TableColumn<UserPermission, String> emailColumn;
+  TableColumn<UserPermissionModel, String> emailColumn;
   @FXML
-  TableColumn<UserPermission, String> permColumn;
+  TableColumn<UserPermissionModel, String> permColumn;
 	@FXML
 	Button btn_backToProject;
 
 	private ArrayList<Utilisateur> userList;
-	private ArrayList<UserPermission> permissionList;
+	private ArrayList<UserPermissionModel> permissionList;
 	private ObservableList<String> permissionString;
 	private int projectID;
 	private ApiConnector apiConnector;
@@ -81,7 +80,7 @@ public class ControllerContributors implements Initializable{
 				}
 
 				if (userID != Main.userContext.getId()){
-					UserPermission userPermission = new UserPermission(name,perm,userID);
+					UserPermissionModel userPermission = new UserPermissionModel(name,perm,userID);
 					permissionList.add(userPermission);
 				}
 			}
@@ -98,7 +97,7 @@ public class ControllerContributors implements Initializable{
 
 	public void initializeList(){
 		userList = new ArrayList<Utilisateur>();
-		permissionList = new ArrayList<UserPermission>();
+		permissionList = new ArrayList<UserPermissionModel>();
 		permissionString = FXCollections.observableArrayList();
 		permissionString.addAll("NONE","READ","WRITE");
 	}
@@ -106,14 +105,14 @@ public class ControllerContributors implements Initializable{
 	public void initializeColumn(){
 		tableViewContributors.setEditable(true);
 
-		emailColumn.setCellValueFactory(new PropertyValueFactory<UserPermission, String>("Email"));
+		emailColumn.setCellValueFactory(new PropertyValueFactory<UserPermissionModel, String>("Email"));
 
 		permColumn.setCellValueFactory(new PropertyValueFactory<>("Permission"));
 		permColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),permissionString));
-		permColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<UserPermission,String>>() {
+		permColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<UserPermissionModel,String>>() {
 			@Override
-			public void handle(CellEditEvent<UserPermission, String> event) {
-				UserPermission userPermission = (UserPermission) event.getTableView().getItems().get(event.getTablePosition().getRow());
+			public void handle(CellEditEvent<UserPermissionModel, String> event) {
+				UserPermissionModel userPermission = (UserPermissionModel) event.getTableView().getItems().get(event.getTablePosition().getRow());
 				Permission apiPermission = new Permission();
 				apiPermission.setId_projet(projectID);
 				apiPermission.setId_user(userPermission.getUserID());
@@ -145,7 +144,7 @@ public class ControllerContributors implements Initializable{
 	}
 
 	public void setBackground(){
-		Image image = new Image(getClass().getResourceAsStream("/image/backArrow.png"));
+		Image image = new Image(getClass().getResourceAsStream("/Image/backArrow.png"));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(35);
 		imageView.setFitWidth(35);
@@ -174,6 +173,7 @@ public class ControllerContributors implements Initializable{
 	private void openWindow(Scene tableViewScene, ActionEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     window.setScene(tableViewScene);
+    window.setResizable(false);
     window.show();
 	}
 

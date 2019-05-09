@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -83,18 +85,19 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
           setText(null);
           setGraphic(null);
       } else {
+
       		if (mLLoader == null) {
-                  mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
-                  mLLoader.setController(this);
-                  try {
-                      mLLoader.load();
-                  } catch (IOException e) {
-                      e.printStackTrace();
-                  }
+                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheGroup.fxml"));
+                mLLoader.setController(this);
+                try {
+                    mLLoader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
       		}
+
       		if(textFieldGroupName!=null){
       			textFieldGroupName.setText(String.valueOf(group.getName()));
-
       		}
 
       		try {
@@ -142,8 +145,10 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						apiConnector.deleteGroup(group.getId());
-						controllerProjectList.removeRow(getGroupIndex());
+						if (showConfirmationMessage()){
+							apiConnector.deleteGroup(group.getId());
+							controllerProjectList.removeRow(getGroupIndex());
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -207,7 +212,21 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 	}
 
-	protected void saveCarteCompletion() {
+	
+	private boolean showConfirmationMessage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Warning");
+    	alert.setHeaderText("Do you really want to delete this group?");
+    	alert.setContentText("This action cannot be undone");
+    	ButtonType buttonTypeOne = new ButtonType("Yes");
+    	ButtonType buttonTypeTwo = new ButtonType("No");
+    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+    	Optional<ButtonType> result = alert.showAndWait();
+
+		return (result.get() == buttonTypeOne);
+	}
+	
+		protected void saveCarteCompletion() {
 		refreshGroup();
 		try {
 			for(Group aGroup:controllerProjectList.getProject().getGroups()){
@@ -224,6 +243,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		}
 
 	}
+
 
 	public void errorMessage() throws IOException{
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -264,7 +284,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		return setCellDragAndDropHandler();
 		});
 	}
-
 
 
 	public void setListener(){

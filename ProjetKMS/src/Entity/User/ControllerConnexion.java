@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import API.ApiConnector;
 import Entity.Projet.ControllerTheProject;
 import Entity.ProjetMenu.ControllerPageProjet;
-import User.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
@@ -35,7 +36,7 @@ public class ControllerConnexion implements Initializable{
 	public TextField txt_username;
 
 	@FXML
-	public TextField txt_password;
+	public PasswordField txt_password;
 
 	@FXML
 	public Text lbl_usernameError;
@@ -45,6 +46,9 @@ public class ControllerConnexion implements Initializable{
 
 	@FXML
 	public Text lbl_userNotExist;
+
+	@FXML
+	public Hyperlink hlink_createAccount;
 
 	public ControllerConnexion() {
 		apiConnector = new ApiConnector();
@@ -69,6 +73,15 @@ public class ControllerConnexion implements Initializable{
 
 			}
 		});
+
+		hlink_createAccount.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				redirectToCreateAccount(event);
+			}
+		});
+
+
 	}
 
 	private void openMenuProject(ActionEvent event) {
@@ -83,8 +96,21 @@ public class ControllerConnexion implements Initializable{
 
 	}
 
+	private void redirectToCreateAccount(ActionEvent event){
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/CreateAccountPage.fxml"));
+	    Parent tableViewParent;
+			tableViewParent = (Parent)fxmlLoader.load();
+	    Scene tableViewScene = new Scene(tableViewParent);
+	    openWindow(tableViewScene,event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void openWindow(Scene tableViewScene, ActionEvent event){
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    window.setResizable(false);
     window.setScene(tableViewScene);
     window.show();
 	}

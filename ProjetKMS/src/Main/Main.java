@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Scene3D.MainView3DController;
 import API.ApiConnector;
 import Entity.Projet.Project;
-import User.Utilisateur;
+import Entity.User.Utilisateur;
 
 public class Main {
 	public static Utilisateur userContext;

@@ -10,7 +10,7 @@ public class Carte extends Entity{
 	private int ordre_de_priorite;
 	private boolean complete;
     private final double carteHeight = 15;
-    private final double carteWeight = 20;
+    private final double carteWidth = 20;
     private final double cartedepth = 0.1;
     private float positionX;
     private float positionY;
@@ -69,8 +69,8 @@ public double getCarteHeight() {
 		return carteHeight;
 	}
 
-	public double getCarteWeight() {
-		return carteWeight;
+	public double getCarteWidth() {
+		return carteWidth;
 	}
 
 	public double getCartedepth() {

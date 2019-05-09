@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.ProjetMenu.ControllerPageProjet">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="679.0" prefWidth="289.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Entity.ProjetMenu.ControllerPageProjet">
    <content>
-      <Pane prefHeight="676.0" prefWidth="497.0">
+      <Pane prefHeight="676.0" prefWidth="287.0">
          <children>
-            <ListView fx:id="listViewProjet" layoutX="11.0" layoutY="69.0" prefHeight="607.0" prefWidth="481.0" />
-            <Button fx:id="btn_projet" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Add project" />
-            <Button fx:id="btn_3D" layoutX="133.0" layoutY="17.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="54.0" text="3D">
+            <ListView fx:id="listViewProjet" layoutX="11.0" layoutY="69.0" prefHeight="607.0" prefWidth="266.0" />
+            <Button fx:id="btn_projet" layoutX="228.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="49.0" />
+            <Button fx:id="btn_3D" layoutX="119.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="49.0">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold Italic" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="btn_disconnect" layoutX="414.0" layoutY="18.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="69.0" style="-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 3 3 3 3;" text="Logout" />
+            <Button fx:id="btn_disconnect" layoutX="11.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="49.0" style="-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 3 3 3 3;" />
          </children>
       </Pane>
    </content>

@@ -1,6 +1,9 @@
 package API;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +15,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,37 +33,60 @@ import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import Entity.User.Permission;
-import User.Utilisateur;
+import Entity.User.Username;
+import Entity.User.Utilisateur;
+import Entity.User.UtilisateurInfo;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 
 
 public class ApiConnector {
 	private String baseURL;
+	private String serverIpAddress="";
 
 	public ApiConnector() {
-		this.baseURL = "http://localhost:8080/DB_API/rest/main/";
+
+		  try {
+			File file = new File("config.ini");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			serverIpAddress = br.readLine();
+		} catch ( IOException e) {
+			serverIpAddress ="localhost";
+		}
+		this.baseURL = "http://" + serverIpAddress+":8080/DB_API/rest/main/";
 	}
 
 	public Utilisateur getUser(String nom,String password) throws IOException{
     String sURL = this.baseURL +"getUser/" + nom + "/" + password;
     URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.connect();
+    try {
+    	URLConnection request = url.openConnection();
+    	 request.connect();
 
-    JsonParser jp = new JsonParser();
-    InputStream stream = request.getInputStream();
-    JsonElement root = jp.parse(new InputStreamReader(stream));
-    if (!root.isJsonNull()){
-      JsonArray  rootarray = root.getAsJsonArray();
-      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
-      int userID = Integer.valueOf(rootobj.get("ID").toString());
-      String userName = rootobj.get("Name").toString();
-      userName = userName.replace("\"", "");
-      Utilisateur user = new Utilisateur(userID,userName);
+    	    JsonParser jp = new JsonParser();
+    	    InputStream stream = request.getInputStream();
+    	    JsonElement root = jp.parse(new InputStreamReader(stream));
+    	    if (!root.isJsonNull()){
+    	      JsonArray  rootarray = root.getAsJsonArray();
+    	      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
+    	      int userID = Integer.valueOf(rootobj.get("ID").toString());
+    	      String userName = rootobj.get("Name").toString();
+    	      userName = userName.replace("\"", "");
+    	      Utilisateur user = new Utilisateur(userID,userName);
 
-      return user;
-    }
-    return null;
+    	      return user;
+    	    }
+	} catch (Exception e) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("API Connection Error");
+		alert.setHeaderText("This IP address to the API is not valid");
+		alert.setContentText("Follow the instalation guide to see how set the right one in the config.ini file.");
+
+		alert.showAndWait();
+	}
+
+       return null;
 	}
 
 	public ArrayList<Utilisateur> getAllUser() throws IOException{
@@ -86,6 +115,50 @@ public class ApiConnector {
 		return userList;
 	}
 
+	public void createUser(UtilisateurInfo user) throws IOException{
+  	Gson gson = new Gson();
+  	String userJson = gson.toJson(user);
+    String sURL = this.baseURL +"createUser";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(userJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+	}
+
+	public boolean doesUserExist(String username) throws IOException{
+		boolean userExist = false;
+		Username name = new Username(username);
+  	Gson gson = new Gson();
+  	String userN = gson.toJson(name);
+
+    String sURL = this.baseURL +"getUserWithName";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(userN);
+    wr.flush();
+    wr.close();
+    request.connect();
+    InputStreamReader sr = new InputStreamReader(request.getInputStream());
+    BufferedReader br = new BufferedReader(sr);
+
+    String text = "";
+    while ((text = br.readLine()) != null){
+    	userExist =  true;
+    }
+
+    return userExist;
+	}
 
 
 	public ArrayList<Project> projectList(int userID) throws IOException{
@@ -99,22 +172,59 @@ public class ApiConnector {
     JsonArray  rootarray = root.getAsJsonArray();
     ArrayList<Project> projectList =  new ArrayList<Project>();
 
+    if (getProjectWithPermission(userID) != null){
+    	projectList.addAll(getProjectWithPermission(userID));
+    }
+
     if (rootarray.size() > 0){
       for (JsonElement obj : rootarray){
-
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
         String colorProject = obj.getAsJsonObject().get("color_project").toString();
         userName = removeQuote(userName);
-        colorProject  =removeQuote(colorProject);
-        projectList.add(new Project(projectID,userName,colorProject));
+        colorProject = removeQuote(colorProject);
+
+        Project projet = new Project(projectID,userName,colorProject);
+        projet.setPermission("ADMIN");
+        projectList.add(projet);
       }
-    }
-    else{
-    	projectList = null;
     }
 
 		return projectList;
+	}
+
+	private ArrayList<Project> getProjectWithPermission(int userID)throws IOException{
+    String sURL = this.baseURL +"getProjectWithPermission/" + userID;
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    JsonParser jp = new JsonParser();
+    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    JsonArray  rootarray = root.getAsJsonArray();
+    ArrayList<Project> projectList = new ArrayList<Project>();
+
+    if (rootarray.size() > 0){
+      for (JsonElement obj : rootarray){
+        int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
+        String projectName = obj.getAsJsonObject().get("projectName").toString();
+        String color_project = obj.getAsJsonObject().get("color_project").toString();
+        String permission = obj.getAsJsonObject().get("permission").toString();
+
+        projectName = removeQuote(projectName);
+        color_project = removeQuote(color_project);
+        permission = removeQuote(permission);
+
+        Project projet = new Project(projectID,projectName,color_project);
+        projet.setPermission(permission);
+        projectList.add(projet);
+
+      }
+      return projectList;
+    }
+    else{
+  		return null;
+    }
 	}
 
 	public ArrayList<Group> groupList(int projectID) throws IOException{
@@ -659,30 +769,7 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
   }
-  private Project getProjectOpenedTime(int userId) throws IOException{
-	    String sURL = this.baseURL + "OpenedProject/" + userId ;
-	    URL url = new URL(sURL);
-	    URLConnection request = url.openConnection();
-	    request.connect();
 
-	    if (request.getContent() != null){
-	        Project leProjet =  new Project();
-	      	JsonParser jp = new JsonParser();
-	      	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-	      	JsonArray rootarray = root.getAsJsonArray();
-
-	     	 for (JsonElement obj : rootarray){
-	             int projectId = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
-	             String projectName = obj.getAsJsonObject().get("projectName").toString();
-	             Date projectDateOpened = Date.valueOf(obj.getAsJsonObject().get("date_projet_ouvert").toString());
-	             leProjet = new Project(projectId,projectName,projectDateOpened);
-	     	 }
-	     	return leProjet;
-	    }
-	    else{
-	    	return null;
-	    }
-  }
 
   public void setDateOpenProject(Project currentProject) throws IOException{
 	  	Gson gson = new Gson();
@@ -804,6 +891,54 @@ public void saveCarteCompletion(List<Carte> list) throws IOException {
 	Gson gson = new Gson();
   	String projectJson = gson.toJson(list);
     String sURL = this.baseURL +"saveCarteCompletion";
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.write(projectJson);
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
+}
+
+public void saveDescriptionCarte(Carte carte) throws IOException {
+	Carte dbCarte = new Carte();
+    String sURL = this.baseURL +"getSingleCarte/" + carte.getId();
+    URL url = new URL(sURL);
+    URLConnection request = url.openConnection();
+    request.connect();
+
+    if (request.getContent() != null){
+    	JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+    	JsonArray rootarray = root.getAsJsonArray();
+
+    	int carteID = -1;
+    	String carteName = "Something went wrong";
+      for (JsonElement obj : rootarray){
+      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
+      	carteName = obj.getAsJsonObject().get("carteName").toString();
+
+      	carteName = removeQuote(carteName);
+
+      }
+      dbCarte = new Carte(carteID,carteName);
+    }
+
+    if (!carte.isEqualTo(dbCarte)){
+    	//Project As Been Modified
+    	updateDescription(carte);
+    }
+
+}
+
+public void updateDescription(Carte carte) throws IOException {
+	Gson gson = new Gson();
+  	String projectJson = gson.toJson(carte);
+    String sURL = this.baseURL +"updateDescription";
     URL url = new URL(sURL);
     HttpURLConnection request = (HttpURLConnection) url.openConnection();
     request.setRequestProperty("Content-Type", "application/json");

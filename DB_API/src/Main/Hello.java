@@ -55,6 +55,47 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/createUser")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void createUser(UtilisateurModel user) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_utilisateur(nom,mots_de_passe) VALUES (\'" + user.getName() + "\', \'" + user.getPassword() + "\')");
+  	mySqlCon.closeConnection();
+  }
+
+  @Path("/getProjectWithPermission/{userID}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getProjectWithPermission(@PathParam("userID") String userID) throws Exception {
+
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT id_projet,permission,id_utilisateur FROM tbl_permission WHERE id_utilisateur = \'" + userID + "\'");
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+      	ResultSet result1 = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet = \'" + result.getString(1) + "\' ORDER BY date_projet_ouvert DESC");
+				JsonObject obj = new JsonObject();
+
+		  	if (result1.isBeforeFirst()){
+		    	while (result1.next()){
+	  				obj.addProperty("projectID", result1.getInt(1));
+	  				obj.addProperty("projectName", result1.getString(2));
+	  				obj.addProperty("color_project", result1.getString(4));
+	  				obj.addProperty("permission", result.getString(2));
+		    	}
+		    }
+				jsonArr.add(obj);
+    	}
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+
   @Path("/getAllUser")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -85,7 +126,32 @@ public class Hello {
   	return gson.toJson(jsonArr);
   }
 
+  @Path("/getUserWithName")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public String getUserWithName(UsernameModel username) throws Exception {
 
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_utilisateur WHERE nom = \'" + username.getUsername() + "\'");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+    	while (result.next()){
+    		JsonObject obj = new JsonObject();
+    		obj.addProperty("username", result.getString(2));
+    		jsonArr.add(obj);
+    	}
+  	}
+  	else{
+  		mySqlCon.closeConnection();
+  		return null;
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
 
   @Path("/getProjects/{userId}")
   @GET
@@ -342,6 +408,14 @@ public class Hello {
   	mySqlCon.executeNonQuery("UPDATE tbl_carte SET nom = \'"+ carte.getName() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
   	mySqlCon.closeConnection();
   }
+  @Path("/updateDescription")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void updateDescription(CarteModel carte) throws Exception {
+  	mySqlCon.openLocalConnection();
+  	mySqlCon.executeNonQuery("UPDATE tbl_carte SET description = \'"+ carte.getDescription() +"\' WHERE id_carte = \'" + carte.getID() + "\'");
+  	mySqlCon.closeConnection();
+  }
 
 
   @Path("/newProject/{userId}")
@@ -506,12 +580,12 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 
 @Path("/createDependance")
 @POST
-@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 public void createDependance(DependnaceModel dependance) throws Exception {
-	mySqlCon.openLocalConnection();
+		mySqlCon.openLocalConnection();
 	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+dependance.getIdCarteDependante() +","+ dependance.getIdCarteDeDependance() +","+false + ")");
-	mySqlCon.closeConnection();
-}
+		mySqlCon.closeConnection();
+	}
 
 
   @Path("/saveCarteOrder")

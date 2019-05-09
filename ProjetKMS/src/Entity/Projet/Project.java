@@ -7,8 +7,6 @@ import Entity.Entity;
 import Entity.Group.Group;
 import javafx.scene.paint.Color;
 
-
-
 public class Project extends Entity{
 
 	private List<Group> groups;
@@ -16,6 +14,8 @@ public class Project extends Entity{
 	private String hexColor;
 	private double y3DPosition;
 	private Date date;
+	private String permission;
+
 	public Project(){
 		super();
 		this.groups = new ArrayList<Group>();
@@ -52,12 +52,15 @@ public class Project extends Entity{
 		}else{
 			return false;
 		}
-
 	}
 
-	public Color getProjectColor() {return projectColor;}
+	public Color getProjectColor() {
+		return projectColor;
+	}
 
-	public void setProjectColor(Color projectColor) {this.projectColor = projectColor;}
+	public void setProjectColor(Color projectColor) {
+		this.projectColor = projectColor;
+	}
 
 	public double getY3DPosition() {
 		return y3DPosition;
@@ -66,18 +69,22 @@ public class Project extends Entity{
 		y3DPosition = yPosition;
 	}
 
-
-
-
-
-
 	public String getHexColor() {
 		return hexColor;
+	}
+
+	public String getPermission() {
+		return permission;
 	}
 
 	public void setHexColor(Color color) {
 		this.hexColor = color.toString();
 	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+
 	public void setHexColor(String color) {
 		this.hexColor = color;
 	}
@@ -87,8 +94,6 @@ public class Project extends Entity{
 		} catch (Exception e) {
 			this.projectColor = Color.WHITE;
 		}
-
-
 	}
 
 }

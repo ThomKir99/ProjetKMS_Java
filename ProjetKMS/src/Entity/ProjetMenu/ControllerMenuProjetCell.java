@@ -18,7 +18,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -35,16 +38,27 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	private Button btn_openProject;
 
 	@FXML
-	private GridPane gridPane_projectCell;
+	private MenuButton splitMenuProject;
+
+	@FXML
+	private AnchorPane anchorPane;
+
+	@FXML
+	private Pane backgroundPane;
 
 	@FXML
 	private MenuItem btn_addContributor;
+
+	@FXML
+	private Text txt_readOnlyProjectMenu;
+
+	@FXML
+	private Text txt_writeOnlyProjectMenu;
 
 	private ControllerPageProjet controllerPageProjet;
 	private Project currentProjet;
 	private FXMLLoader mLLoader;
 	private ApiConnector apiConnector;
-
 
 	public ControllerMenuProjetCell(ControllerPageProjet controllerPageProjet){
 		this.controllerPageProjet = controllerPageProjet;
@@ -52,30 +66,85 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	}
 
 	@Override
-    protected void updateItem(Project projet, boolean empty) {
-        super.updateItem(projet, empty);
+  protected void updateItem(Project projet, boolean empty) {
+      super.updateItem(projet, empty);
+ 	  this.currentProjet = projet;
+      if(empty || projet == null ) {
+          setText(null);
+          setGraphic(null);
 
-        if(empty || projet == null) {
+      } else {
 
-            setText(null);
-            setGraphic(null);
+          if (mLLoader == null) {
+          	loadTheMenuProjetView(projet);
+          }
 
-        } else {
-            if (mLLoader == null) {
-            	loadTheMenuProjetView(projet);
-            }
-            initializeViewInfo(projet);
-        }
-    }
-
+          initializeViewInfo(projet);
+          setGraphic(anchorPane);
+      }
+  }
 
 	private void initializeViewInfo(Project projet) {
-		 txt_projectName.setText(projet.getName());
+	 txt_projectName.setText(projet.getName());
      setListener();
-     Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
-     btn_delete.setGraphic(new ImageView(imagePoubelle));
-     setGraphic(gridPane_projectCell);
+     setBackground();
+     restrainUserWithPermission(projet);
 	}
+
+	private void setBackground(){
+		setDeleteButtonBackground();
+		setContributorsButtonBackground();
+		setProjectColor();
+	}
+
+	private void setProjectColor(){
+		backgroundPane.setStyle("-fx-background-color: linear-gradient(to bottom, #FFFFFF, " + getRGBProjectColor() + ");-fx-background-radius: 10;-fx-border-width: 1px;-fx-border-color: #c4c4c4;-fx-border-radius: 10;");
+	}
+
+	private void setDeleteButtonBackground(){
+    Image imagePoubelle = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
+    btn_delete.setGraphic(new ImageView(imagePoubelle));
+	}
+
+	private String getRGBProjectColor(){
+		String colorRgb = String.format( "#%02X%02X%02X",
+        (int)( currentProjet.getProjectColor().getRed() * 255 ),
+        (int)( currentProjet.getProjectColor().getGreen() * 255 ),
+        (int)( currentProjet.getProjectColor().getBlue() * 255 ) );
+
+		return colorRgb;
+	}
+
+	private void setContributorsButtonBackground(){
+
+		Image imageAdd = new Image(getClass().getResourceAsStream("/Image/plus1.png"));
+		ImageView imageView = new ImageView(imageAdd);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+    btn_addContributor.setGraphic(imageView);
+	}
+
+	private void restrainUserWithPermission(Project projet){
+		txt_projectName.setFocusTraversable(true);
+		txt_projectName.setMouseTransparent(false);
+		txt_writeOnlyProjectMenu.setVisible(false);
+		txt_readOnlyProjectMenu.setVisible(false);
+
+		if (!projet.getPermission().equals("ADMIN")){
+			splitMenuProject.setFocusTraversable(false);
+			splitMenuProject.setMouseTransparent(true);
+		}
+
+		if (projet.getPermission().equals("READ")){
+			txt_projectName.setFocusTraversable(false);
+			txt_projectName.setMouseTransparent(true);
+			txt_readOnlyProjectMenu.setVisible(true);
+		}else if (projet.getPermission().equals("WRITE")){
+			txt_writeOnlyProjectMenu.setVisible(true);
+			txt_readOnlyProjectMenu.setVisible(false);
+		}
+	}
+
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {
@@ -113,12 +182,10 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 			public void handle(ActionEvent event) {
 				try {
 					openProject(event);
-
 				} catch (IOException e) {
 					showLoadingError();
 				}
 			}
-
 		});
 
     btn_addContributor.setOnAction(new EventHandler<ActionEvent>() {

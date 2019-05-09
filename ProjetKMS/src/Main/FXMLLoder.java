@@ -13,6 +13,7 @@ public class FXMLLoder extends Application{
 
 		Parent root = FXMLLoader.load(getClass().getResource("/FXMLFILE/ConnexionPage.fxml"));
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
 	}

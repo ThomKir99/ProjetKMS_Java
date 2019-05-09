@@ -62,6 +62,7 @@ CONSTRAINT FK_id_utilisateur1 FOREIGN KEY (id_utilisateur) REFERENCES tbl_utilis
 INSERT INTO tbl_utilisateur VALUES (1,"aaa@aa.com","123456");
 INSERT INTO tbl_utilisateur VALUES (2,"bbb@bb.com","123456");
 INSERT INTO tbl_utilisateur VALUES (3,"ccc@cc.com","123456");
+INSERT INTO tbl_utilisateur VALUES (4,"a@a.com","1");
 
 /*Projet*/
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Antoine", 1,"#FFFFFF", now());
@@ -69,8 +70,6 @@ INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouver
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Antoine3", 1,"#FFFFFF", now()+2);
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Dave", 2,"#FFFFFF", now()+3);
 INSERT INTO tbl_projet(nom_projet,id_utilisateur,color_project,date_projet_ouvert) VALUES ("Projet Thomas", 3,"#FFFFFF", now()+4);
-
-
 
 /*Group*/
 INSERT INTO tbl_groupe VALUES (1,"Group 1", 4,1,false);
@@ -86,6 +85,7 @@ INSERT INTO tbl_carte(nom,description,ordre_de_priorite,complete,id_groupe) VALU
 /*Permission*/
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,2,"READ");
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRITE");
+INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(2,3,"READ");
 
 /*Depandance*/
 INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES(1,2,false);
