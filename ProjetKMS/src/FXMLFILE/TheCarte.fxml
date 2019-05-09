@@ -21,6 +21,7 @@
               <items>
                 <MenuItem fx:id="btn_Link" mnemonicParsing="false" text="Link" />
                 <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete card" />
+                  <MenuItem fx:id="btn_showLink" mnemonicParsing="false" text="Show link" />
               </items>
             </MenuButton>
          </children>

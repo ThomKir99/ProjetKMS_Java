@@ -57,7 +57,7 @@ public class GroupeCell extends ListCell<Carte> {
 	@FXML
 	private MenuItem btn_Link;
 	@FXML
-	private Button btn_showLink;
+	private MenuItem btn_showLink;
 
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
