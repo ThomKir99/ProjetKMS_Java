@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Group.GroupeCell;
 import Entity.Projet.ControllerTheGroup;
@@ -45,6 +46,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	private Button btn_createLink;
 	private ApiConnector apiConnector;
 	private GroupeCell groupCell;
+	private Dependance dependance;
 
 	public ControllerLinkGroupCell(TheGroupLink groupCell,ControllerTheDependance projectCell){
 		groupController = groupCell;
@@ -64,9 +66,10 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
         } else {
 
 			if (mLLoader == null) {
+				System.out.println(1111);
                 mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkCarte.fxml"));
                 mLLoader.setController(this);
-
+                System.out.println(222);
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
@@ -104,7 +107,9 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 				try {
 					int carte2;
 					carte2 = getCarteId();
+					 System.out.println("premier");
 					createLink(carte2);
+					System.out.println("deuxieme");
 					openProjectPage(event);
 				}catch(IOException e){
 				 showLoadingError();
@@ -118,8 +123,6 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 		addLinkdb();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheProjet.fxml"));
         Parent tableViewParent = (Parent)fxmlLoader.load();
-
-
         ControllerTheProject ControllerTheProject = fxmlLoader.getController();
         ControllerTheProject.setProject(currentProjet);
 
@@ -153,15 +156,15 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 	{
 		try {
 			int carteParent;
+			dependance = new Dependance();
 			System.out.println("carte2 = " + carteRelier );
 			carteParent = projectController.getCarteParent().getId() ;
-
-			apiConnector.createDependance(carteParent,carteRelier);
+			dependance.setIdCarteDeDependance(carteParent);
+			dependance.setIdCarteDependante(carteRelier);
+			apiConnector.createDependance(dependance);
 			} catch (IOException e) {
 				e.printStackTrace();
 				}
-
-
 	}
 
-}
+  }

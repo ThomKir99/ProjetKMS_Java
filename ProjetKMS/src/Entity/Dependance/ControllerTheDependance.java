@@ -78,7 +78,7 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public void refreshGroupList(){
 		getAllGroup();
 		listViewLinkGroupe.setItems(groupObservableListLink);
-		//erreur commence ici
+		System.out.println("theProjetlink refresh");
 		listViewLinkGroupe.setCellFactory(group->{
 			return setFactory();
 		});
@@ -105,6 +105,7 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 		setListener();
 		refreshGroupList();
 		listViewLinkGroupe.setItems(groupObservableListLink);
+		System.out.println("theProjetlink initinalise");
 		listViewLinkGroupe.setCellFactory(group->{
 			return setFactory();
 		});

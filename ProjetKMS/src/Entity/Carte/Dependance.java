@@ -9,6 +9,12 @@ public class Dependance {
 		this.idCarteDependante = idCarteDependante;
 	}
 
+	public Dependance ()
+	{
+		idCarteDependante = 0;
+		idCarteDeDependance= 0;
+	}
+
 	public int getIdCarteDeDependance() {
 		return idCarteDeDependance;
 	}

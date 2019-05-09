@@ -790,20 +790,18 @@ public class ApiConnector {
     }
   }
 
-	public void createDependance(int idCarteParent,int idCarte) throws IOException{
+  public void createDependance(Dependance dependance) throws IOException{
 		Gson gson = new Gson();
-		String idParent = gson.toJson(String.valueOf(idCarteParent));
-		String idCarteDep = gson.toJson(String.valueOf(idCarte));
+		String theDependance = gson.toJson(dependance);
 		String sURL = this.baseURL +"createDependance";
-
+		System.out.println("dependnace Parent : " + dependance.getIdCarteDeDependance() + "depdnance enfant : " + dependance.getIdCarteDependante());
 		URL url = new URL(sURL);
 		HttpURLConnection request = (HttpURLConnection) url.openConnection();
 		request.setRequestProperty("Content-Type", "application/json");
 		request.setRequestMethod("POST");
 		request.setDoOutput(true);
 		OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-		wr.write(idParent);
-		wr.write(idCarteDep);
+		wr.write(theDependance);
 		wr.flush();
 		wr.close();
 		request.connect();
