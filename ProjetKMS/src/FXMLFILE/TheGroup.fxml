@@ -20,8 +20,8 @@
    <children>
       <Pane prefHeight="33.0" prefWidth="237.0">
          <children>
-            <TextField fx:id="textFieldGroupName" prefHeight="33.0" prefWidth="216.0" />
-            <MenuButton fx:id="menuButtonGroup" layoutX="216.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="33.0">
+            <TextField fx:id="textFieldGroupName" layoutX="5.0" prefHeight="33.0" prefWidth="207.0" />
+            <MenuButton fx:id="menuButtonGroup" layoutX="212.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="32.0">
               <items>
                 <MenuItem fx:id="btn_addCarte" mnemonicParsing="false" text="Add card" />
                 <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete group" />
@@ -31,7 +31,7 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
          <children>
-            <ListView fx:id="listViewGroup" layoutX="5.0" layoutY="5.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="239.0" />
+            <ListView fx:id="listViewGroup" layoutX="5.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="239.0" />
          </children>
       </Pane>
    </children>
