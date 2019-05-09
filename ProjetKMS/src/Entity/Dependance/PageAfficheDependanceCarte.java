@@ -78,24 +78,24 @@ public PageAfficheDependanceCarte(){
 public void setCarte(Carte carte){
 	TheCarte = carte;
 }
-public void fillTableView(){
-	try {
-		//recoit la list de toute les dependance enfant  de la carte envoyé
-		DependanceListenfant =  apiConnector.getDependanceCarteEnfant(TheCarte.getId());
-	//	DependanceListParent =  apiConnector.getDependanceCarte(TheCarte.getId());
-			String CarteDependnaceColumn = Dependance.getIdCarteDeDependance();
-			String ChosenCarteColumn = Dependance.getIdCarteDependante();
-			boolean state = Dependance.getState();
-
-				showDependnance showDependnance = new showDependnance(CarteDependnaceColumn,ChosenCarteColumn,state);
-				DependanceListenfant.add(showDependnance);
-		}
-		tableViewDependnance.getItems().addAll(permissionList);
-
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-}
+//public void fillTableView(){
+//	try {
+//		//recoit la list de toute les dependance enfant  de la carte envoyé
+//		DependanceListenfant =  apiConnector.getDependanceCarteEnfant(TheCarte.getId());
+//	//	DependanceListParent =  apiConnector.getDependanceCarte(TheCarte.getId());
+//			String CarteDependnaceColumn = Dependance.getIdCarteDeDependance();
+//			String ChosenCarteColumn = Dependance.getIdCarteDependante();
+//			boolean state = Dependance.getState();
+//
+//				showDependnance showDependnance = new showDependnance(CarteDependnaceColumn,ChosenCarteColumn,state);
+//				DependanceListenfant.add(showDependnance);
+//		}
+//		tableViewDependnance.getItems().addAll(permissionList);
+//
+//	} catch (IOException e) {
+//		e.printStackTrace();
+//	}
+//}
 
 public void initializeList(){
 	//DependanceList = new ArrayList<showDependnance>();
@@ -110,13 +110,13 @@ public void initializeList(){
 
 @Override
 public void initialize(URL location, ResourceBundle resources) {
-
-	setHandler();
-	initializeColumn();
-
-	Platform.runLater(() -> {
-		fillTableView();
-	});
+//
+//	setHandler();
+//	initializeColumn();
+//
+//	Platform.runLater(() -> {
+//		fillTableView();
+//	});
 }
 
 private void setHandler() {
