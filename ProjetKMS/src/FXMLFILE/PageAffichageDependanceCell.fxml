@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="21.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carte :" />
-      <Text layoutX="278.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carte dependante :" />
-      <Button layoutX="534.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
+      <Text layoutX="21.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card :" />
+      <Text layoutX="166.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Group :" />
+      <Button layoutX="570.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
       <Text layoutX="55.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom carte Parent" />
-      <Text layoutX="379.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom carte " />
+      <Text layoutX="213.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Group name" />
+      <Separator layoutX="153.0" orientation="VERTICAL" prefHeight="45.0" prefWidth="5.0" />
+      <Separator layoutX="294.0" orientation="VERTICAL" prefHeight="45.0" prefWidth="5.0" />
+      <Label layoutX="300.0" layoutY="14.0" text="Project :" />
+      <Label layoutX="350.0" layoutY="14.0" text="Project Name" />
+      <Label layoutX="436.0" layoutY="14.0" text="State :" />
+      <Separator layoutX="433.0" orientation="VERTICAL" prefHeight="45.0" prefWidth="5.0" />
+      <Label layoutX="475.0" layoutY="14.0" text="Not Complete" />
+      <Separator layoutX="550.0" orientation="VERTICAL" prefHeight="45.0" prefWidth="5.0" />
    </children>
 </AnchorPane>

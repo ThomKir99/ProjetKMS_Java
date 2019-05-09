@@ -4,20 +4,24 @@ public class showDependnance {
 
 
 	private String carteDependance;
-	private String chosenCarte;
-	private Boolean State;
+	private String groupName;
+	private String projectName;
+	private String State;
+	private String delete="delete";
 
 
 
 	public showDependnance(){
 		carteDependance = "";
-		chosenCarte = "";
-		State = false;
+		groupName = "";
+		setProjectName("");
+		State = "NOt Complete";
 	}
 
-	public showDependnance(String carteDependance,String chosenCarte,boolean State){
+	public showDependnance(String carteDependance,String groupName,String projectName,String State){
 		this.carteDependance = carteDependance;
-		this.chosenCarte = chosenCarte;
+		this.groupName = groupName;
+		this.projectName = projectName;
 		this.State = State;
 	}
 
@@ -27,10 +31,10 @@ public class showDependnance {
 	}
 
 	public void setchosenCarte(String chosenCarte) {
-		this.chosenCarte = chosenCarte;
+		this.groupName = chosenCarte;
 	}
 
-	public void setState(boolean State) {
+	public void setState(String State) {
 		this.State = State;
 	}
 
@@ -39,11 +43,27 @@ public class showDependnance {
 	}
 
 	public String getchosenCarte() {
-		return chosenCarte;
+		return groupName;
 	}
 
-	public Boolean getState() {
+	public String getState() {
 		return State;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getDelete() {
+		return delete;
+	}
+
+	public void setDelete(String delete) {
+		this.delete = delete;
 	}
 
 }

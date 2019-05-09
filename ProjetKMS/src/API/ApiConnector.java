@@ -974,6 +974,11 @@ public ArrayList<Dependance> getDependanceCarteEnfant(int idCarte) throws IOExce
 	return list;
 }
 
+public ArrayList<Carte> getDependante(Carte currentCard) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 
 
 
