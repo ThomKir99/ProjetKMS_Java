@@ -68,7 +68,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 	@Override
   protected void updateItem(Project projet, boolean empty) {
       super.updateItem(projet, empty);
-
+ 	  this.currentProjet = projet;
       if(empty || projet == null ) {
           setText(null);
           setGraphic(null);
@@ -80,16 +80,15 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
           }
 
           initializeViewInfo(projet);
-
           setGraphic(anchorPane);
       }
   }
 
 	private void initializeViewInfo(Project projet) {
-		 txt_projectName.setText(projet.getName());
+	 txt_projectName.setText(projet.getName());
      setListener();
      setBackground();
-     restrainUserWithPermission();
+     restrainUserWithPermission(projet);
 	}
 
 	private void setBackground(){
@@ -125,22 +124,27 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
     btn_addContributor.setGraphic(imageView);
 	}
 
-	private void restrainUserWithPermission(){
-		if (!currentProjet.getPermission().equals("ADMIN")){
+	private void restrainUserWithPermission(Project projet){
+		txt_projectName.setFocusTraversable(true);
+		txt_projectName.setMouseTransparent(false);
+		txt_writeOnlyProjectMenu.setVisible(false);
+		txt_readOnlyProjectMenu.setVisible(false);
+
+		if (!projet.getPermission().equals("ADMIN")){
 			splitMenuProject.setFocusTraversable(false);
 			splitMenuProject.setMouseTransparent(true);
 		}
 
-		if (currentProjet.getPermission().equals("READ")){
+		if (projet.getPermission().equals("READ")){
 			txt_projectName.setFocusTraversable(false);
 			txt_projectName.setMouseTransparent(true);
 			txt_readOnlyProjectMenu.setVisible(true);
-		}
-
-		if (currentProjet.getPermission().equals("WRITE")){
+		}else if (projet.getPermission().equals("WRITE")){
 			txt_writeOnlyProjectMenu.setVisible(true);
+			txt_readOnlyProjectMenu.setVisible(false);
 		}
 	}
+
 
 	public void setListener(){
 		txt_projectName.focusedProperty().addListener((ov, oldV, newV) -> {

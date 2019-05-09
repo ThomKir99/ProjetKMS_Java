@@ -1,5 +1,6 @@
 package Entity.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import API.ApiConnector;
 import Entity.Projet.Project;
@@ -22,7 +23,10 @@ public class Utilisateur {
 		this.projets = new ArrayList<Project>();
 	}
 
-	public ArrayList<Project> getProjets(){	return this.projets;}
+	public ArrayList<Project> getProjets(){
+		return this.projets;
+
+		}
 
 	public void setProjets(ArrayList<Project> lesProjets){this.projets = lesProjets;}
 

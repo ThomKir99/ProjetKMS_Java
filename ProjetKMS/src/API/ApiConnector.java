@@ -1,6 +1,9 @@
 package API;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,36 +36,57 @@ import Entity.User.Permission;
 import Entity.User.Username;
 import Entity.User.Utilisateur;
 import Entity.User.UtilisateurInfo;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 
 
 public class ApiConnector {
 	private String baseURL;
+	private String serverIpAddress="";
 
 	public ApiConnector() {
-		this.baseURL = "http://localhost:8080/DB_API/rest/main/";
+
+		  try {
+			File file = new File("config.ini");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			serverIpAddress = br.readLine();
+		} catch ( IOException e) {
+			serverIpAddress ="localhost";
+		}
+		this.baseURL = "http://" + serverIpAddress+":8080/DB_API/rest/main/";
 	}
 
 	public Utilisateur getUser(String nom,String password) throws IOException{
     String sURL = this.baseURL +"getUser/" + nom + "/" + password;
     URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.connect();
+    try {
+    	URLConnection request = url.openConnection();
+    	 request.connect();
 
-    JsonParser jp = new JsonParser();
-    InputStream stream = request.getInputStream();
-    JsonElement root = jp.parse(new InputStreamReader(stream));
-    if (!root.isJsonNull()){
-      JsonArray  rootarray = root.getAsJsonArray();
-      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
-      int userID = Integer.valueOf(rootobj.get("ID").toString());
-      String userName = rootobj.get("Name").toString();
-      userName = userName.replace("\"", "");
-      Utilisateur user = new Utilisateur(userID,userName);
+    	    JsonParser jp = new JsonParser();
+    	    InputStream stream = request.getInputStream();
+    	    JsonElement root = jp.parse(new InputStreamReader(stream));
+    	    if (!root.isJsonNull()){
+    	      JsonArray  rootarray = root.getAsJsonArray();
+    	      JsonObject rootobj = rootarray.get(0).getAsJsonObject();
+    	      int userID = Integer.valueOf(rootobj.get("ID").toString());
+    	      String userName = rootobj.get("Name").toString();
+    	      userName = userName.replace("\"", "");
+    	      Utilisateur user = new Utilisateur(userID,userName);
 
-      return user;
-    }
-    return null;
+    	      return user;
+    	    }
+	} catch (Exception e) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("API Connection Error");
+		alert.setHeaderText("This IP address to the API is not valid");
+		alert.setContentText("Follow the instalation guide to see how set the right one in the config.ini file.");
+
+		alert.showAndWait();
+	}
+
+       return null;
 	}
 
 	public ArrayList<Utilisateur> getAllUser() throws IOException{
@@ -691,11 +715,12 @@ public class ApiConnector {
 }
 
 
+  public boolean changeCarteGroupId(Carte carte) throws IOException{
 
 
-  public void changeCarteGroupId(Carte carte) throws IOException{
-		Gson gson = new Gson();
+	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
+	  	Boolean reponse = false;
 	    String sURL = this.baseURL +"changeCarteGroupId";
 	    URL url = new URL(sURL);
 	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
@@ -705,10 +730,27 @@ public class ApiConnector {
 	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
 	    wr.write(projectJson);
 	    wr.flush();
-	    wr.close();
-	    request.connect();
-	    request.getInputStream();
-}
+	      wr.close();
+	      request.connect();
+	      request.getInputStream();
+
+
+      	 if (request.getContent() != null){
+
+ 	    	JsonParser jp = new JsonParser();
+ 	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+
+ 	    	JsonArray rootarray = root.getAsJsonArray();
+
+
+ 	        for (JsonElement obj : rootarray){
+ 	        	 reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
+ 	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
+ 	        }
+
+      	 }
+      	 return reponse;
+  }
   public void changeProjectColor(Project project) throws IOException{
 		Gson gson = new Gson();
 	  	String projectJson = gson.toJson(project);
@@ -769,24 +811,21 @@ public class ApiConnector {
     }
   }
 
-	public void createDependance(int idCarteParent,int idCarte) throws IOException{
+	public void createDependance(Dependance dependance) throws IOException{
 		Gson gson = new Gson();
-		String idParent = gson.toJson(String.valueOf(idCarteParent));
-		String idCarteDep = gson.toJson(String.valueOf(idCarte));
-		String sURL = this.baseURL +"createDependance";
-
-		URL url = new URL(sURL);
-		HttpURLConnection request = (HttpURLConnection) url.openConnection();
-		request.setRequestProperty("Content-Type", "application/json");
-		request.setRequestMethod("POST");
-		request.setDoOutput(true);
-		OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-		wr.write(idParent);
-		wr.write(idCarteDep);
-		wr.flush();
-		wr.close();
-		request.connect();
-		request.getInputStream();
+	  	String theDependance = gson.toJson(dependance);
+	    String sURL = this.baseURL +"createDependance";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(theDependance);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
 	}
 
   public void deletePermission(Permission permission) throws IOException{
@@ -908,5 +947,34 @@ public class ApiConnector {
 	    request.connect();
 	    request.getInputStream();
 	}
+
+public ArrayList<Dependance> getDependanceCarteEnfant(int idCarte) throws IOException{
+
+
+	   String sURL = this.baseURL +"getDepandanceCarteEnfant" + idCarte;
+	      URL url = new URL(sURL);
+	      URLConnection request = url.openConnection();
+	      request.connect();
+
+	      JsonParser jp = new JsonParser();
+	      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	      JsonArray  rootarray = root.getAsJsonArray();
+	      ArrayList<Dependance> list = new ArrayList<Dependance>();
+
+	      if (rootarray.size() > 0){
+	        for (JsonElement obj : rootarray){
+	          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+	       //   boolean state =
+	          list.add(new Dependance(idCarteDependante, idCarteDeDependance));
+	        }
+	      }
+
+
+	return list;
+}
+
+
+
 
 }

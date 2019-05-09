@@ -23,6 +23,7 @@ public class CarteModel {
 	public String getName() {
 		return name;
 	}
+	
 
 	public int getOrdre_de_priorite() {
 		return ordre_de_priorite;
@@ -34,6 +35,8 @@ public class CarteModel {
 	public int getGroupId() {
 		return groupId;
 	}
+	
+	
 
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;

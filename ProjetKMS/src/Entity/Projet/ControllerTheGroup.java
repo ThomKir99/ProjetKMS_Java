@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.Dependance;
 import Entity.Group.Group;
 import Entity.Group.GroupeCell;
 import javafx.beans.property.ObjectProperty;
@@ -66,6 +67,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private MenuItem btn_delete;
 	@FXML
 	private CheckMenuItem checkMenuItemGroup;
+	Boolean reponse;
 	@FXML
 	private MenuButton menuButtonGroup;
 
@@ -372,7 +374,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       });
 
          cell.setOnDragDropped(event -> {
-        	 setOnDragDroppedHandler(event,cell);
+
+
+        	 try {
+				setOnDragDroppedHandler(event,cell);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
          });
 
@@ -381,9 +390,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 
 
-	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) {
+	private void setOnDragDroppedHandler(DragEvent event, ListCell<Carte> cell) throws IOException {
+		ArrayList<Dependance> ListeDependanceCarte;
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
+		// ListeDependanceCarte	=  setOnlyIfGroupCompletion(group,dragSource.get().getItem().getId());
      Dragboard db = event.getDragboard();
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
@@ -411,12 +422,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		saveCarteCompletion();
+
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
 	}
 
 	private void refreshGroup() {
+
 		if (group.getCartes() != null){
 			group.getCartes().clear();
 			group.addAll(listViewGroup.getItems());
@@ -507,15 +520,28 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 	private void addCarteToOtherList( DragEvent event) {
+
 		try {
 			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 			carteObservableList.addAll(listViewGroup.getItems());
 			ListCell<Carte> dragSourceCell = dragSource.get();
 			carteObservableList.add(dragSourceCell.getItem());
 			dragSourceCell.getItem().setGroupId(group.getId());
-			apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			 if(reponse = false){
+				 apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+				 Alert alert = new Alert(AlertType.ERROR);
+				 alert.setTitle("Error");
+				 alert.setHeaderText("Can't move this card");
+				 alert.setContentText("you are not able to move this card because it has unfinished dependance.");
+
+				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
+
+			 }
 			listViewGroup.setItems(carteObservableList);
 	        event.setDropCompleted(true);
+
+
 	        setDragSourceToNull();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -565,6 +591,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		return index;
 	}
 
+
+//	public ArrayList<Dependance> setOnlyIfGroupCompletion(Group group,int Carte) throws IOException{
+//		if(group.getIsGroupOfCompletion() == true){
+//		ArrayList<Dependance> dependance;
+//			dependance = apiConnector.getDependanceCarte(Carte);
+//			return dependance;
+//		}
+//	}
 
 
 

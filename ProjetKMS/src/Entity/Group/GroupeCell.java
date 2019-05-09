@@ -8,8 +8,10 @@ import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
+import Entity.Dependance.PageAfficheDependanceCarte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
+import Entity.User.ControllerContributors;
 import Entity.Projet.ControllerTheGroup;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -54,6 +56,8 @@ public class GroupeCell extends ListCell<Carte> {
 	private MenuItem btn_delete;
 	@FXML
 	private MenuItem btn_Link;
+	@FXML
+	private Button btn_showLink;
 
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
@@ -213,6 +217,23 @@ public class GroupeCell extends ListCell<Carte> {
 				}
 			}
 		});
+
+		btn_showLink.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					showLink(event);
+				} catch (IOException e) {
+					showLoadingError();
+				}catch(Exception e){
+					System.err.println(e.getMessage());
+				}
+
+			}
+
+		});
+
 	}
 
 
@@ -259,9 +280,26 @@ public void errorMessage() throws IOException{
 	  }catch(Exception e){
 		  e.printStackTrace();
 	  }
-
-
     }
+
+
+	private void showLink(ActionEvent event) throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/PageAffichageDependanceSelonCarte.fxml"));
+		try{
+		Parent tableViewParent = (Parent)fxmlLoader.load();
+		Stage stage = new Stage();
+		PageAfficheDependanceCarte AfficheDependanceCarte = fxmlLoader.getController();
+		AfficheDependanceCarte.setProject(currentProjet);
+		AfficheDependanceCarte.setCarteDependant(carte);
+	    Scene tableViewScene = new Scene(tableViewParent);
+	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+	    window.setScene(tableViewScene);
+	    window.show();
+		 }catch(Exception e){
+			  e.printStackTrace();
+		  }
+    }
+
 
 	public void showLoadingError(){
 		Alert alert = new Alert(AlertType.ERROR);
@@ -273,8 +311,9 @@ public void errorMessage() throws IOException{
 	public int getCarteId(){
 		int carteId;
 		carteId = carte.getId();
-		System.out.println("group cell la 1 carte id est : "+ carte.getId());
 		return carteId;
 	}
+
+
 
 }

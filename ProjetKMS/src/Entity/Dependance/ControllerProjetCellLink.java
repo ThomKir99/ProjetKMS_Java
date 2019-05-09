@@ -1,6 +1,7 @@
 package Entity.Dependance;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -16,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
@@ -28,13 +31,16 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	@FXML
 	public TextField txt_projectName;
 
+
+
+
 	@FXML
     public Button btn_openProjetLink;
 
     private FXMLLoader mLLoader;
-    private Project currentProjet;
     private ControllerDependance controllerDependance;
     private Project currentProjetDependance;
+	private Project projetPrincipale;
     private Carte currentCarte;
 
     public ControllerProjetCellLink(ControllerDependance controllerPageDependance){
@@ -43,9 +49,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	@Override
     protected void updateItem(Project projet, boolean empty) {
         super.updateItem(projet, empty);
-
         if(empty || projet == null) {
-
             setText(null);
             setGraphic(null);
 
@@ -60,18 +64,21 @@ public class ControllerProjetCellLink extends ListCell<Project>{
     }
 
 	public void setCurrentProject(){
-		currentProjet = controllerDependance.getProject();
+		this.projetPrincipale = controllerDependance.getProject();
 
+	}
+
+	public void setCurrentCarte(){
+		this.currentCarte =  controllerDependance.getCarteParent();
 	}
 
 	private void initializeViewInfo(Project projet) {
 		txt_projectName.setText(projet.getName());
 		setCurrentProject();
+		setCurrentCarte();
         setListener();
         setGraphic(pane1);
         currentProjetDependance = projet;
-        System.out.println(projet.getId());
-
 	}
 
 	private void loadTheProjetView(Project projet) {
@@ -106,9 +113,10 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		ControllerTheDependance controllerProjectList = fxmlLoader.getController();
-		controllerProjectList.setProject(currentProjetDependance);
-		System.out.println("projetcellLink : la carte parent " + controllerDependance.getCarteParent().getId());
-		controllerProjectList.setACarteParent(controllerDependance.getCarteParent());
+		controllerProjectList.setProjectDependnace(currentProjetDependance);
+		controllerProjectList.setProjectPrincipale(projetPrincipale);
+		controllerProjectList.setACarteParent(currentCarte);
+		controllerDependance.setCarteDependant(currentCarte);
 		Scene tableViewScene = new Scene(tableViewParent);
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 		window.setScene(tableViewScene);
