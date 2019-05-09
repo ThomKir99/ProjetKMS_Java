@@ -73,10 +73,7 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	}
 
 	public void setCarteDependant(Carte uneCarte){
-		System.out.println("setCarteparentavant"+carteParent);
 		this.carteParent = uneCarte;
-		System.out.println("setCarteparentApres"+carteParent);
-
 	}
 
 
@@ -89,7 +86,6 @@ public class ControllerDependance extends AnchorPane implements Initializable {
 	}
 
 	public Carte getCarteParent(){
-		System.out.println("La vrai carte aparent"+carteParent);
 		Carte carte;
 		carte= carteParent;
 		return carte;

@@ -725,11 +725,8 @@ public class ApiConnector {
 	    request.setRequestProperty("Content-Type", "application/json");
 	    request.setRequestMethod("POST");
 	    request.setDoOutput(true);
-	  //  String a = ("{\"id\":7,	\"name\":\"nomDeLaCarte\",\"ordre_de_priorite\" : 1,\"groupId\":5,\"complete\":false}");
 	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
 	    wr.write(projectJson);
-	  //  System.out.println("print a : "+ a);
-	  //  System.out.println("projectJson :" + projectJson);
 	    wr.flush();
 	      wr.close();
 	      request.connect();
@@ -747,7 +744,6 @@ public class ApiConnector {
  	        for (JsonElement obj : rootarray){
  	        	 reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
  	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
- 	 	    	System.out.println("laResponse :" + reponse);
  	        }
 
       	 }

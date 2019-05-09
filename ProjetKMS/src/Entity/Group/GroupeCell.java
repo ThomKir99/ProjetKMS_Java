@@ -294,11 +294,8 @@ public void errorMessage() throws IOException{
 		try{
 	  	Parent tableViewParent = (Parent)fxmlLoader.load();
 	    ControllerDependance controllerProjectList = fxmlLoader.getController();
-	    System.out.println("patatecarte et projet" + carte + " " + " " + currentProjet);
-	    System.out.println(controllerProjectList);
         controllerProjectList.setCarteDependant(carte);
 	    controllerProjectList.setProject(currentProjet);
-	    System.out.println("naaacarte et projet" + carte + " " + " " + currentProjet);
 
 
 	    Scene tableViewScene = new Scene(tableViewParent);
@@ -317,14 +314,8 @@ public void errorMessage() throws IOException{
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		Stage stage = new Stage();
 		PageAfficheDependanceCarte AfficheDependanceCarte = fxmlLoader.getController();
-		System.out.println(currentProjet);
-		System.out.println("carte" + carte);
-		System.out.println(AfficheDependanceCarte);
 		AfficheDependanceCarte.setProject(currentProjet);
 		AfficheDependanceCarte.setCarteDependant(carte);
-		System.out.println(currentProjet.getId());
-
-		System.out.println("CINQ.1");
 	    Scene tableViewScene = new Scene(tableViewParent);
 	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 	    window.setScene(tableViewScene);

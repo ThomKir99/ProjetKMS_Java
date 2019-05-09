@@ -66,10 +66,8 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
         } else {
 
 			if (mLLoader == null) {
-				System.out.println(1111);
                 mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheLinkCarte.fxml"));
                 mLLoader.setController(this);
-                System.out.println(222);
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
@@ -107,9 +105,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 				try {
 					int carte2;
 					carte2 = getCarteId();
-					 System.out.println("premier");
 					createLink(carte2);
-					System.out.println("deuxieme");
 					openProjectPage(event);
 				}catch(IOException e){
 				 showLoadingError();

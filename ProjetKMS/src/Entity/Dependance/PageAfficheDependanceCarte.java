@@ -153,9 +153,7 @@ public void setProject(Project unProjet){
 }
 
 public void setCarteDependant(Carte uneCarte){
-	System.out.println("setCarteparentavant"+TheCarte);
 	this.TheCarte = uneCarte;
-	System.out.println("setCarteparentApres"+TheCarte);
 }
 
 public void BackToTheProject(ActionEvent event)throws IOException{

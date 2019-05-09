@@ -726,7 +726,6 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   	}
 
   	mySqlCon.closeConnection();
-  	System.out.println(gson.toJson(jsonArr));
   	return gson.toJson(jsonArr);
   }
 

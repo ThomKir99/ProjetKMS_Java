@@ -71,7 +71,6 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public Carte getCarteParent(){
 		Carte carte;
 		carte= carteParent;
-		System.out.println(carteParent);
 		return carte;
 
 	}
@@ -124,8 +123,6 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
         ControllerDependance controllerProjectList = fxmlLoader.getController();
         controllerProjectList.setProject(projetPrincipale);
         controllerProjectList.setCarteDependant(carteParent);
-        System.out.println("qqchose"+carteParent);
-        System.out.println("NULL "+ this.carteParent);
         Scene tableViewScene = new Scene(tableViewParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 

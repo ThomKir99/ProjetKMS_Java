@@ -369,9 +369,7 @@ private Stage stage =null;
 
 
 	private void changeLayer() {
-		System.out.println("number of layer : "+ numberOfLayer);
 		if(layer<=numberOfLayer){
-			System.out.println( layer);
 			try {
 				buttons[1].setDisable(true);
 				buttons[2].setDisable(true);

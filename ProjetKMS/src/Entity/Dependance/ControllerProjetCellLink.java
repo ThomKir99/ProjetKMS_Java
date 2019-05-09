@@ -49,16 +49,13 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	@Override
     protected void updateItem(Project projet, boolean empty) {
         super.updateItem(projet, empty);
-        System.out.println("dfdf");
         if(empty || projet == null) {
-        	System.out.println("eeeeee");
             setText(null);
             setGraphic(null);
 
         } else {
             if (mLLoader == null) {
             	loadTheProjetView(projet);
-            	System.out.println("ok");
             }
             initializeViewInfo(projet);
 
@@ -78,9 +75,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	private void initializeViewInfo(Project projet) {
 		txt_projectName.setText(projet.getName());
 		setCurrentProject();
-		System.out.println("carteItitialisePasSet"+currentCarte);
 		setCurrentCarte();
-		System.out.println("carteItitialiseSet"+currentCarte);
         setListener();
         setGraphic(pane1);
         currentProjetDependance = projet;
@@ -115,7 +110,6 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 
 
 	public void openProject(ActionEvent event)throws IOException{
-		System.out.println("lacarte"+currentCarte);
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheDependance.fxml"));
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		ControllerTheDependance controllerProjectList = fxmlLoader.getController();
