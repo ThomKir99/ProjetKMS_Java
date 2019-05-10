@@ -1,13 +1,16 @@
 package Main;
 
+import java.sql.ResultSet;
+
 public class APIResponse {
 
 	public Boolean successful;
 	public String ErrorMessage;
-	public int noGroupAvantDrag; 
+	public Boolean groupCompletion;
 	public APIResponse() {
 		successful = false;
 		ErrorMessage = "";
+
 	}
 
 	public Boolean getSuccessful(){
@@ -17,15 +20,15 @@ public class APIResponse {
 	public String getErrorMessage(){
 		return ErrorMessage;
 	}
-	
-	public int getNoGroupAvantDrag(){
-		return noGroupAvantDrag;
+
+	public boolean getNoGroupAvantDrag(){
+		return groupCompletion;
 	}
-	
-	public void setNoGroupAvantDrag(int num){
-		noGroupAvantDrag = num ;
+
+	public void setNoGroupAvantDrag(boolean state){
+		groupCompletion = state ;
 	}
-	
+
 	public void setSeccessful(Boolean state){
 		successful = state ;
 	}
@@ -33,7 +36,7 @@ public class APIResponse {
 	public void setErrorMessage(String Message){
 		ErrorMessage = Message;
 	}
-	
-	
+
+
 
 }

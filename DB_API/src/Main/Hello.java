@@ -583,7 +583,7 @@ public String getAProject(@PathParam("userId") String projetId) throws Exception
 	@Consumes(MediaType.APPLICATION_JSON)
 public void createDependance(DependnaceModel dependance) throws Exception {
 		mySqlCon.openLocalConnection();
-	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+dependance.getIdCarteDependante() +","+ dependance.getIdCarteDeDependance() +","+false + ")");
+	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+dependance.getIdCarteDeDependance() +","+ dependance.getIdCarteDependante() +","+false + ")");
 		mySqlCon.closeConnection();
 	}
 
@@ -605,39 +605,40 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   public String changeCarteGroupId(CarteModel carte) throws Exception {
 	  Gson gson = new Gson();
 	  int size = 0;
-	  //JsonArray jsonArr = new JsonArray();
+	  JsonArray jsonArr = new JsonArray();
+	  JsonObject obj = new JsonObject();
 	  APIResponse response;
 	  response =  new APIResponse();
 	  mySqlCon.openLocalConnection();
-	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_de_depandance =\'" +  carte.getID()+"\'" );
-
+	  System.out.println(carte.getGroupId());
+	  ResultSet group = mySqlCon.getQueryResult("SELECT completion FROM tbl_groupe WHERE id_groupe =\'" +  carte.getGroupId()+"\'" );
+	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_de_depandance =\'" +  carte.getID()+"\'  AND terminer = false;" );
+	  System.out.println("hello4");
 	  if(result != null){
 		  result.last();
 		  size = result.getRow();
 	  }
+	  System.out.println("je suis ");
+ while(group.next()){
+	 System.out.println("group completion  "+group.getBoolean(1));
 
 
-	  if(size < 1){
-			mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
+	  	if(group.getBoolean(1) == true){
+			  if(size <= 0 ){
+				 mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
+				response.ErrorMessage="It works";
+				response.successful = true;
+			  }else{
+				  response.successful = false;
+				  response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
+			  }
+	  	}else{
+	  		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
 			response.ErrorMessage="It works";
-			System.out.println(response.ErrorMessage);
 			response.successful = true;
+	  	}
+ }
 
-	  }else{
-		  response.successful = false;
-			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
-			System.out.println(response.ErrorMessage);
-	  }
-
-//	  if (result.isBeforeFirst()){
-//		  System.out.println(result.getRow());
-//		  if(result.getRow()!=0){
-//			}else{
-//			//ok on déplace
-//
-//		  	}
-//
-//	  }
 		mySqlCon.closeConnection();
 		String json = gson.toJson(response);
 		return json;
@@ -681,6 +682,33 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 				JsonObject obj = new JsonObject();
 				obj.addProperty("id_carte_depandante", result.getInt(1));
 				obj.addProperty("id_carte_de_depandance", result.getInt(2));
+				jsonArr.add(obj);
+
+			}
+
+  	}
+
+  	mySqlCon.closeConnection();
+  	return gson.toJson(jsonArr);
+  }
+
+  @Path("/getDepandanceForACarte/{idCarte}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getDepandanceFromACarte(@PathParam("projectID") int idCarte) throws Exception {
+
+  	mySqlCon.openLocalConnection();
+  	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance where id_carte_depandante = \'" + idCarte + "\'");
+
+  	Gson gson = new Gson();
+  	JsonArray jsonArr = new JsonArray();
+
+  	if (result.isBeforeFirst()){
+			while (result.next()){
+				JsonObject obj = new JsonObject();
+				obj.addProperty("id_carte_depandante", result.getInt(1));
+				obj.addProperty("id_carte_de_depandance", result.getInt(2));
+
 				jsonArr.add(obj);
 
 			}

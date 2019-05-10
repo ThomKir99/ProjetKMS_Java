@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.swing.JOptionPane;
+
 import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Carte.Dependance;
@@ -465,25 +467,18 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			carteObservableList.addAll(listViewGroup.getItems());
 			ListCell<Carte> dragSourceCell = dragSource.get();
 			carteObservableList.add(dragSourceCell.getItem());
+			int groupId = dragSourceCell.getItem().getGroupId();
 			dragSourceCell.getItem().setGroupId(group.getId());
-			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
-//			 if(reponse = false){
-//
-//				 Alert alert = new Alert(AlertType.ERROR);
-//				 alert.setTitle("Error");
-//				 alert.setHeaderText("Can't move this card");
-//				 alert.setContentText("you are not able to move this card because it has unfinished dependance.");
-//
-//				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
-//
-//			 }
-
-			 refreshGroup();
-			 refreshCarteList();
 			 listViewGroup.setItems(carteObservableList);
+			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
+			 if(reponse = false){
+			  //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
+				 controllerProjectList.setDropIsSuccessful(false);
+			 }
+
 	        event.setDropCompleted(true);
 
-
+	        refreshGroup();
 	        setDragSourceToNull();
 		} catch (IOException e) {
 			e.printStackTrace();

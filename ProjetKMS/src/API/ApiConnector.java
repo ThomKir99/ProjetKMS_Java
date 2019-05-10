@@ -732,21 +732,35 @@ public class ApiConnector {
 	      request.connect();
 	      request.getInputStream();
 
-
       	 if (request.getContent() != null){
 
  	    	JsonParser jp = new JsonParser();
  	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-
  	    	JsonArray rootarray = root.getAsJsonArray();
 
-
+ 	    	System.out.println("cinq");
  	        for (JsonElement obj : rootarray){
- 	        	 reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
- 	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
+// 	        	System.out.println("six");
+// 	        	Dependance dependance;
+// 	        	dependance = new Dependance();
+//
+// 	        	//moi
+// 	        	System.out.println("sept");
+// 	        	dependance.setIdCarteDependante(obj.getAsJsonObject().get("idCompleted").getAsInt());
+// 	        	dependance.setIdCarteDeDependance(obj.getAsJsonObject().get("idCompleted").getAsInt());
+// 	        	dependance.setState(obj.getAsJsonObject().get("idCompleted").getAsBoolean());
+ 	        	reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
+ 	        	System.out.println(reponse);
+ 	        	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
+ 	        	System.out.println("dependance state");
+// 	        	if(dependance.state == false){
+// 	        		reponse = false;
+//
+// 	        	}
  	        }
 
       	 }
+      	 System.out.println(reponse);
       	 return reponse;
   }
   public void changeProjectColor(Project project) throws IOException{

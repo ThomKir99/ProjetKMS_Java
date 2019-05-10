@@ -32,7 +32,7 @@ public class Dependance {
 	public void setIdCarteDependante(int idCarteDependante) {
 		this.idCarteDependante = idCarteDependante;
 	}
-	public void setIdCarteDependante(boolean state) {
+	public void setState(boolean state) {
 		this.state = state;
 	}
 
