@@ -84,6 +84,7 @@ public class Hello {
 	  				obj.addProperty("projectID", result1.getInt(1));
 	  				obj.addProperty("projectName", result1.getString(2));
 	  				obj.addProperty("color_project", result1.getString(4));
+	  				obj.addProperty("date", result1.getString(5));
 	  				obj.addProperty("permission", result.getString(2));
 		    	}
 		    }
@@ -171,6 +172,8 @@ public class Hello {
 				obj.addProperty("projectID", result.getInt(1));
 				obj.addProperty("projectName", result.getString(2));
 				obj.addProperty("color_project", result.getString(4));
+				obj.addProperty("date", result.getString(5));
+
 				jsonArr.add(obj);
 			}
   	}
@@ -546,38 +549,6 @@ public class Hello {
   }
 
 
-@Path("/OpenedProject/{userId}")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public String getAProject(@PathParam("userId") String projetId) throws Exception {
-
-	mySqlCon.openLocalConnection();
-	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet  = \'" + projetId + "\' order by date_projet_ouvert");
-
-	Gson gson = new Gson();
-	JsonArray jsonArr = new JsonArray();
-
-	if (result.isBeforeFirst()){
-			while (result.next()){
-				JsonObject obj = new JsonObject();
-
-				obj.addProperty("projectID", result.getInt(1));
-				obj.addProperty("projectName", result.getString(2));
-				obj.addProperty("Date", result.getString(3));
-				jsonArr.add(obj);
-			}
-	}
-	else {
-		mySqlCon.closeConnection();
-		return gson.toJson(new JsonArray());
-	}
-
-	mySqlCon.closeConnection();
-	return gson.toJson(jsonArr);
-}
-
-
-
 @Path("/createDependance")
 @POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -592,6 +563,7 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   @Consumes(MediaType.APPLICATION_JSON)
   public void saveCarteOrder(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
+
   	for(CarteModel carte : cartes ){
   		mySqlCon.executeNonQuery("update tbl_carte set ordre_de_priorite =\'"+ carte.getOrdre_de_priorite() +"\' where id_carte =\'"+carte.getID()+"\'");
   	}
@@ -654,8 +626,6 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   	mySqlCon.closeConnection();
   }
 
-
-
   @Path("/changerColorProject")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -696,9 +666,11 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   @Consumes(MediaType.APPLICATION_JSON)
   public void saveCarteCompletion(ArrayList<CarteModel> cartes) throws Exception {
   	mySqlCon.openLocalConnection();
+
   	for(CarteModel carteModel : cartes ){
-  		mySqlCon.executeNonQuery("update tbl_carte set complete ="+ carteModel.getIfComplete() +" where id_carte =\'"+carteModel.getID()+"\'");
+  		mySqlCon.executeNonQuery("UPDATE tbl_carte SET complete ="+ carteModel.getIfComplete() +" WHERE id_carte =\'"+carteModel.getID()+"\'");
   	}
+
   	mySqlCon.closeConnection();
   }
 

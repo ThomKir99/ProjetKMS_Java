@@ -174,8 +174,6 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 		listViewProjet.setCellFactory(listViewProjet -> new ControllerMenuProjetCell(this));
 	}
 
-
-
 	public void getAllProjet(){
 		projetObservableList = FXCollections.observableArrayList();
 		if(userContext.getProjets() != null){
