@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
+import Entity.Dependance.ControllerPageAfficheDependanceCell;
 import Entity.Dependance.PageAfficheDependanceCarte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -311,11 +312,12 @@ public void errorMessage() throws IOException{
 	private void showLink(ActionEvent event) throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/PageAffichageDependanceSelonCarte.fxml"));
 		try{
+
 		Parent tableViewParent = (Parent)fxmlLoader.load();
+		ControllerPageAfficheDependanceCell controllerProjectList = fxmlLoader.getController();
+		controllerProjectList.setCurrentCard(carte);
+		controllerProjectList.setCurrentProject(currentProjet);
 		Stage stage = new Stage();
-		PageAfficheDependanceCarte AfficheDependanceCarte = fxmlLoader.getController();
-		AfficheDependanceCarte.setProject(currentProjet);
-		AfficheDependanceCarte.setCarteDependant(carte);
 	    Scene tableViewScene = new Scene(tableViewParent);
 	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 	    window.setScene(tableViewScene);

@@ -30,6 +30,7 @@ import com.sun.javafx.webkit.ThemeClientImpl;
 
 import Entity.Carte.Carte;
 import Entity.Carte.Dependance;
+import Entity.Carte.DependanceCarteInfo;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import Entity.User.Permission;
@@ -948,38 +949,92 @@ public void updateDescription(Carte carte) throws IOException {
     request.getInputStream();
 }
 
-public ArrayList<Dependance> getDependanceCarteEnfant(int idCarte) throws IOException{
 
 
-	   String sURL = this.baseURL +"getDepandanceCarteEnfant" + idCarte;
-	      URL url = new URL(sURL);
-	      URLConnection request = url.openConnection();
-	      request.connect();
-
-	      JsonParser jp = new JsonParser();
-	      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-	      JsonArray  rootarray = root.getAsJsonArray();
-	      ArrayList<Dependance> list = new ArrayList<Dependance>();
-
-	      if (rootarray.size() > 0){
+public ArrayList<DependanceCarteInfo> getAllCarteDependanteOfThisCarte(Carte currentCard) throws IOException {
+	ArrayList<DependanceCarteInfo> allDependanceCarteInfos = new ArrayList<DependanceCarteInfo>();
+    String sURL = this.baseURL +"getAllCarteDependanteOfThisCarte/" + currentCard.getId();
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+      wr.close();
+      request.connect();
+      request.getInputStream();
+  	 if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
 	        for (JsonElement obj : rootarray){
-	          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
-	          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
-	       //   boolean state =
-	          list.add(new Dependance(idCarteDependante, idCarteDeDependance));
+	        	int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        	int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+	        	String nomCarteDependante = obj.getAsJsonObject().get("tbl_carte.nom").toString();
+	        	Boolean completion = Boolean.valueOf(obj.getAsJsonObject().get("complete").toString());
+	        	int idGroupe = Integer.valueOf(obj.getAsJsonObject().get("tbl_groupe.id_groupe").toString());
+	        	String nomGroupe = obj.getAsJsonObject().get("tbl_groupe.nom_groupe").toString();
+	        	int idProjet = Integer.valueOf(obj.getAsJsonObject().get("tbl_projet.id_projet").toString());
+	        	String nomProjet = obj.getAsJsonObject().get("nom_projet").toString();
+
+	        	allDependanceCarteInfos.add(new DependanceCarteInfo(idCarteDependante,idCarteDeDependance,removeQuote(nomCarteDependante),completion,
+	        			idGroupe,removeQuote(nomGroupe),idProjet,removeQuote(nomProjet)));
 	        }
-	      }
+  	 }
+  	 return allDependanceCarteInfos;
 
+	}
 
-	return list;
+public ArrayList<DependanceCarteInfo> getAllCarteThatThisCarteDependOn(Carte currentCard) throws IOException {
+	ArrayList<DependanceCarteInfo> allDependanteCarteInfos = new ArrayList<DependanceCarteInfo>();
+    String sURL = this.baseURL +"getAllCarteThatThisCarteIsDependante/" + currentCard.getId();
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+      wr.close();
+      request.connect();
+      request.getInputStream();
+  	 if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
+	        for (JsonElement obj : rootarray){
+	        	int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        	int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+	        	String nomCarteDependante = obj.getAsJsonObject().get("tbl_carte.nom").toString();
+	        	Boolean completion = Boolean.valueOf(obj.getAsJsonObject().get("complete").toString());
+	        	int idGroupe = Integer.valueOf(obj.getAsJsonObject().get("tbl_groupe.id_groupe").toString());
+	        	String nomGroupe = obj.getAsJsonObject().get("tbl_groupe.nom_groupe").toString();
+	        	int idProjet = Integer.valueOf(obj.getAsJsonObject().get("tbl_projet.id_projet").toString());
+	        	String nomProjet = obj.getAsJsonObject().get("nom_projet").toString();
+
+	        	allDependanteCarteInfos.add(new DependanceCarteInfo(idCarteDependante,idCarteDeDependance,removeQuote(nomCarteDependante),completion,
+	        			idGroupe,removeQuote(nomGroupe),idProjet,removeQuote(nomProjet)));
+	        }
+  	 }
+  	 return allDependanteCarteInfos;
+
+}
+public void removeDependance(int carteDependante,int carteDeDependance) throws IOException {
+    String sURL = this.baseURL +"removeDependance/" + carteDependante +"/" + carteDeDependance;
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
 }
 
-public ArrayList<Carte> getDependante(Carte currentCard) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
 
 }
+
+
