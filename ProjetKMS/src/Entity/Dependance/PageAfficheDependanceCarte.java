@@ -55,18 +55,18 @@ private ApiConnector apiConnector;
 private FXMLLoader mLLoader;
 
 @FXML
-TableView<showDependnance> tableViewDependnance;
+TableView<ShowDependance> tableViewDependnance;
 @FXML
-TableColumn<showDependnance, String> CarteDependnaceColumn;
+TableColumn<ShowDependance, String> CarteDependnaceColumn;
 @FXML
-TableColumn<showDependnance, String> ChosenCarteColumn;
+TableColumn<ShowDependance, String> ChosenCarteColumn;
 @FXML
-TableColumn<showDependnance, Boolean> StateColumn;
+TableColumn<ShowDependance, Boolean> StateColumn;
 
 
 
-private ArrayList<showDependnance> DependanceList;
-private ArrayList<showDependnance> DependanceListenfant;
+private ArrayList<ShowDependance> DependanceList;
+private ArrayList<ShowDependance> DependanceListenfant;
 
 public PageAfficheDependanceCarte(){
 	apiConnector = new ApiConnector();
@@ -97,7 +97,7 @@ public void setCarte(Carte carte){
 
 public void initializeList(){
 	//DependanceList = new ArrayList<showDependnance>();
-	DependanceListenfant = new ArrayList<showDependnance>();
+	DependanceListenfant = new ArrayList<ShowDependance>();
 }
 
 //public PageAfficheDependanceCarte(){
@@ -138,9 +138,9 @@ private void setHandler() {
 public void initializeColumn(){
 	tableViewDependnance.setEditable(true);
 
-	ChosenCarteColumn.setCellValueFactory(new PropertyValueFactory<showDependnance, String>("Chosen card"));
+	ChosenCarteColumn.setCellValueFactory(new PropertyValueFactory<ShowDependance, String>("Chosen card"));
 
-	CarteDependnaceColumn.setCellValueFactory(new PropertyValueFactory<showDependnance, String>("Dependance card"));
+	CarteDependnaceColumn.setCellValueFactory(new PropertyValueFactory<ShowDependance, String>("Dependance card"));
 
 	//StateColumn.setCellValueFactory(new PropertyValueFactory<showDependnance, boolean>("completed"));
 

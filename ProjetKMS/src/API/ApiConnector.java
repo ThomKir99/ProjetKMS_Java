@@ -18,8 +18,11 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,7 @@ import com.sun.javafx.webkit.ThemeClientImpl;
 
 import Entity.Carte.Carte;
 import Entity.Carte.Dependance;
+import Entity.Carte.DependanceCarteInfo;
 import Entity.Group.Group;
 import Entity.Projet.Project;
 import Entity.User.Permission;
@@ -181,14 +185,18 @@ public class ApiConnector {
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
         String colorProject = obj.getAsJsonObject().get("color_project").toString();
+        String dateString = obj.getAsJsonObject().get("date").toString();
+
+        dateString = removeQuote(dateString);
         userName = removeQuote(userName);
         colorProject = removeQuote(colorProject);
 
-        Project projet = new Project(projectID,userName,colorProject);
+        Project projet = new Project(projectID,userName,colorProject,dateString);
         projet.setPermission("ADMIN");
         projectList.add(projet);
       }
     }
+    Collections.sort(projectList,Collections.reverseOrder());
 
 		return projectList;
 	}
@@ -210,12 +218,14 @@ public class ApiConnector {
         String projectName = obj.getAsJsonObject().get("projectName").toString();
         String color_project = obj.getAsJsonObject().get("color_project").toString();
         String permission = obj.getAsJsonObject().get("permission").toString();
+        String dateString = obj.getAsJsonObject().get("date").toString();
 
+        dateString = removeQuote(dateString);
         projectName = removeQuote(projectName);
         color_project = removeQuote(color_project);
         permission = removeQuote(permission);
 
-        Project projet = new Project(projectID,projectName,color_project);
+        Project projet = new Project(projectID,projectName,color_project,dateString);
         projet.setPermission(permission);
         projectList.add(projet);
 
@@ -714,7 +724,9 @@ public class ApiConnector {
 	    request.getInputStream();
 }
 
+
   public boolean changeCarteGroupId(Carte carte) throws IOException{
+
 
 	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
@@ -738,7 +750,6 @@ public class ApiConnector {
  	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
  	    	JsonArray rootarray = root.getAsJsonArray();
 
- 	    	System.out.println("cinq");
  	        for (JsonElement obj : rootarray){
 // 	        	System.out.println("six");
 // 	        	Dependance dependance;
@@ -897,98 +908,155 @@ public class ApiConnector {
           return dependanceList;
       }
 
-public void saveCarteCompletion(List<Carte> list) throws IOException {
-	Gson gson = new Gson();
-  	String projectJson = gson.toJson(list);
-    String sURL = this.baseURL +"saveCarteCompletion";
-    URL url = new URL(sURL);
-    HttpURLConnection request = (HttpURLConnection) url.openConnection();
-    request.setRequestProperty("Content-Type", "application/json");
-    request.setRequestMethod("POST");
-    request.setDoOutput(true);
-    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-    wr.write(projectJson);
-    wr.flush();
-    wr.close();
-    request.connect();
-    request.getInputStream();
-}
+	public void saveCarteCompletion(List<Carte> list) throws IOException {
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(list);
+	    String sURL = this.baseURL +"saveCarteCompletion";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	}
 
-public void saveDescriptionCarte(Carte carte) throws IOException {
-	Carte dbCarte = new Carte();
-    String sURL = this.baseURL +"getSingleCarte/" + carte.getId();
-    URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.connect();
+	public void saveDescriptionCarte(Carte carte) throws IOException {
+		Carte dbCarte = new Carte();
+	    String sURL = this.baseURL +"getSingleCarte/" + carte.getId();
+	    URL url = new URL(sURL);
+	    URLConnection request = url.openConnection();
+	    request.connect();
 
-    if (request.getContent() != null){
-    	JsonParser jp = new JsonParser();
-    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-    	JsonArray rootarray = root.getAsJsonArray();
+	    if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
 
-    	int carteID = -1;
-    	String carteName = "Something went wrong";
-      for (JsonElement obj : rootarray){
-      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
-      	carteName = obj.getAsJsonObject().get("carteName").toString();
-
-      	carteName = removeQuote(carteName);
-
-      }
-      dbCarte = new Carte(carteID,carteName);
-    }
-
-    if (!carte.isEqualTo(dbCarte)){
-    	//Project As Been Modified
-    	updateDescription(carte);
-    }
-
-}
-
-public void updateDescription(Carte carte) throws IOException {
-	Gson gson = new Gson();
-  	String projectJson = gson.toJson(carte);
-    String sURL = this.baseURL +"updateDescription";
-    URL url = new URL(sURL);
-    HttpURLConnection request = (HttpURLConnection) url.openConnection();
-    request.setRequestProperty("Content-Type", "application/json");
-    request.setRequestMethod("POST");
-    request.setDoOutput(true);
-    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
-    wr.write(projectJson);
-    wr.flush();
-    wr.close();
-    request.connect();
-    request.getInputStream();
-}
-
-public ArrayList<Dependance> getDependanceCarteEnfant(int idCarte) throws IOException{
-
-
-	   String sURL = this.baseURL +"getDepandanceCarteEnfant" + idCarte;
-	      URL url = new URL(sURL);
-	      URLConnection request = url.openConnection();
-	      request.connect();
-
-	      JsonParser jp = new JsonParser();
-	      JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-	      JsonArray  rootarray = root.getAsJsonArray();
-	      ArrayList<Dependance> list = new ArrayList<Dependance>();
-
-	      if (rootarray.size() > 0){
-	        for (JsonElement obj : rootarray){
-	          int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
-	          int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
-	       //   boolean state =
-	          list.add(new Dependance(idCarteDependante, idCarteDeDependance));
-	        }
+	    	int carteID = -1;
+	    	String carteName = "Something went wrong";
+	      for (JsonElement obj : rootarray){
+	      	carteID = Integer.valueOf(obj.getAsJsonObject().get("carteID").toString());
+	      	carteName = obj.getAsJsonObject().get("carteName").toString();
+	      	carteName = removeQuote(carteName);
 	      }
+	      dbCarte = new Carte(carteID,carteName);
+	    }
+
+	    if (!carte.isEqualTo(dbCarte)){
+	    	//Project As Been Modified
+	    	updateDescription(carte);
+	    }
+
+	}
+
+	public void updateDescription(Carte carte) throws IOException {
+		Gson gson = new Gson();
+	  	String projectJson = gson.toJson(carte);
+	    String sURL = this.baseURL +"updateDescription";
+	    URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	    wr.close();
+	    request.connect();
+	    request.getInputStream();
+	}
 
 
-	return list;
+
+public ArrayList<DependanceCarteInfo> getAllCarteDependanteOfThisCarte(Carte currentCard) throws IOException {
+	ArrayList<DependanceCarteInfo> allDependanceCarteInfos = new ArrayList<DependanceCarteInfo>();
+    String sURL = this.baseURL +"getAllCarteDependanteOfThisCarte/" + currentCard.getId();
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+      wr.close();
+      request.connect();
+      request.getInputStream();
+  	 if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
+	        for (JsonElement obj : rootarray){
+	        	int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        	int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+	        	String nomCarteDependante = obj.getAsJsonObject().get("tbl_carte.nom").toString();
+	        	Boolean completion = Boolean.valueOf(obj.getAsJsonObject().get("complete").toString());
+	        	int idGroupe = Integer.valueOf(obj.getAsJsonObject().get("tbl_groupe.id_groupe").toString());
+	        	String nomGroupe = obj.getAsJsonObject().get("tbl_groupe.nom_groupe").toString();
+	        	int idProjet = Integer.valueOf(obj.getAsJsonObject().get("tbl_projet.id_projet").toString());
+	        	String nomProjet = obj.getAsJsonObject().get("nom_projet").toString();
+
+	        	allDependanceCarteInfos.add(new DependanceCarteInfo(idCarteDependante,idCarteDeDependance,removeQuote(nomCarteDependante),completion,
+	        			idGroupe,removeQuote(nomGroupe),idProjet,removeQuote(nomProjet)));
+	        }
+  	 }
+  	 return allDependanceCarteInfos;
+
+	}
+
+public ArrayList<DependanceCarteInfo> getAllCarteThatThisCarteDependOn(Carte currentCard) throws IOException {
+	ArrayList<DependanceCarteInfo> allDependanteCarteInfos = new ArrayList<DependanceCarteInfo>();
+    String sURL = this.baseURL +"getAllCarteThatThisCarteIsDependante/" + currentCard.getId();
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+      wr.close();
+      request.connect();
+      request.getInputStream();
+  	 if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
+	        for (JsonElement obj : rootarray){
+	        	int idCarteDependante = Integer.valueOf(obj.getAsJsonObject().get("id_carte_depandante").toString());
+	        	int idCarteDeDependance = Integer.valueOf(obj.getAsJsonObject().get("id_carte_de_depandance").toString());
+	        	String nomCarteDependante = obj.getAsJsonObject().get("tbl_carte.nom").toString();
+	        	Boolean completion = Boolean.valueOf(obj.getAsJsonObject().get("complete").toString());
+	        	int idGroupe = Integer.valueOf(obj.getAsJsonObject().get("tbl_groupe.id_groupe").toString());
+	        	String nomGroupe = obj.getAsJsonObject().get("tbl_groupe.nom_groupe").toString();
+	        	int idProjet = Integer.valueOf(obj.getAsJsonObject().get("tbl_projet.id_projet").toString());
+	        	String nomProjet = obj.getAsJsonObject().get("nom_projet").toString();
+
+	        	allDependanteCarteInfos.add(new DependanceCarteInfo(idCarteDependante,idCarteDeDependance,removeQuote(nomCarteDependante),completion,
+	        			idGroupe,removeQuote(nomGroupe),idProjet,removeQuote(nomProjet)));
+	        }
+  	 }
+  	 return allDependanteCarteInfos;
+
+}
+public void removeDependance(int carteDependante,int carteDeDependance) throws IOException {
+    String sURL = this.baseURL +"removeDependance/" + carteDependante +"/" + carteDeDependance;
+    URL url = new URL(sURL);
+    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+    request.setRequestProperty("Content-Type", "application/json");
+    request.setRequestMethod("POST");
+    request.setDoOutput(true);
+    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+    wr.flush();
+    wr.close();
+    request.connect();
+    request.getInputStream();
 }
 
 
-
-
 }
+
+

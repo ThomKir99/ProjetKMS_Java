@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerDependance;
+import Entity.Dependance.ControllerPageAfficheDependanceCell;
 import Entity.Dependance.PageAfficheDependanceCarte;
 import Entity.Projet.ControllerTheProject;
 import Entity.Projet.Project;
@@ -28,11 +29,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -42,19 +48,17 @@ import javafx.stage.Stage;
 public class GroupeCell extends ListCell<Carte> {
 
 	@FXML
-	private TextField textField1;
-	@FXML
 	private TextField textFieldName;
 	@FXML
 	private TextArea txtDescription;
 	@FXML
 	private GridPane gridPane1;
 	@FXML
-	private Button btn_delete;
+	private MenuItem btn_delete;
 	@FXML
-	private Button btn_Link;
+	private MenuItem btn_Link;
 	@FXML
-	private Button btn_showLink;
+	private MenuItem btn_showLink;
 
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
@@ -73,50 +77,68 @@ public class GroupeCell extends ListCell<Carte> {
 
 
 	@Override
-    protected void updateItem(Carte carte, boolean empty) {
+  protected void updateItem(Carte carte, boolean empty) {
 
-        super.updateItem(carte, empty);
-        this.carte = carte;
-        if(empty || carte == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheCarte.fxml"));
-                mLLoader.setController(this);
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            textField1.setText(String.valueOf(carte.getId()));
-            textFieldName.setText(carte.getName());
-            txtDescription.setText(carte.getDescription());
-            txtDescription.setMinHeight(40);
-            txtDescription.setMaxHeight(400);
-            setHandler();
+      super.updateItem(carte, empty);
+      this.carte = carte;
+      if(empty || carte == null) {
+          setText(null);
+          setGraphic(null);
+      } else {
+          if (mLLoader == null) {
+              mLLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/TheCarte.fxml"));
+              mLLoader.setController(this);
+              try {
+                  mLLoader.load();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+          }
+          textFieldName.setText(carte.getName());
+          txtDescription.setText(carte.getDescription());
+          txtDescription.setMinHeight(40);
+          txtDescription.setMaxHeight(400);
+          setHandler();
+          setBackground();
 
-            setText(null);
-            setGraphic(gridPane1);
-        }
+          setText(null);
+          setGraphic(gridPane1);
+      }
 
-    }
+  }
 
 
+	private void setBackground(){
+		setLinkButton();
+		setDeleteButton();
+	}
+
+	private void setLinkButton(){
+    Image imageLink = new Image(getClass().getResourceAsStream("/Image/linkImg.png"));
+		ImageView imageView = new ImageView(imageLink);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+		btn_Link.setGraphic(imageView);
+	}
+
+	private void setDeleteButton(){
+    Image imageDelete = new Image(getClass().getResourceAsStream("/Image/poubelle.png"));
+		ImageView imageView = new ImageView(imageDelete);
+		imageView.setFitHeight(25);
+		imageView.setFitWidth(25);
+		btn_delete.setGraphic(imageView);
+	}
 
 	private void setHandler() {
 		setButtonHandler();
 		setTextHandler();
 		setCurrentProject();
-
 	}
-
-
 
 	public void setCurrentProject(){
 		currentProjet = projectController.getProject();
 	}
+
 	private void setButtonHandler() {
 		btn_delete.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -148,14 +170,7 @@ public class GroupeCell extends ListCell<Carte> {
 	}
 
 	private void setTextHandler() {
-		textField1.setOnKeyReleased(new EventHandler<Event>() {
 
-			@Override
-			public void handle(Event event) {
-
-				setCarteId(Integer.valueOf(textField1.getText()));
-			}
-		});
 
 		textFieldName.focusedProperty().addListener((ov, oldV, newV) -> {
       if (!newV) {
@@ -173,10 +188,10 @@ public class GroupeCell extends ListCell<Carte> {
 				}
      }
 		});
+
 		txtDescription.focusedProperty().addListener(e->{
 			if(txtDescription.isFocused()){
-				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
-	        			txtDescription.getText(), 0.0D) );
+				txtDescription.setPrefHeight(100);
 
 			}else{
 				if(!txtDescription.isHover()){
@@ -189,57 +204,19 @@ public class GroupeCell extends ListCell<Carte> {
 						e1.printStackTrace();
 					}
 				}
-
 			}
-			{
-		}
 		});
-		txtDescription.setOnMouseExited(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-			if(!txtDescription.isFocused()){
-				txtDescription.setPrefHeight(40);
-				carte.setDescription(txtDescription.getText());
-				try {
-					apiConnector.updateDescription(carte);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			}
-
-		});
-		txtDescription.setOnKeyTyped(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-				txtDescription.setPrefHeight(TextUtils.computeTextWidth(txtDescription.getFont(),
-	        			txtDescription.getText(), 0.0D));
-				carte.setDescription(txtDescription.getText());
-
-
-			}
-		} );
-
-
 
 
 		btn_Link.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					addLink(event);
+					addLink();
 				} catch (IOException e) {
 					showLoadingError();
-				}catch(Exception e){
-					System.err.println(e.getMessage());
 				}
-
 			}
-
 		});
 
 		btn_showLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -288,18 +265,17 @@ public void errorMessage() throws IOException{
 	}
 
 
-	public void addLink(ActionEvent event)throws IOException{
+	public void addLink()throws IOException{
 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageDependance.fxml"));
 		try{
 	  	Parent tableViewParent = (Parent)fxmlLoader.load();
 	    ControllerDependance controllerProjectList = fxmlLoader.getController();
-        controllerProjectList.setCarteDependant(carte);
+      controllerProjectList.setCarteDependant(carte);
 	    controllerProjectList.setProject(currentProjet);
 
-
 	    Scene tableViewScene = new Scene(tableViewParent);
-	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+	    Stage window = (Stage) txtDescription.getScene().getWindow();
 	    window.setScene(tableViewScene);
 	    window.show();
 	  }catch(Exception e){
@@ -311,15 +287,16 @@ public void errorMessage() throws IOException{
 	private void showLink(ActionEvent event) throws IOException{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/PageAffichageDependanceSelonCarte.fxml"));
 		try{
+
 		Parent tableViewParent = (Parent)fxmlLoader.load();
+		ControllerPageAfficheDependanceCell controllerProjectList = fxmlLoader.getController();
 		Stage stage = new Stage();
-		PageAfficheDependanceCarte AfficheDependanceCarte = fxmlLoader.getController();
-		AfficheDependanceCarte.setProject(currentProjet);
-		AfficheDependanceCarte.setCarteDependant(carte);
-	    Scene tableViewScene = new Scene(tableViewParent);
-	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-	    window.setScene(tableViewScene);
-	    window.show();
+		controllerProjectList.setCurrentCard(carte);
+		controllerProjectList.setCurrentProject(currentProjet);
+		stage.setScene(new Scene(tableViewParent));
+		stage.resizableProperty().setValue(Boolean.FALSE);
+		textFieldName.getScene().getWindow().hide();
+		stage.show();
 		 }catch(Exception e){
 			  e.printStackTrace();
 		  }

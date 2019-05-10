@@ -64,10 +64,11 @@ private float positionToGetZ = 0;
 private int layer=0;
 private int numberOfLayer=0;
 private String lastLayerChange="";
-private enum CameraStates{
 
+private enum CameraStates{
 	FOWARDS,BACKWARDS,DEFAULT,WAINTING
 }
+
 CameraStates states;
 Button[] buttons = new Button[5];
 Button defaultCameraPosition = new Button("Default Position");
@@ -231,6 +232,20 @@ private Stage stage =null;
 		addListener(stage);
 		stage.setTitle("My New Stage Title");
 		stage.setScene(scene);
+		stage.setResizable(true);
+		setOnClosingListener(stage);
+		stage.show();
+		if(this.stage == null){
+			this.stage = stage;
+		}
+	}
+
+	private void createStage2(Scene scene) {
+    Stage stage = new Stage();
+		addListener(stage);
+		stage.setTitle("My New Stage Title");
+		stage.setScene(scene);
+		stage.setResizable(false);
 		setOnClosingListener(stage);
 		stage.show();
 		if(this.stage == null){
@@ -328,7 +343,7 @@ private Stage stage =null;
 			root = FXMLLoader.load(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
 			Scene scene = new Scene(root);
 			scene.setFill(Color.DARKGRAY);
-			createStage(scene);
+			createStage2(scene);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
