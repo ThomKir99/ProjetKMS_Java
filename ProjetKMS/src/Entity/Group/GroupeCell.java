@@ -290,13 +290,13 @@ public void errorMessage() throws IOException{
 
 		Parent tableViewParent = (Parent)fxmlLoader.load();
 		ControllerPageAfficheDependanceCell controllerProjectList = fxmlLoader.getController();
+		Stage stage = new Stage();
 		controllerProjectList.setCurrentCard(carte);
 		controllerProjectList.setCurrentProject(currentProjet);
-		Stage stage = new Stage();
-	    Scene tableViewScene = new Scene(tableViewParent);
-	    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-	    window.setScene(tableViewScene);
-	    window.show();
+		stage.setScene(new Scene(tableViewParent));
+		stage.resizableProperty().setValue(Boolean.FALSE);
+		textFieldName.getScene().getWindow().hide();
+		stage.show();
 		 }catch(Exception e){
 			  e.printStackTrace();
 		  }
