@@ -109,13 +109,17 @@ public class ControllerCreateAccount implements Initializable{
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER)){
-					redirectToConnection(event);
+					initializeUser(event);
 				}
 			}
 		});
 	}
 
 	public void initializeUser(ActionEvent event){
+		validateInformation(event);
+	}
+
+	public void initializeUser(KeyEvent event){
 		validateInformation(event);
 	}
 
@@ -147,7 +151,37 @@ public class ControllerCreateAccount implements Initializable{
 		}
 	}
 
+	private void validateInformation(KeyEvent event){
+		String username = txt_createUsername.getText().toString();
+		String password = txt_createPassword.getText().toString();
+		String confirmPassword = txt_confirmPassword.getText().toString();
+
+		hideError();
+		if (!checkForEmpty(username,password,confirmPassword)){
+			if (checkForEmail(username)){
+				if (checkForMatchingPassword(password,confirmPassword) ){
+					if (!checkIfAlreadyExist(username)){
+						createUser(username,password);
+						connectUser(username,password);
+						redirectUserProjectPage(event);
+					}
+				}
+			}
+		}
+	}
+
 	public void redirectUserProjectPage(ActionEvent event){
+		try {
+  		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
+      Parent tableViewParent = (Parent)fxmlLoader.load();
+      Scene tableViewScene = new Scene(tableViewParent);
+      openWindow(tableViewScene,event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void redirectUserProjectPage(KeyEvent event){
 		try {
   		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLFILE/pageProjet.fxml"));
       Parent tableViewParent = (Parent)fxmlLoader.load();

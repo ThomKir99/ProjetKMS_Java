@@ -626,8 +626,6 @@ public void createDependance(DependnaceModel dependance) throws Exception {
   	mySqlCon.closeConnection();
   }
 
-
-
   @Path("/changerColorProject")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)

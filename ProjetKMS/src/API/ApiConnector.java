@@ -748,12 +748,10 @@ public class ApiConnector {
 
  	    	JsonParser jp = new JsonParser();
  	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-
  	    	JsonArray rootarray = root.getAsJsonArray();
 
-
  	        for (JsonElement obj : rootarray){
- 	        	 reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
+ 	        		reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
  	 	    	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
  	        }
 
