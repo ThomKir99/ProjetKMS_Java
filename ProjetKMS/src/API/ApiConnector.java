@@ -18,8 +18,11 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -181,14 +184,18 @@ public class ApiConnector {
         int projectID = Integer.valueOf(obj.getAsJsonObject().get("projectID").toString());
         String userName = obj.getAsJsonObject().get("projectName").toString();
         String colorProject = obj.getAsJsonObject().get("color_project").toString();
+        String dateString = obj.getAsJsonObject().get("date").toString();
+
+        dateString = removeQuote(dateString);
         userName = removeQuote(userName);
         colorProject = removeQuote(colorProject);
 
-        Project projet = new Project(projectID,userName,colorProject);
+        Project projet = new Project(projectID,userName,colorProject,dateString);
         projet.setPermission("ADMIN");
         projectList.add(projet);
       }
     }
+    Collections.sort(projectList,Collections.reverseOrder());
 
 		return projectList;
 	}
@@ -210,12 +217,14 @@ public class ApiConnector {
         String projectName = obj.getAsJsonObject().get("projectName").toString();
         String color_project = obj.getAsJsonObject().get("color_project").toString();
         String permission = obj.getAsJsonObject().get("permission").toString();
+        String dateString = obj.getAsJsonObject().get("date").toString();
 
+        dateString = removeQuote(dateString);
         projectName = removeQuote(projectName);
         color_project = removeQuote(color_project);
         permission = removeQuote(permission);
 
-        Project projet = new Project(projectID,projectName,color_project);
+        Project projet = new Project(projectID,projectName,color_project,dateString);
         projet.setPermission(permission);
         projectList.add(projet);
 

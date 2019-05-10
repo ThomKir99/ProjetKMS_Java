@@ -1,19 +1,20 @@
 package Entity.Projet;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import Entity.Entity;
 import Entity.Group.Group;
 import javafx.scene.paint.Color;
 
-public class Project extends Entity{
+public class Project extends Entity implements Comparable<Project>{
 
 	private List<Group> groups;
 	private Color projectColor;
 	private String hexColor;
 	private double y3DPosition;
-	private Date date;
+	private String date;
 	private String permission;
 
 	public Project(){
@@ -24,6 +25,16 @@ public class Project extends Entity{
 		setHexColor("#FFFFFF");
 	}
 
+	public Project(int id,String name,String colorProject,String date){
+		super(id,name);
+		this.groups = new ArrayList<Group>();
+		this.date = date;
+		projectColor = new Color(1, 1, 1, 1);
+		setHexColor(colorProject);
+		setColor(colorProject);
+
+	}
+
 	public Project(int id,String name,String colorProject){
 		super(id,name);
 		this.groups = new ArrayList<Group>();
@@ -31,13 +42,6 @@ public class Project extends Entity{
 		setHexColor(colorProject);
 		setColor(colorProject);
 
-	}
-
-	public Project(int id,String name , Date date){
-		super(id,name);
-		this.groups = new ArrayList<Group>();
-		projectColor = new Color(1, 1, 1, 1);
-		setHexColor("#FFFFFF");
 	}
 
 	public List<Group> getGroups() {return groups;}
@@ -52,6 +56,14 @@ public class Project extends Entity{
 		}else{
 			return false;
 		}
+	}
+
+
+	public LocalDateTime getDate() {
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+    LocalDateTime datetime = LocalDateTime.from(f.parse(date));
+
+		return datetime;
 	}
 
 	public Color getProjectColor() {
@@ -95,5 +107,11 @@ public class Project extends Entity{
 			this.projectColor = Color.WHITE;
 		}
 	}
+
+	@Override
+	public int compareTo(Project o) {
+		return getDate().compareTo(o.getDate());
+	}
+
 
 }

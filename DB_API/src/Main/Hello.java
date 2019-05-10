@@ -84,6 +84,7 @@ public class Hello {
 	  				obj.addProperty("projectID", result1.getInt(1));
 	  				obj.addProperty("projectName", result1.getString(2));
 	  				obj.addProperty("color_project", result1.getString(4));
+	  				obj.addProperty("date", result1.getString(5));
 	  				obj.addProperty("permission", result.getString(2));
 		    	}
 		    }
@@ -171,6 +172,8 @@ public class Hello {
 				obj.addProperty("projectID", result.getInt(1));
 				obj.addProperty("projectName", result.getString(2));
 				obj.addProperty("color_project", result.getString(4));
+				obj.addProperty("date", result.getString(5));
+
 				jsonArr.add(obj);
 			}
   	}
@@ -544,38 +547,6 @@ public class Hello {
   	mySqlCon.executeNonQuery("UPDATE tbl_projet SET date_projet_ouvert = NOW() WHERE id_projet = \'" + project.getID() + "\'");
   	mySqlCon.closeConnection();
   }
-
-
-@Path("/OpenedProject/{userId}")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public String getAProject(@PathParam("userId") String projetId) throws Exception {
-
-	mySqlCon.openLocalConnection();
-	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_projet WHERE id_projet  = \'" + projetId + "\' order by date_projet_ouvert");
-
-	Gson gson = new Gson();
-	JsonArray jsonArr = new JsonArray();
-
-	if (result.isBeforeFirst()){
-			while (result.next()){
-				JsonObject obj = new JsonObject();
-
-				obj.addProperty("projectID", result.getInt(1));
-				obj.addProperty("projectName", result.getString(2));
-				obj.addProperty("Date", result.getString(3));
-				jsonArr.add(obj);
-			}
-	}
-	else {
-		mySqlCon.closeConnection();
-		return gson.toJson(new JsonArray());
-	}
-
-	mySqlCon.closeConnection();
-	return gson.toJson(jsonArr);
-}
-
 
 
 @Path("/createDependance")
