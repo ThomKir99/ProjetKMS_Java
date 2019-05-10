@@ -374,9 +374,9 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       });
 
          cell.setOnDragDropped(event -> {
-
-
+        	 System.out.println("rigjeoigj");
         	 try {
+
 				setOnDragDroppedHandler(event,cell);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -394,11 +394,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		ArrayList<Dependance> ListeDependanceCarte;
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
-		// ListeDependanceCarte	=  setOnlyIfGroupCompletion(group,dragSource.get().getItem().getId());
      Dragboard db = event.getDragboard();
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
      } else {
+
          event.setDropCompleted(false);
      }
      refreshGroup();
@@ -407,13 +407,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
 
 		if(dragSourceCameFromSameList(listViewGroup)){
-
   		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
   		   	saveCarteOrder();
   	   }else{
   		  addCarteToOtherList(event);
   	   }
-		refreshGroup();
 	}
 
 
@@ -527,6 +525,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			ListCell<Carte> dragSourceCell = dragSource.get();
 			carteObservableList.add(dragSourceCell.getItem());
 			dragSourceCell.getItem().setGroupId(group.getId());
+			listViewGroup.setItems(carteObservableList);
 			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
 			 if(reponse = false){
 				 apiConnector.changeCarteGroupId(dragSourceCell.getItem());
@@ -538,7 +537,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 				 //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
 
 			 }
-			listViewGroup.setItems(carteObservableList);
 	        event.setDropCompleted(true);
 
 
