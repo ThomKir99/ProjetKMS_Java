@@ -3,6 +3,8 @@ package Entity.DependanceFocus;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import API.ApiConnector;
 import Entity.Carte.Carte;
 import Entity.Dependance.ControllerTheDependance;
 import Entity.Group.Group;
@@ -37,7 +39,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 	@Override
     protected void updateItem(Group group, boolean empty) {
-
 		super.updateItem(group, empty);
         this.group = group;
         if(empty || group == null) {
@@ -75,8 +76,6 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-
-
 		if(listViewLinkGroup!=null){
 			refreshCarteList();
 			listViewLinkGroup.setCellFactory(ListDescartes->{
@@ -92,7 +91,12 @@ public class TheGroupLink extends ListCell<Group> implements Initializable {
 	public void getAllCarte(){
 		carteObservableList = FXCollections.observableArrayList();
 		if(group.getCartes() != null){
-			carteObservableList.addAll(group.getCartes());
+			try {
+				ApiConnector apiConnector = new ApiConnector();
+				carteObservableList.addAll(apiConnector.carteList(group.getId()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
