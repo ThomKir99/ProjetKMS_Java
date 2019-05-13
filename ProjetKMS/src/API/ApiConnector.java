@@ -726,8 +726,6 @@ public class ApiConnector {
 
 
   public boolean changeCarteGroupId(Carte carte) throws IOException{
-
-
 	  	Gson gson = new Gson();
 	  	String projectJson = gson.toJson(carte);
 	  	Boolean reponse = false;
@@ -745,33 +743,17 @@ public class ApiConnector {
 	      request.getInputStream();
 
       	 if (request.getContent() != null){
-
+      		 System.out.println(request.getContent());
  	    	JsonParser jp = new JsonParser();
  	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
  	    	JsonArray rootarray = root.getAsJsonArray();
-
  	        for (JsonElement obj : rootarray){
-// 	        	System.out.println("six");
-// 	        	Dependance dependance;
-// 	        	dependance = new Dependance();
-//
-// 	        	//moi
-// 	        	System.out.println("sept");
-// 	        	dependance.setIdCarteDependante(obj.getAsJsonObject().get("idCompleted").getAsInt());
-// 	        	dependance.setIdCarteDeDependance(obj.getAsJsonObject().get("idCompleted").getAsInt());
-// 	        	dependance.setState(obj.getAsJsonObject().get("idCompleted").getAsBoolean());
- 	        	reponse = (Boolean) obj.getAsJsonObject().get("reponse").getAsBoolean();
- 	        	System.out.println(reponse);
- 	        	String message = obj.getAsJsonObject().get("ErrorMessage").toString();
- 	        	System.out.println("dependance state");
-// 	        	if(dependance.state == false){
-// 	        		reponse = false;
-//
-// 	        	}
+
+ 	        	reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
+
  	        }
 
       	 }
-      	 System.out.println(reponse);
       	 return reponse;
   }
   public void changeProjectColor(Project project) throws IOException{

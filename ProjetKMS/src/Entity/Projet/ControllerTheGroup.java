@@ -87,6 +87,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	public ControllerTheGroup(ControllerTheProject controllerProjectList){
 		this.controllerProjectList = controllerProjectList;
 		this.apiConnector = new ApiConnector();
+
+
 	}
 
 	@Override
@@ -376,8 +378,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       });
 
          cell.setOnDragDropped(event -> {
-
-
         	 try {
 				setOnDragDroppedHandler(event,cell);
 			} catch (IOException e) {
@@ -396,26 +396,23 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		ArrayList<Dependance> ListeDependanceCarte;
 		 ControllerTheProject.setDropIsSuccessful(true);
 		 dragSource = ControllerTheProject.getDragSource();
-		// ListeDependanceCarte	=  setOnlyIfGroupCompletion(group,dragSource.get().getItem().getId());
      Dragboard db = event.getDragboard();
      if (db.hasString() && dragSource.get() != null) {
     	 doDragAndDrop(event,cell);
      } else {
+
          event.setDropCompleted(false);
      }
      refreshGroup();
 	}
 
 	private void doDragAndDrop(DragEvent event, ListCell<Carte> cell) {
-
 		if(dragSourceCameFromSameList(listViewGroup)){
-
   		   	changeOrderInList(event,listViewGroup,cell.getIndex(),findDragSourceIndex(listViewGroup));
   		   	saveCarteOrder();
   	   }else{
   		  addCarteToOtherList(event);
   	   }
-		refreshGroup();
 	}
 
 
@@ -424,7 +421,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		if(!dropInSameList&& ControllerTheProject.dropIsSuccessful){
      		 listViewGroup.getItems().remove(cell.getItem());
      		saveCarteCompletion();
-
      	}
      		dropInSameList=false;
      		ControllerTheProject.setDropIsSuccessful(false);
@@ -434,6 +430,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 
 		if (group.getCartes() != null){
 			group.getCartes().clear();
+
 			group.addAll(listViewGroup.getItems());
 		}
 	}
