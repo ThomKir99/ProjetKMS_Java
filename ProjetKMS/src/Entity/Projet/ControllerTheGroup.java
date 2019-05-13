@@ -524,14 +524,16 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			ObservableList<Carte> carteObservableList =  FXCollections.observableArrayList();
 			carteObservableList.addAll(listViewGroup.getItems());
 			ListCell<Carte> dragSourceCell = dragSource.get();
-			carteObservableList.add(dragSourceCell.getItem());
 			int groupId = dragSourceCell.getItem().getGroupId();
 			dragSourceCell.getItem().setGroupId(group.getId());
-			 listViewGroup.setItems(carteObservableList);
 			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
-			 if(reponse = false){
+			 if(reponse == false){
 			  //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
-				 controllerProjectList.setDropIsSuccessful(false);
+				 dragSourceCell.getItem().setGroupId(groupId);
+				 ControllerTheProject.setDropIsSuccessful(false);
+			 }else{
+				 carteObservableList.add(dragSourceCell.getItem());
+				 listViewGroup.setItems(carteObservableList);
 			 }
 
 	        event.setDropCompleted(true);

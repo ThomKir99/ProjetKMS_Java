@@ -583,17 +583,17 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 	  APIResponse response;
 	  response =  new APIResponse();
 	  mySqlCon.openLocalConnection();
-	  System.out.println(carte.getGroupId());
+
 	  ResultSet group = mySqlCon.getQueryResult("SELECT completion FROM tbl_groupe WHERE id_groupe =\'" +  carte.getGroupId()+"\'" );
-	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_de_depandance =\'" +  carte.getID()+"\'  AND terminer = false;" );
-	  System.out.println("hello4");
+	  ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =\'" +  carte.getID()+"\'  AND terminer = false;" );
+
 	  if(result != null){
 		  result.last();
 		  size = result.getRow();
 	  }
 
 	  while(group.next()){
-	  	if(group.getBoolean(1) == true){
+	  	if(group.getBoolean(1) ){
 			  if(size <= 0 ){
 				 mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
 				 obj.addProperty("successful", true);

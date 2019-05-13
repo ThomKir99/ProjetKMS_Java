@@ -381,11 +381,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	private void changeTheGroupOfTheCarte(DragEvent event, ListCell<Group> cell) {
 		try {
-			dropIsSuccessful=true;
 			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerTheProject.getDragSource().get().getItem());
 			ControllerTheProject.getDragSource().get().getItem().setGroupId(leProjet.getGroups().get(cell.getIndex()).getId());
+			dropIsSuccessful=true;
 			Boolean reponse = apiConnector.changeCarteGroupId(ControllerTheProject.getDragSource().get().getItem());
-			if(reponse){
+			if(reponse == false){
+				dropIsSuccessful = false;
+				ControllerTheProject.dropIsSuccessful= false;
+				refreshGroupList();
+			}else {
+
 				refreshGroupList();
 			}
 

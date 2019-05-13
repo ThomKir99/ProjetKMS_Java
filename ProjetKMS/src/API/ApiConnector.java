@@ -727,6 +727,8 @@ public class ApiConnector {
 
   public boolean changeCarteGroupId(Carte carte) throws IOException{
 	  	Gson gson = new Gson();
+	  	int carteGroupId = carte.getGroupId();
+	  	System.out.println("id groupe avant change" + carteGroupId);
 	  	String projectJson = gson.toJson(carte);
 	  	Boolean reponse = false;
 	    String sURL = this.baseURL +"changeCarteGroupId";
@@ -743,13 +745,18 @@ public class ApiConnector {
 	      request.getInputStream();
 
       	 if (request.getContent() != null){
-      		 System.out.println(request.getContent());
  	    	JsonParser jp = new JsonParser();
  	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
  	    	JsonArray rootarray = root.getAsJsonArray();
  	        for (JsonElement obj : rootarray){
-
  	        	reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
+ 	        	try {
+ 	        		System.out.println(reponse);
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
  	        }
 
