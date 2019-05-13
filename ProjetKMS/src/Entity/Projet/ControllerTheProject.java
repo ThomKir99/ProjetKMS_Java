@@ -218,8 +218,14 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 	}
 
 	public void getAllGroup(){
-		groupObservableList = FXCollections.observableArrayList();
-		groupObservableList.addAll(leProjet.getGroups());
+		try {
+			groupObservableList = FXCollections.observableArrayList();
+			groupObservableList.addAll(apiConnector.groupList(leProjet.getId()));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -278,12 +284,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	private void setOnDragDroppedHandler(DragEvent event, ListCell<Group> cell) {
 		if(targetIsAllowed(event.getTarget().toString())&& !dragFromGroup){
-				changeTheGroupOfTheCarte(cell);
+				changeTheGroupOfTheCarte(event,cell);
 		}else{
 			if(dragFromGroup){
 				changeGroupOrder(event,cell);
 			}
 		}
+
 	}
 
 	private void changeGroupOrder(DragEvent event, ListCell<Group> cell) {
@@ -372,13 +379,16 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		return index;
 	}
 
-	private void changeTheGroupOfTheCarte(ListCell<Group> cell) {
+	private void changeTheGroupOfTheCarte(DragEvent event, ListCell<Group> cell) {
 		try {
 			dropIsSuccessful=true;
 			listViewProjet.getItems().get(cell.getIndex()).addCarte(ControllerTheProject.getDragSource().get().getItem());
 			ControllerTheProject.getDragSource().get().getItem().setGroupId(leProjet.getGroups().get(cell.getIndex()).getId());
-			apiConnector.changeCarteGroupId(ControllerTheProject.getDragSource().get().getItem());
-			refreshGroupList();
+			Boolean reponse = apiConnector.changeCarteGroupId(ControllerTheProject.getDragSource().get().getItem());
+			if(reponse){
+				refreshGroupList();
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

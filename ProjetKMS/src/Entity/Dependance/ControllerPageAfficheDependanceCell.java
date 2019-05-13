@@ -84,6 +84,7 @@ private ShowDependance showDependnance = new ShowDependance();
 public void initialize(URL arg0, ResourceBundle arg1) {
 	initializeColumn();
 	setListener();
+
 	Platform.runLater(() -> {
 		fillTableView();
 	});
@@ -165,6 +166,7 @@ private void fillDependanteTable() {
 
 public void setCurrentCard(Carte currentCard) {
 	this.currentCard = currentCard;
+	carteName.setText(currentCard.getName());
 }
 
 public void setListener(){

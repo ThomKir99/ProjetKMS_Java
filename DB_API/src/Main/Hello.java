@@ -573,11 +573,13 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 
   @Path("/changeCarteGroupId")
   @POST
+  @Produces (MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
   public String changeCarteGroupId(CarteModel carte) throws Exception {
 	  Gson gson = new Gson();
 	  int size = 0;
-	  //JsonArray jsonArr = new JsonArray();
+	  JsonArray jsonArr = new JsonArray();
+	  JsonObject obj = new JsonObject();
 	  APIResponse response;
 	  response =  new APIResponse();
 	  mySqlCon.openLocalConnection();
@@ -587,32 +589,18 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 		  result.last();
 		  size = result.getRow();
 	  }
-
-
 	  if(size < 1){
 			mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
-			response.ErrorMessage="It works";
-			System.out.println(response.ErrorMessage);
-			response.successful = true;
+			  obj.addProperty("successful", true);
+			jsonArr.add(obj);
 
 	  }else{
 		  response.successful = false;
-			response.ErrorMessage="'"+ carte.name+ "'" +" can not be moved to "+ carte.getGroupId() + "because the object has unfinished dependance";
-			System.out.println(response.ErrorMessage);
+		  obj.addProperty("successful", false);
+		  jsonArr.add(obj);
 	  }
-
-//	  if (result.isBeforeFirst()){
-//		  System.out.println(result.getRow());
-//		  if(result.getRow()!=0){
-//			}else{
-//			//ok on déplace
-//
-//		  	}
-//
-//	  }
 		mySqlCon.closeConnection();
-		String json = gson.toJson(response);
-		return json;
+		return gson.toJson(jsonArr);
   }
 
   @Path("/saveGroupeOrder")
