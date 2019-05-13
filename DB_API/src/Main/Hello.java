@@ -591,22 +591,22 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 		  result.last();
 		  size = result.getRow();
 	  }
-	  System.out.println("je suis ");
- while(group.next()){
-	 System.out.println("group completion  "+group.getBoolean(1));
+
+	  while(group.next()){
 	  	if(group.getBoolean(1) == true){
 			  if(size <= 0 ){
 				 mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
-			  obj.addProperty("successful", true);
-			jsonArr.add(obj);
+				 obj.addProperty("successful", true);
+				 jsonArr.add(obj);
 			  }else{
 				  response.successful = false;
-		  obj.addProperty("successful", false);
-		  jsonArr.add(obj);
-	  	}else{
+				  obj.addProperty("successful", false);
+				  jsonArr.add(obj);
+			  }
+		}else{
 	  		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
-			response.ErrorMessage="It works";
-			response.successful = true;
+			obj.addProperty("successful", true);
+			  jsonArr.add(obj);
 	  	}
  }
 		mySqlCon.closeConnection();
