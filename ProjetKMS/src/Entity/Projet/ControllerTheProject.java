@@ -386,6 +386,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 			dropIsSuccessful=true;
 			Boolean reponse = apiConnector.changeCarteGroupId(ControllerTheProject.getDragSource().get().getItem());
 			if(reponse == false){
+				errorMessageCantDrag();
 				dropIsSuccessful = false;
 				ControllerTheProject.dropIsSuccessful= false;
 				refreshGroupList();
@@ -496,6 +497,13 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		apiConnector.setDateOpenProject(currentProject);
 	}
 
+	public void errorMessageCantDrag() throws IOException{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("You can't move this card because it has unfunished dependance");
+		alert.showAndWait();
+	}
 
 
 

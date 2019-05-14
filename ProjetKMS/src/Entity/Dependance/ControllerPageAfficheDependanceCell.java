@@ -3,6 +3,7 @@ package Entity.Dependance;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import API.ApiConnector;
@@ -25,10 +26,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -191,12 +195,18 @@ public void setListener(){
 	});
 }
 	public void removeRow(ShowDependance showDependance){
+		boolean result = showConfirmationMessage();
 		try {
-			tblviewDependance.getItems().remove(showDependance);
+			if(result){
+				tblviewDependance.getItems().remove(showDependance);
+			}
+
 		} catch (Exception e) {
 		}
 		try {
+			if(result){
 			tblviewDependante.getItems().remove(showDependance);
+			}
 		} catch (Exception e) {
 		}
 
@@ -208,5 +218,19 @@ public void setListener(){
 
 	public void setCurrentProject(Project currentProject) {
 		this.currentProject = currentProject;
+	}
+
+
+	private boolean showConfirmationMessage() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Warning");
+    	alert.setHeaderText("Do you really want to delete this dependance");
+    	alert.setContentText("This action cannot be undone");
+    	ButtonType buttonTypeOne = new ButtonType("Yes");
+    	ButtonType buttonTypeTwo = new ButtonType("No");
+    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+    	Optional<ButtonType> result = alert.showAndWait();
+
+		return (result.get() == buttonTypeOne);
 	}
 }

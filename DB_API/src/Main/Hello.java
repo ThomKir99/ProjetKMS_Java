@@ -260,18 +260,39 @@ public class Hello {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public void deleteGroup(@PathParam("groupID") String groupID) throws Exception {
-  	mySqlCon.openLocalConnection();
+	//ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance inner join WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
+	mySqlCon.openLocalConnection();
   	mySqlCon.executeNonQuery("DELETE FROM tbl_groupe WHERE id_groupe = \'" + groupID + "\'");
   	mySqlCon.closeConnection();
   }
 
   @Path("/deleteCarte/{carteID}")
-  @GET
+  @POST
   @Produces(MediaType.APPLICATION_JSON)
-  public void deleteCarte(@PathParam("carteID") String carteID) throws Exception {
-  	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("DELETE FROM tbl_carte WHERE id_carte = \'" + carteID + "\'");
-  	mySqlCon.closeConnection();
+  @Consumes(MediaType.APPLICATION_JSON)
+  public String deleteCarte(@PathParam("carteID") String carteID) throws Exception {
+	 Gson gson = new Gson();
+	 int size = 0;
+	 JsonArray jsonArr = new JsonArray();
+	 JsonObject obj = new JsonObject();
+	 ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
+	 if(result != null){
+		  result.last();
+		  size = result.getRow();
+	  }
+	 if(size <= 0 ){
+		 mySqlCon.openLocalConnection();
+  		 mySqlCon.executeNonQuery("DELETE FROM tbl_carte WHERE id_carte = \'" + carteID + "\'");
+  		 mySqlCon.closeConnection();
+  		 obj.addProperty("successful", true);
+  		 jsonArr.add(obj);
+	 }else{
+		 obj.addProperty("successful", false);
+  		 jsonArr.add(obj);
+	 }
+
+	 mySqlCon.closeConnection();
+		return gson.toJson(jsonArr);
   }
 
   @Path("/getSingleProject/{projectID}")
@@ -596,6 +617,8 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 	  	if(group.getBoolean(1) ){
 			  if(size <= 0 ){
 				 mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
+				 mySqlCon.executeNonQuery("update tbl_carte set complete =\'"+ 1 +"\' where id_carte =\'"+carte.getID()+"\'");
+				 mySqlCon.executeNonQuery("update tbl_depandance set terminer =\'"+ 1 +"\' where id_carte_de_depandance =\'"+carte.getID()+"\'");
 				 obj.addProperty("successful", true);
 				 jsonArr.add(obj);
 			  }else{
@@ -606,8 +629,11 @@ public void createDependance(DependnaceModel dependance) throws Exception {
 		}else{
 	  		mySqlCon.executeNonQuery("update tbl_carte set id_groupe =\'"+ carte.getGroupId() +"\' where id_carte =\'"+carte.getID()+"\'");
 			obj.addProperty("successful", true);
-			  jsonArr.add(obj);
-	  	}
+			jsonArr.add(obj);
+			mySqlCon.executeNonQuery("update tbl_carte set complete =\'"+ 0 +"\' where id_carte =\'"+carte.getID()+"\'");
+			mySqlCon.executeNonQuery("update tbl_depandance set terminer =\'"+ 0 +"\' where id_carte_de_depandance =\'"+carte.getID()+"\'");
+
+		}
  }
 		mySqlCon.closeConnection();
 		return gson.toJson(jsonArr);

@@ -217,7 +217,7 @@ public class ControllerMenuProjetCell extends ListCell<Project>{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
-		alert.setContentText("Remplir le nom du projet avant de continuer!");
+		alert.setContentText("You have to fill the project name before continuing!");
 		alert.showAndWait();
 
 		txt_projectName.setText(apiConnector.getSingleProject(currentProjet.getId()).getName());

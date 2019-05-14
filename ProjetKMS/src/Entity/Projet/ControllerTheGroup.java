@@ -528,7 +528,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			dragSourceCell.getItem().setGroupId(group.getId());
 			 reponse= apiConnector.changeCarteGroupId(dragSourceCell.getItem());
 			 if(reponse == false){
-			  //REMETTRE LA CARTE DANS SON GROUPE ORIGIONAL
+			  System.out.println("reponse " + reponse);
+			  	 errorMessageCantDrag();
 				 dragSourceCell.getItem().setGroupId(groupId);
 				 ControllerTheProject.setDropIsSuccessful(false);
 			 }else{
@@ -596,6 +597,14 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 //			return dependance;
 //		}
 //	}
+
+	public void errorMessageCantDrag() throws IOException{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("You can't move this card because it has unfunished dependance");
+		alert.showAndWait();
+	}
 
 
 

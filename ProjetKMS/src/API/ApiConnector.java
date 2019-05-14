@@ -316,13 +316,31 @@ public class ApiConnector {
     request.getInputStream();
   }
 
-  public void deleteCarte(int carteID) throws IOException{
-    String sURL = this.baseURL +"deleteCarte/" + carteID;
-    URL url = new URL(sURL);
-    URLConnection request = url.openConnection();
-    request.setDoOutput(false);
-    request.connect();
-    request.getInputStream();
+  public boolean deleteCarte(int carteID) throws IOException{
+	Gson gson = new Gson();
+	boolean reponse = false;
+	String projectJson = gson.toJson(carteID);
+	String sURL = this.baseURL +"deleteCarte/" + carteID;
+	 URL url = new URL(sURL);
+	    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+	    request.setRequestProperty("Content-Type", "application/json");
+	    request.setRequestMethod("POST");
+	    request.setDoOutput(true);
+	    OutputStreamWriter wr = new OutputStreamWriter(request.getOutputStream());
+	    wr.write(projectJson);
+	    wr.flush();
+	      wr.close();
+	      request.connect();
+	      request.getInputStream();
+    if (request.getContent() != null){
+	    	JsonParser jp = new JsonParser();
+	    	JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+	    	JsonArray rootarray = root.getAsJsonArray();
+	    	for (JsonElement obj : rootarray){
+	    		reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
+	    	}
+    }
+    return reponse;
   }
 
   public void modifyProject(Project currentProject) throws IOException{
@@ -727,8 +745,6 @@ public class ApiConnector {
 
   public boolean changeCarteGroupId(Carte carte) throws IOException{
 	  	Gson gson = new Gson();
-	  	int carteGroupId = carte.getGroupId();
-	  	System.out.println("id groupe avant change" + carteGroupId);
 	  	String projectJson = gson.toJson(carte);
 	  	Boolean reponse = false;
 	    String sURL = this.baseURL +"changeCarteGroupId";
@@ -751,7 +767,6 @@ public class ApiConnector {
  	        for (JsonElement obj : rootarray){
  	        	reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
  	        	try {
- 	        		System.out.println(reponse);
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
