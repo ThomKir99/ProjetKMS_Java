@@ -1,6 +1,7 @@
 package Main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -16,6 +17,7 @@ class MySqlCon {
 	public void openLocalConnection(){
 	  try
 	  {
+
 		  Class.forName("com.mysql.jdbc.Driver");
 		  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys","root","");
 	  }
