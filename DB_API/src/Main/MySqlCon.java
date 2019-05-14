@@ -15,11 +15,22 @@ class MySqlCon {
 
 
 	public void openLocalConnection(){
+		String motDePasse="";
+		String nomBD="";
 	  try
 	  {
 
+		  try {
+				File file = new File("config.ini");
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				nomBD = br.readLine();
+				motDePasse = br.readLine();
+			} catch ( IOException e) {
+				motDePasse ="";
+			}
+
 		  Class.forName("com.mysql.jdbc.Driver");
-		  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys","root","");
+		  con = DriverManager.getConnection("jdbc:mysql://"+ nomBD+":3306/sys","root","");
 	  }
 	  catch(Exception e)
 	  {
