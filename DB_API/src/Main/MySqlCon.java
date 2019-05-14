@@ -15,28 +15,37 @@ class MySqlCon {
 
 
 	public void openLocalConnection(){
+		String nomBaseDonnee="";
 		String motDePasse="";
-		String nomBD="";
 	  try
 	  {
 
 		  try {
 				File file = new File("config.ini");
 				BufferedReader br = new BufferedReader(new FileReader(file));
-				nomBD = br.readLine();
-				motDePasse = br.readLine();
+				br.readLine();
+				nomBaseDonnee = trim(br.readLine());
+				motDePasse = trim(br.readLine());
 			} catch ( IOException e) {
-				motDePasse ="";
+				nomBaseDonnee = "localhost";
+				motDePasse ="root";
 			}
 
 		  Class.forName("com.mysql.jdbc.Driver");
-		  con = DriverManager.getConnection("jdbc:mysql://"+ nomBD+":3306/sys","root","");
+		  con = DriverManager.getConnection("jdbc:mysql://"+nomBaseDonnee+":3306/sys","root",motDePasse);
 	  }
 	  catch(Exception e)
 	  {
 		  System.out.println(e);
 	  }
 	}
+
+	private String trim(String readLine) {
+		String[] infoSplit = readLine.split(":");
+		String info = infoSplit[1].trim();
+		return info;
+	}
+
 
 	public void closeConnection(){
 		try{
