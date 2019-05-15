@@ -155,6 +155,7 @@ public class ControllerLinkGroupCell extends ListCell<Carte> {
 			carteParent = projectController.getCarteParent().getId() ;
 			dependance.setIdCarteDeDependance(carteParent);
 			dependance.setIdCarteDependante(carteRelier);
+			dependance.setIdCarte(carteRelier);
 			apiConnector.createDependance(dependance);
 			} catch (IOException e) {
 				e.printStackTrace();

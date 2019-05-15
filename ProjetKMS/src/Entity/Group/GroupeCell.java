@@ -146,14 +146,7 @@ public class GroupeCell extends ListCell<Carte> {
 			public void handle(ActionEvent event) {
 				try {
 					if (showConfirmationMessage()){
-						boolean reponse =apiConnector.deleteCarte(carte.getId());
-						if(reponse){
-							removeCarte();
-							System.out.println("done");
-						}else{
-							System.out.println("roor");
-						}
-
+						apiConnector.deleteCarte(carte.getId());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

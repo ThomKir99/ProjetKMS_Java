@@ -45,7 +45,11 @@ ON DELETE CASCADE
 create table if not exists tbl_depandance(
 id_carte_depandante int not null,
 id_carte_de_depandance int not null,
-terminer bool
+terminer bool,
+id_carte int,
+CONSTRAINT FK_id_carte FOREIGN KEY (id_carte)
+REFERENCES tbl_carte(id_carte)
+ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS tbl_permission(
 id_permission int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -89,12 +93,24 @@ INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(1,3,"WRI
 INSERT INTO tbl_permission (id_projet,id_utilisateur,permission) VALUES(2,3,"READ");
 
 /*Depandance*/
-INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES(1,2,false);
-INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES(1,7,false);
+INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer,id_carte) VALUES(1,2,false,1);
+INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer,id_carte) VALUES(1,7,false,2);
 SELECT * from tbl_carte;
 
 SELECT * from tbl_projet;
+SELECT * from tbl_depandance;
+SELECT * from tbl_carte;
+SELECT * from tbl_groupe;
 
-SELECT * FROM tbl_depandance WHERE id_carte_depandante = 1;
+SELECT * FROM tbl_carte WHERE id_carte_depandante = 1;
 
 SELECT tbl_carte.nom , ,tbl_dependance.complete from tbl_dependance INNER JOIN tbl_carte WHERE id_carte_depandante = 1;
+
+SELECT * FROM tbl_depandance WHERE id_carte_de_depandance = 4 AND terminer = false;
+INSERT INTO tbl_depandance (id_carte_depandante,id_carte_de_depandance,terminer) VALUES(1,5,true);
+
+SELECT completion FROM tbl_groupe WHERE id_groupe=6 ;
+
+SELECT terminer FROM tbl_groupe inner join tbl_carte WHERE id_groupe = TBL_CARTE.FK_id_groupe  AND terminer = false;
+	
+DELETE

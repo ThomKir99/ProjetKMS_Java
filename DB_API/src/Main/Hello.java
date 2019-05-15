@@ -270,29 +270,14 @@ public class Hello {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public String deleteCarte(@PathParam("carteID") String carteID) throws Exception {
-	 Gson gson = new Gson();
-	 int size = 0;
-	 JsonArray jsonArr = new JsonArray();
-	 JsonObject obj = new JsonObject();
-	 ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
-	 if(result != null){
-		  result.last();
-		  size = result.getRow();
-	  }
-	 if(size <= 0 ){
-		 mySqlCon.openLocalConnection();
-  		 mySqlCon.executeNonQuery("DELETE FROM tbl_carte WHERE id_carte = \'" + carteID + "\'");
-  		 mySqlCon.closeConnection();
-  		 obj.addProperty("successful", true);
-  		 jsonArr.add(obj);
-	 }else{
-		 obj.addProperty("successful", false);
-  		 jsonArr.add(obj);
-	 }
-
-	 mySqlCon.closeConnection();
-		return gson.toJson(jsonArr);
+  public void deleteCarte(@PathParam("carteID") String carteID) throws Exception {
+	mySqlCon.openLocalConnection();
+	mySqlCon.executeNonQuery("DELETE FROM tbl_carte WHERE id_carte = \'" + carteID + "\'");
+	System.out.println("k");
+	mySqlCon.executeNonQuery("DELETE FROM tbl_depandance WHERE id_carte_depandante = \'" + carteID + "\'");
+	System.out.println("wtf");
+	mySqlCon.executeNonQuery("DELETE FROM tbl_depandance WHERE id_carte_de_depandance = \'" + carteID + "\'");
+	mySqlCon.closeConnection();
   }
 
   @Path("/getSingleProject/{projectID}")
@@ -573,9 +558,9 @@ public class Hello {
 @Path("/createDependance")
 @POST
 	@Consumes(MediaType.APPLICATION_JSON)
-public void createDependance(DependnaceModel dependance) throws Exception {
+public void createDependance(DependanceModel dependance) throws Exception {
 		mySqlCon.openLocalConnection();
-	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer) VALUES ("+dependance.getIdCarteDeDependance() +","+ dependance.getIdCarteDependante() +","+false + ")");
+	mySqlCon.executeNonQuery("INSERT INTO tbl_depandance(id_carte_depandante,id_carte_de_depandance,terminer,id_carte) VALUES ("+dependance.getIdCarteDeDependance() +","+ dependance.getIdCarteDependante() +","+false + ","+ dependance.getIdCarte() +")");
 		mySqlCon.closeConnection();
 	}
 
