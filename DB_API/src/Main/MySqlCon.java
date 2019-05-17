@@ -1,7 +1,6 @@
 package Main;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -15,24 +14,9 @@ class MySqlCon {
 
 
 	public void openLocalConnection(){
-		String nomBaseDonnee="";
-		String motDePasse="";
 	  try
 	  {
-
-		  try {
-				File file = new File("config.ini");
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				br.readLine();
-				nomBaseDonnee = trim(br.readLine());
-				motDePasse = trim(br.readLine());
-			} catch ( IOException e) {
-				nomBaseDonnee = "localhost";
-				motDePasse ="root";
-			}
-
 		  Class.forName("com.mysql.jdbc.Driver");
-		 // con = DriverManager.getConnection("jdbc:mysql://"+nomBaseDonnee+":3306/sys","root",motDePasse);
 		  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys","root","");
 	  }
 	  catch(Exception e)
@@ -40,13 +24,6 @@ class MySqlCon {
 		  System.out.println(e);
 	  }
 	}
-
-	private String trim(String readLine) {
-		String[] infoSplit = readLine.split(":");
-		String info = infoSplit[1].trim();
-		return info;
-	}
-
 
 	public void closeConnection(){
 		try{
