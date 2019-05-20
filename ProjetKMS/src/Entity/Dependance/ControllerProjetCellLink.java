@@ -83,7 +83,7 @@ public class ControllerProjetCellLink extends ListCell<Project>{
 	}
 
 	private void setBackground(){
-		btn_openProjetLink.setStyle("-fx-background-color: linear-gradient(to bottom, #FFFFFF, " + getRGBProjectColor() + ")");
+		btn_openProjetLink.setStyle("-fx-background-color: linear-gradient(to bottom, #FFFFFF, " + getRGBProjectColor() + ");-fx-border-width: 1 ;-fx-border-color: gray");
 	}
 
 	private String getRGBProjectColor(){
