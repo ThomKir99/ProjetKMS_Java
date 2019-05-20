@@ -251,6 +251,15 @@ public class Hello {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public void deleteProject(@PathParam("projectID") String projectID) throws Exception {
+	  mySqlCon.openLocalConnection();
+		mySqlCon.executeNonQuery("DELETE tbl_depandance FROM tbl_depandance inner join tbl_carte on id_carte_depandante = id_carte "
+				+ "inner join tbl_groupe on tbl_carte.id_groupe =tbl_groupe.id_groupe where tbl_groupe.id_projet =\'"+ projectID + "\'");
+		mySqlCon.closeConnection();
+		mySqlCon.openLocalConnection();
+		mySqlCon.executeNonQuery("DELETE tbl_depandance FROM tbl_depandance inner join tbl_carte on id_carte_de_depandance = id_carte "
+				+ "inner join tbl_groupe on tbl_carte.id_groupe =tbl_groupe.id_groupe where tbl_groupe.id_projet =\'"+ projectID + "\'");
+		mySqlCon.closeConnection();
+		mySqlCon.openLocalConnection();
   	mySqlCon.openLocalConnection();
   	mySqlCon.executeNonQuery("DELETE FROM tbl_projet WHERE id_projet = \'" + projectID + "\'");
   	mySqlCon.closeConnection();
@@ -261,6 +270,12 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public void deleteGroup(@PathParam("groupID") String groupID) throws Exception {
 	//ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance inner join WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
+	mySqlCon.openLocalConnection();
+	mySqlCon.executeNonQuery("DELETE tbl_depandance FROM tbl_depandance inner join tbl_carte on id_carte_depandante = id_carte inner join tbl_groupe where tbl_carte.id_groupe =\'"+ groupID +"\'");
+	mySqlCon.closeConnection();
+	mySqlCon.openLocalConnection();
+	mySqlCon.executeNonQuery("DELETE tbl_depandance FROM tbl_depandance inner join tbl_carte on id_carte_de_depandance = id_carte inner join tbl_groupe where tbl_carte.id_groupe =\'"+ groupID +"\'");
+	mySqlCon.closeConnection();
 	mySqlCon.openLocalConnection();
   	mySqlCon.executeNonQuery("DELETE FROM tbl_groupe WHERE id_groupe = \'" + groupID + "\'");
   	mySqlCon.closeConnection();
@@ -275,7 +290,7 @@ public class Hello {
 	 int size = 0;
 	 JsonArray jsonArr = new JsonArray();
 	 JsonObject obj = new JsonObject();
-	 ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
+	 ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_depandance WHERE id_carte_depandante =\'" + carteID +"\' OR id_carte_de_depandance =\'" + carteID +"\'" );
 	 if(result != null){
 		  result.last();
 		  size = result.getRow();
@@ -283,6 +298,9 @@ public class Hello {
 	 if(size <= 0 ){
 		 mySqlCon.openLocalConnection();
   		 mySqlCon.executeNonQuery("DELETE FROM tbl_carte WHERE id_carte = \'" + carteID + "\'");
+  		 mySqlCon.closeConnection();
+  		 mySqlCon.openLocalConnection();
+  		 mySqlCon.executeNonQuery("DELETE FROM tbl_depandance WHERE id_carte_depandante = \'" + carteID + "\' OR id_carte_de_depandance = \'" + carteID +"\'");
   		 mySqlCon.closeConnection();
   		 obj.addProperty("successful", true);
   		 jsonArr.add(obj);
