@@ -502,7 +502,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
-		alert.setContentText("You can't move this card because it has unfunished dependance");
+		alert.setContentText("You can't move this card because it has unfinished dependency");
 		alert.showAndWait();
 	}
 

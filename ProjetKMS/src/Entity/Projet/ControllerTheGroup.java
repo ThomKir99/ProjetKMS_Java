@@ -589,20 +589,11 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		return index;
 	}
 
-
-//	public ArrayList<Dependance> setOnlyIfGroupCompletion(Group group,int Carte) throws IOException{
-//		if(group.getIsGroupOfCompletion() == true){
-//		ArrayList<Dependance> dependance;
-//			dependance = apiConnector.getDependanceCarte(Carte);
-//			return dependance;
-//		}
-//	}
-
 	public void errorMessageCantDrag() throws IOException{
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
-		alert.setContentText("You can't move this card because it has unfunished dependance");
+		alert.setContentText("You can't move this card because it has unfinished dependency");
 		alert.showAndWait();
 	}
 
