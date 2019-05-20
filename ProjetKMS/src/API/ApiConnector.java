@@ -765,7 +765,6 @@ public class ApiConnector {
  	    	JsonArray rootarray = root.getAsJsonArray();
  	        for (JsonElement obj : rootarray){
  	        	reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
-
  	        }
 
       	 }

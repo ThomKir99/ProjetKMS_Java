@@ -114,6 +114,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
       		}
 
       		try {
+      			setCompletionGroup();
     				getCarteFromGroup();
     			} catch (IOException e) {
     				e.printStackTrace();
@@ -133,8 +134,8 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 			createCheckBoxMenuItem();
 			setImage();
 			setListener();
-			setCompletionGroup();
-			refreshCarteList();
+		//	setCompletionGroup();
+		//	refreshCarteList();
 		}
 	}
 
@@ -290,7 +291,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	}
 
 		protected void saveCarteCompletion() {
-		refreshGroup();
 		try {
 			if (controllerProjectList.getProject().getGroups() != null){
 				for(Group aGroup: controllerProjectList.getProject().getGroups()){
