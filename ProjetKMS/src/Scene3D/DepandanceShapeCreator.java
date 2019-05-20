@@ -54,10 +54,10 @@ public ArrayList<FrustumMesh> createTheLink(ArrayList<Carte3D> allCarte3D){
 }
 
 private ArrayList<FrustumMesh> createLink(int idCarteDeDependance, int idCarteDependante,
-		ArrayList<Carte3D> allCarte3D) {
+			ArrayList<Carte3D> allCarte3D) {
 
 			ArrayList<FrustumMesh> meshView = new ArrayList<FrustumMesh>();
-			float height = (float) allCarte3D.get(0).carte3D.getHeight();
+			float height = (allCarte3D.size()==0) ? 0 : (float) allCarte3D.get(0).carte3D.getHeight();
 			float[] carteDeDependancePosition = getPosition(idCarteDeDependance, allCarte3D);
 			float[] carteDependantePosition = getPosition(idCarteDependante, allCarte3D);
 			if(carteDeDependancePosition[0] !=0 && carteDependantePosition[0] !=0){

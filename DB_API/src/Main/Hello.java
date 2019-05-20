@@ -511,7 +511,7 @@ public class Hello {
   @Produces(MediaType.APPLICATION_JSON)
   public String newCarte(@PathParam("groupId") String groupId) throws Exception {
   	mySqlCon.openLocalConnection();
-  	mySqlCon.executeNonQuery("INSERT INTO tbl_carte(nom,description,id_groupe,ordre_de_priorite,complete) VALUES (\"Insert a name\", \"No desc\","+ groupId + ",0,0)" );
+  	mySqlCon.executeNonQuery("INSERT INTO tbl_carte(nom,description,id_groupe,ordre_de_priorite,complete) VALUES (\"Insert a name\", \"\","+ groupId + ",0,0)" );
 
   	ResultSet result = mySqlCon.getQueryResult("SELECT * FROM tbl_carte WHERE id_carte = LAST_INSERT_ID()");
   	Gson gson = new Gson();
