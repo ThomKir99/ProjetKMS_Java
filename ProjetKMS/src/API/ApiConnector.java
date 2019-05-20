@@ -766,13 +766,6 @@ public class ApiConnector {
  	    	JsonArray rootarray = root.getAsJsonArray();
  	        for (JsonElement obj : rootarray){
  	        	reponse = (Boolean) obj.getAsJsonObject().get("successful").getAsBoolean();
- 	        	try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
  	        }
 
       	 }

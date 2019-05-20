@@ -269,7 +269,7 @@ public class Hello {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public void deleteGroup(@PathParam("groupID") String groupID) throws Exception {
-	//ResultSet result = mySqlCon.getQueryResult("SELECT terminer FROM tbl_depandance inner join WHERE id_carte_depandante =\'" + carteID +"\'  AND terminer = false;" );
+
 	mySqlCon.openLocalConnection();
 	mySqlCon.executeNonQuery("DELETE tbl_depandance FROM tbl_depandance inner join tbl_carte on id_carte_depandante = id_carte inner join tbl_groupe where tbl_carte.id_groupe =\'"+ groupID +"\'");
 	mySqlCon.closeConnection();
