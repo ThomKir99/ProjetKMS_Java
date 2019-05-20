@@ -79,6 +79,19 @@ public class ControllerProjetCellLink extends ListCell<Project>{
         setListener();
         setGraphic(pane1);
         currentProjetDependance = projet;
+        setBackground();
+	}
+
+	private void setBackground(){
+		btn_openProjetLink.setStyle("-fx-background-color: linear-gradient(to bottom, #FFFFFF, " + getRGBProjectColor() + ")");
+	}
+
+	private String getRGBProjectColor(){
+		String colorRgb = String.format( "#%02X%02X%02X",
+        (int)( this.currentProjetDependance.getProjectColor().getRed() * 255 ),
+        (int)( this.currentProjetDependance.getProjectColor().getGreen() * 255 ),
+        (int)( this.currentProjetDependance.getProjectColor().getBlue() * 255 ) );
+		return colorRgb;
 	}
 
 	private void loadTheProjetView(Project projet) {

@@ -12,11 +12,11 @@
       <Button fx:id="btn_backToTheProject" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Back" />
       <TableView fx:id="tblviewDependante" layoutX="56.0" layoutY="72.0" prefHeight="147.0" prefWidth="511.0">
         <columns>
-          <TableColumn fx:id="carteNameTblViewDependante" prefWidth="90.0" text="Carte" />
+          <TableColumn fx:id="carteNameTblViewDependante" prefWidth="90.0" text="Card" />
           <TableColumn fx:id="groupNameTblDependante" prefWidth="126.0" text="Group" />
             <TableColumn fx:id="projectNameTblDependante" prefWidth="127.0" text="Project" />
             <TableColumn fx:id="stateTblDependante" prefWidth="101.0" text="State" />
-            <TableColumn fx:id="deleteTblDependante" minWidth="0.0" prefWidth="69.0" text="delete" />
+            <TableColumn fx:id="deleteTblDependante" minWidth="0.0" prefWidth="69.0" text="Delete" />
         </columns>
       </TableView>
       <Label fx:id="carteName" alignment="CENTER" contentDisplay="CENTER" layoutX="209.0" text="Carte name" textAlignment="CENTER">
@@ -26,11 +26,11 @@
       </Label>
       <TableView fx:id="tblviewDependance" layoutX="56.0" layoutY="242.0" prefHeight="164.0" prefWidth="511.0">
         <columns>
-          <TableColumn fx:id="carteNameTblViewDependance" prefWidth="90.0" text="Carte" />
+          <TableColumn fx:id="carteNameTblViewDependance" prefWidth="90.0" text="Card" />
           <TableColumn fx:id="groupNameTblDependance" prefWidth="126.0" text="Group" />
             <TableColumn fx:id="projectNameTblDependance" prefWidth="127.0" text="Project" />
             <TableColumn fx:id="stateTblDependance" prefWidth="101.0" text="State" />
-            <TableColumn fx:id="deleteTblDependance" prefWidth="69.0" text="delete" />
+            <TableColumn fx:id="deleteTblDependance" prefWidth="69.0" text="Delete" />
         </columns>
       </TableView>
       <Label layoutX="57.0" layoutY="53.0" text="Card that depend on this card " />

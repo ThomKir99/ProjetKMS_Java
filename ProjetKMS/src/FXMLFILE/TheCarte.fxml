@@ -20,8 +20,8 @@
             <MenuButton fx:id="menuButton" layoutX="188.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="10.0" style="-fx-background-radius: 0 10 0 0; -fx-background-color: transparent; -fx-border-width: 1 1 0 0; -fx-border-color: #c1c1c1;">
               <items>
                 <MenuItem fx:id="btn_Link" mnemonicParsing="false" text="Link" />
-                <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete card" />
                   <MenuItem fx:id="btn_showLink" mnemonicParsing="false" text="Show link" />
+                <MenuItem fx:id="btn_delete" mnemonicParsing="false" text="Delete card" />
               </items>
             </MenuButton>
          </children>

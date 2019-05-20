@@ -16,11 +16,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 @Path("/main")
-public class Hello {
+public class Reader {
 
 	private MySqlCon mySqlCon;
 
-	public Hello(){
+	public Reader(){
 		mySqlCon = new MySqlCon();
 	}
 

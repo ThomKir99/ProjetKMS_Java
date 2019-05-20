@@ -230,6 +230,7 @@ public class ControllerTheProject  extends AnchorPane implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		listViewProjet.setCache(true);
 		addTooltip();
 		setBackground();
 		setListener();

@@ -70,6 +70,7 @@ public class ControllerPageProjet extends AnchorPane implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		if (listViewProjet !=null){
+			listViewProjet.setCache(true);
 			setListener();
 			setBackground();
 			refreshProjectList();

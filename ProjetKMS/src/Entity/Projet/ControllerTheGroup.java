@@ -88,7 +88,6 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 		this.controllerProjectList = controllerProjectList;
 		this.apiConnector = new ApiConnector();
 
-
 	}
 
 	@Override
@@ -130,6 +129,7 @@ public class ControllerTheGroup extends ListCell<Group> implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		if(listViewGroup!=null){
+			listViewGroup.setCache(true);
 			createCheckBoxMenuItem();
 			setImage();
 			setListener();

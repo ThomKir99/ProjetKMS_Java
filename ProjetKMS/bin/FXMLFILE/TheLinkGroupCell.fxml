@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="textFieldGroupName" editable="false" prefHeight="27.0" prefWidth="195.0" />
-      <ListView fx:id="listViewLinkGroup" layoutX="-6.0" layoutY="27.0" prefHeight="456.0" prefWidth="237.0" />
+      <TextField fx:id="textFieldGroupName" editable="false" prefHeight="32.0" prefWidth="237.0" />
+      <ListView fx:id="listViewLinkGroup" layoutY="32.0" prefHeight="532.0" prefWidth="237.0" />
    </children>
 </Pane>

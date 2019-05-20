@@ -2,11 +2,13 @@ package Entity.Group;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import API.ApiConnector;
 import Entity.Carte.Carte;
+import Entity.Carte.DependanceCarteInfo;
 import Entity.Dependance.ControllerDependance;
 import Entity.Dependance.ControllerPageAfficheDependanceCell;
 import Entity.Dependance.PageAfficheDependanceCarte;
@@ -38,10 +40,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -63,11 +67,9 @@ public class GroupeCell extends ListCell<Carte> {
 	public Project currentProjet;
 	private FXMLLoader mLLoader;
 	private Carte carte;
-	private Carte carteParent;
 	private ControllerTheGroup groupController;
 	private ApiConnector apiConnector;
 	private ControllerTheProject projectController;
-	private int index=1;
 
 	public GroupeCell(ControllerTheProject currentProject,ControllerTheGroup projectCell){
 		groupController = projectCell;
@@ -111,6 +113,15 @@ public class GroupeCell extends ListCell<Carte> {
 	private void setBackground(){
 		setLinkButton();
 		setDeleteButton();
+		setImage();
+	}
+
+	private void setImage(){
+		  Image imageLink = new Image(getClass().getResourceAsStream("/Image/caution.png"));
+			ImageView imageView = new ImageView(imageLink);
+			imageView.setFitHeight(25);
+			imageView.setFitWidth(25);
+			btn_showLink.setGraphic(imageView);
 	}
 
 	private void setLinkButton(){

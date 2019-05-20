@@ -38,6 +38,10 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public Button btn_backToMenu;
 	@FXML
 	public ListView<Group> listViewLinkGroupe;
+
+	@FXML
+	public AnchorPane anchorBackground;
+
 	public ControllerTheDependance(){
 
 		leProjetDependance = new Project();
@@ -47,7 +51,16 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	public Project getProject(){
 		Project projet;
 		projet= projetPrincipale;
+
 		return projet;
+	}
+
+	private String getRGBProjectColor(){
+		String colorRgb = String.format( "#%02X%02X%02X",
+        (int)( this.leProjetDependance.getProjectColor().getRed() * 255 ),
+        (int)( this.leProjetDependance.getProjectColor().getGreen() * 255 ),
+        (int)( this.leProjetDependance.getProjectColor().getBlue() * 255 ) );
+		return colorRgb;
 	}
 
 	public void setProjectPrincipale(Project leProjetPrincipale){
@@ -56,12 +69,16 @@ public class ControllerTheDependance extends AnchorPane implements Initializable
 	}
 
 
-
 	public void setProjectDependnace(Project unProjet){
 
 		this.leProjetDependance = unProjet;
 		txt_nomProjet.setText(leProjetDependance.getName());
+		setBackground();
 		refreshGroupList();
+	}
+
+	public void setBackground(){
+		anchorBackground.setStyle("-fx-background-color: "+ getRGBProjectColor() + ";");
 	}
 
 	public void setACarteParent(Carte uneCarte){
